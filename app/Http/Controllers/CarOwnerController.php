@@ -19,8 +19,11 @@ class CarOwnerController extends Controller
     }
     public function dashboard()
     {
+        $cars = Car::where('car_owner_id', auth()->id())->get();
+
         return view('car_owner.dashboard', [
-            'addCarLink' => route('car_owner.car_details')
+            'addCarLink' => route('car_owner.car_details'),
+            'cars' => $cars
         ]);
     }    
 
@@ -33,6 +36,7 @@ class CarOwnerController extends Controller
 
     // Validate the request data
     $request->validate([
+        'display_picture' => ['required', 'mimes:jpg,jpeg,png', 'max:2048'],
         'car_brand' => ['required', 'string', 'max:255'],
         'car_model' => ['required', 'string', 'max:255'],
         'plate_number' => ['required', 'string', 'max:255'],
@@ -47,6 +51,7 @@ class CarOwnerController extends Controller
 
     // Create new car instance
     $car = new Car;
+    $car->display_picture = $request->file('display_picture')->store('public/dp');
     $car->car_brand = $request->car_brand;
     $car->car_model = $request->car_model;
     $car->plate_number = $request->plate_number;

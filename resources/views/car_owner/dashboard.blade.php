@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Traverse</title>
-    <link rel="shortcut icon" type="image/png" href="resources/img/logo.png">
+    <link rel="shortcut icon" type="image/png" href="./resources/img/logo.png">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -16,12 +16,15 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
+    {{-- Flowbite Tailwind --}}
+    {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" /> --}}
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ route('car_owner.dashboard') }}">
                     Traverse
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -67,5 +70,24 @@
     </div>
 
     <h2> Listed Cars </h2>
+
+@foreach($cars as $car)
+    <div class="card">
+        <div class="card-header">{{ $car->car_brand }} - {{ $car->car_model }}</div>
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <p>Plate number: {{ $car->plate_number }}</p>
+                    <p>Location: {{ $car->location }}</p>
+                    <p>Rental fee: {{ $car->rental_fee }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+@endforeach
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 </body>
 </html>

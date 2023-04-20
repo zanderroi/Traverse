@@ -17,6 +17,7 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
     <style>
         body {
           background-image: url('resources/img/bgimage.jpg');
@@ -27,7 +28,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ route('car_owner.dashboard') }}">
                     Traverse
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -77,7 +78,21 @@
                         <div class="card-body">
                             <form method="POST" action="{{ route('car_owner.add_car_details') }}" enctype="multipart/form-data">
                                 @csrf
+                                
+                                <!-- image upload field -->
+                                <div class="row mb-3">
+                                    <label for="display_picture" class="col-md-4 col-form-label text-md-end">{{ __('Display Picture') }}</label>
         
+                                    <div class="col-md-6">
+                                        <input id="display_picture" type="file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 form-control-file @error('display_picture') is-invalid @enderror" name="display_picture" required>
+        
+                                        @error('display_picture')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
                                 <div class="row mb-3">
                                     <label for="car_brand" class="col-md-4 col-form-label text-md-end">{{ __('Car Brand') }}</label>
         
@@ -198,8 +213,8 @@
 
                                 
                                 <div class="row mb-0">
-                                    <div class="col-md-6 offset-md-4">
-                                        <button type="submit" class="btn btn-primary">
+                                    <div class="offset-md-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <button type="submit">
                                             {{ __('Add Car') }}
                                         </button>
                                     </div>
@@ -218,6 +233,6 @@
         </main>
     </div>
     
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 </body>
 </html>
