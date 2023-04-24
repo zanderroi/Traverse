@@ -5,6 +5,8 @@ use App\Models\Car;
 use App\Models\CarImage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+
 
 class CarOwnerController extends Controller
 {
@@ -87,11 +89,11 @@ public function deleteCar(Request $request, $car_id)
         $carImage->delete();
     });
 
-    // Delete the car
+    // Soft delete the car
     $car->delete();
 
     // Redirect back to the car owner dashboard
-    return redirect()->route('car_owner_dashboard');
+    return redirect()->route('car_owner.dashboard');
 }
 
 

@@ -13,4 +13,9 @@ class CarImage extends Model
         'car_id',
         'filename',
     ];
+
+    public function car()
+    {
+        return $this->belongsTo(Car::class, 'car_id');
+    }
 }

@@ -75,27 +75,29 @@
     <h2> Listed Cars </h2>
 
     @foreach($cars as $car)
-    <div class="card">
-        <div class="card-header">{{ $car->car_brand }} - {{ $car->car_model }}</div>
-        <div class="card-body">
-            <div class="row">
-                <img src="{{ asset($car->display_picture) }}" alt="Car Image">
-                <div class="col-md-6">
-                    <p>Plate number: {{ $car->plate_number }}</p>
-                    <p>Location: {{ $car->location }}</p>
-                    <p>Rental fee: {{ $car->rental_fee }}</p>
-                    <p>Status: {{ $car->status }}</p>
-                </div>
-            </div>
+    <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <a href="#">
+            <img class="rounded-t-lg" src="{{ asset($car->display_picture) }}" alt="Car Image" />
+        </a>
+        <div class="p-5">
+            <a href="#">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>
+            </a>
+            <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Plate number: {{ $car->plate_number }}</p>
+            <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Location: {{ $car->location }}</p>
+            <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Rental fee: Php{{ $car->rental_fee }}</p>
+            <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Status: {{ $car->status }}</p>
         </div>
-        <form action="{{ route('car_owner.delete_car', ['car_id' => $car->car_id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this car?')">
+        <form action="{{ route('car_owner.delete_car', ['car_id' => $car->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to unlist this car?')">
             @csrf
             @method('DELETE')
-            <button type="submit" class="text-gray-900 btn btn-danger">Delete</button>
+            <button type="submit" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-gray-900 btn btn-danger">Unlist Car</button>
         </form>
         
     </div>
 @endforeach
+
+
 
 
 

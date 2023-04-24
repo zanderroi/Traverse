@@ -1,11 +1,14 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Car extends Model
 {
+    use SoftDeletes;
     use HasFactory;
 
     protected $fillable = [
@@ -21,7 +24,7 @@ class Car extends Model
         'car_owner_id',
         'status',
     ];
-    
+
     protected $attributes = [
         'status' => 'available', // set the default value of status to 'available'
     ];
@@ -35,5 +38,4 @@ class Car extends Model
     {
         return $this->hasMany(CarImage::class, 'car_id');
     }
-
 }
