@@ -77,4 +77,22 @@ class CarOwnerController extends Controller
     return redirect()->route('car_owner.dashboard', ['addCarLink' => $addCarLink])->with('success', 'Car details added successfully!');
 }
 
+public function deleteCar(Request $request, $car_id)
+{
+    $car = Car::find($car_id);
+
+    // Delete the car images
+    $car->carImages->each(function ($carImage) {
+        unlink(storage_path('app/' . $carImage->filename));
+        $carImage->delete();
+    });
+
+    // Delete the car
+    $car->delete();
+
+    // Redirect back to the car owner dashboard
+    return redirect()->route('car_owner_dashboard');
+}
+
+
 }
