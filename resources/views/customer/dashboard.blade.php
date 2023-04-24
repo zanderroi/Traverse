@@ -65,6 +65,12 @@
     </div>
 
     <h2> Available Cars </h2>
+    <!-- Display the search form -->
+<form method="GET" action="{{ route('customer.available_cars') }}">
+    <label for="location">Search by Location:</label>
+    <input type="text" name="location" value="{{ $location }}">
+    <button type="submit">Search</button>
+</form>
     @foreach ($cars as $car)
     <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <a href="#">
