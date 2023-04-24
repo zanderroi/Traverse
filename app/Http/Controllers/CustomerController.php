@@ -12,7 +12,7 @@ class CustomerController extends Controller
     {
         $this->middleware(['auth']);
     }
-    public function index()
+    public function index(Request $request)
     {
         $location = $request->input('location');
 
