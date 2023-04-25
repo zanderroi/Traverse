@@ -6,7 +6,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="shortcut icon" type="image/png" href="{{ asset('../resources/img/logo.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('/resources/img/logo.png') }}">
 
     <title>Traverse</title>
 
@@ -77,7 +77,7 @@
     @foreach($cars as $car)
     <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <a href="#">
-            <img class="rounded-t-lg" src="{{ asset($car->display_picture) }}" alt="Car Image" />
+            <img class="rounded-t-lg" src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" />
         </a>
         <div class="p-5">
             <a href="#">
