@@ -111,7 +111,7 @@ class RegisterController extends Controller
             'contactperson1number' => $data['contactperson1number'],
             'contactperson2' => $data['contactperson2'],
             'contactperson2number' => $data['contactperson2number'],
-            'user_type' => $data['user_type'] == 'car_owner' ? 'car_owner' : 'customer',
+            'user_type' => $data['user_type'] == 'car_owner' ? 'car_owner' : ($data['user_type'] == 'admin' ? 'admin' : 'customer'),
 
         ]);
     }

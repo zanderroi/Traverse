@@ -185,6 +185,7 @@
                             <select id="user_type" name="user_type" class="col-md-6">
                                 <option value="customer">Customer</option>
                                 <option value="car_owner">Car Owner</option>
+                                <option value="admin">Admin</option>
                             </select>
                         </div>
                         <div class="col-md-6">
