@@ -47,10 +47,14 @@ Route::get('/cars/{id}', [CarController::class, 'show'])->name('cars.show');
 Route::get('/cars/{id}/book', [CarController::class, 'book'])->name('cars.book');
 
 //Booking Form Submission
-Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
+Route::post('/bookings/store/{car}', [BookingController::class, 'store'])->name('bookings.store');
+
 
 //Route to Book Now
 Route::get('/bookings/create/{id}', [BookingController::class, 'createBooking'])->name('bookings.create');
+
+//Booking Form
+
 
 
 

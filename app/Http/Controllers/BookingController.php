@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -7,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\Car;
 use App\Models\CarImage;
+use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
@@ -16,53 +16,45 @@ class BookingController extends Controller
         return view('bookings.create', compact('car'));
     }
     
-    //Booking details
-    public function showBookingDetails($booking_id)
-{
-    // Retrieve the booking based on the ID
-    $booking = Booking::findOrFail($booking_id);
 
-    // Calculate the total rental fee based on the number of days rented
-    $daysRented = $booking->check_out_date->diffInDays($booking->check_in_date);
-    $totalRentalFee = $booking->car->rental_fee * $daysRented;
+    //Booking process
+    public function store(Request $request, $car_id)
+    {
+        $validatedData = $request->validate([
+            'pickup_date_time' => 'required|date',
+            'return_date_time' => 'required|date|after:pickup_date_time',
+        ]);
 
-    // Load the view and pass the booking and total rental fee
-    return view('bookings.show', compact('booking', 'totalRentalFee'));
-}
+        $user_id = Auth::id(); // retrieve user_id from authenticated user
 
-//Booking process
-public function store(Request $request, $car_id)
-{
-    $booking = new Booking;
+        $car = Car::findOrFail($car_id);
 
-    // set booking properties from request
-    $booking->user_id = Auth::user()->id;
-    $booking->car_id = $car_id;
-    $booking->pickup_location = $request->input('pickup_location');
-    $booking->return_location = $request->input('return_location');
-    $booking->pickup_date_time = $request->input('pickup_date_time');
-    $booking->return_date_time = $request->input('return_date_time');
-    $booking->note = $request->input('note');
+        // calculate total rental fee and late fee
+        $daysRented = strtotime($validatedData['return_date_time']) - strtotime($validatedData['pickup_date_time']);
+        $daysRented = round($daysRented / (60 * 60 * 24));
+        $totalRentalFee = $car->rental_fee * $daysRented;
+        $late_fee = 0;
 
-    // calculate rental fee and late fee
-    $car = Car::findOrFail($car_id);
-    $pickup_date_time = Carbon::parse($booking->pickup_date_time);
-    $return_date_time = Carbon::parse($booking->return_date_time);
-    $num_hours_rented = $return_date_time->diffInHours($pickup_date_time);
-    $total_rental_fee = $car->rental_fee * $num_hours_rented;
-    $late_fee_per_hour = 500;
-    $late_fee = max(0, $return_date_time->diffInMinutes($booking->car->rental_due_time) / 60) * $late_fee_per_hour;
-    $booking->total_rental_fee = $total_rental_fee;
-    $booking->late_fee = $late_fee;
+        $booking = new Booking([
+            'pickup_date_time' => $validatedData['pickup_date_time'],
+            'return_date_time' => $validatedData['return_date_time'],
+            'total_rental_fee' => $totalRentalFee,
+            'late_fee' => $late_fee,
+            'notes' => $request->input('notes') ?? '',
+        ]);
 
-    $booking->save();
+        $booking->car()->associate($car);
+        $booking->user_id = $user_id; // associate the booking with the user
 
-    // update car status to booked
-    $car->status = 'booked';
-    $car->save();
-
-    return redirect()->route('customer.dashboard')->with('success', 'Booking created successfully');
-}
+        $booking->save();
+        $car->status = 'booked';
+        $car->save();
+        $bookingDetails = [
+           'car' => $car,
+           'booking' => $booking
+          ];        
+                return view('bookings.create', compact('bookingDetails'));
+    }
 
 
 }

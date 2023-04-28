@@ -77,7 +77,7 @@
                 </svg>
               </div>
               <input type="text" name="location" value="{{ $location }}" class="h-4 block w-64 p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search by Location">
-              <button type="submit" class="text-white absolute top-2.5 right-2.5 bottom-2.5 bg-gray-800 hover:bg-gray-900 rounded-md text-xs text-center px-2 py-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Search</button>
+              <button type="submit" class="text-white absolute top-2.5 right-2.5 bottom-2.5 bg-blue-600 hover:bg-blue-700 rounded-md text-xs text-center px-2 py-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Search</button>
             </div>
           </form>
       
@@ -85,12 +85,12 @@
             <div class="form-group">
               <label class="text-xs ml-1" for="sort_by_rental_fee">Sort by rental fee</label>
               <div class="flex">
-                <select class="w-32 h-7 form-control text-xs" name="sort_by_rental_fee" id="sort_by_rental_fee">
+                <select class="w-32 h-7 text-xs order border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" name="sort_by_rental_fee" id="sort_by_rental_fee">
                   <option value="asc">Lowest to highest</option>
                   <option value="desc">Highest to lowest</option>
                 </select>
       
-                <button class="h-7 ml-2 text-white bg-gray-800 hover:bg-gray-900 rounded-md text-xs text-center px-2 py-1.5 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700" type="submit" onclick="updateSortBox()">Sort</button>
+                <button class="h-7 ml-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md text-xs text-center px-2 py-1.5 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700" type="submit" onclick="updateSortBox()">Sort</button>
               </div>
             </div>
           </form>
@@ -118,6 +118,8 @@
 
     @endforeach
 
+
+
 </div>
 
 <script>
@@ -126,5 +128,6 @@ function updateSortBox() {
   sortBox.innerText = "Sort by rental fee";
 }
   </script>
+
 </body>
 </html>
