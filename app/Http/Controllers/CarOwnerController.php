@@ -85,7 +85,7 @@ public function deleteCar(Request $request, $car_id)
 
     // Delete the car images
     $car->carImages->each(function ($carImage) {
-        unlink(storage_path('app/' . $carImage->filename));
+        unlink(storage_path('app/public/' . $carImage->filename));
         $carImage->delete();
     });
 

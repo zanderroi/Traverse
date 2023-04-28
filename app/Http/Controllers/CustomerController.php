@@ -47,4 +47,6 @@ class CustomerController extends Controller
         // Pass the cars to the view to display
         return view('customer.dashboard', ['cars' => $cars, 'location' => $location]);
     }
+
+
 }

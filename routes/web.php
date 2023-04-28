@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CarOwnerController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CarController;
+use App\Http\Controllers\BookingController;
+
 
 
 
@@ -37,6 +40,29 @@ Route::delete('/car_owner/car/{car_id}', [CarOwnerController::class, 'deleteCar'
 
 // Route to display all available cars
 Route::get('/customer/cars', [CustomerController::class, 'availableCars'])->name('customer.available_cars');
+
+//Booking Screen
+Route::get('/cars/{id}', [CarController::class, 'show'])->name('cars.show');
+
+Route::get('/cars/{id}/book', [CarController::class, 'book'])->name('cars.book');
+
+//Booking Form Submission
+Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
+
+//Route to Book Now
+Route::get('/bookings/create/{id}', [BookingController::class, 'createBooking'])->name('bookings.create');
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
