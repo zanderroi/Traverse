@@ -10,6 +10,8 @@ class Car extends Model
 {
     use SoftDeletes;
     use HasFactory;
+    protected $table = 'cars';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'display_picture',
