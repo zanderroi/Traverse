@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Traverse</title>
-    <link rel="shortcut icon" type="image/png" href="resources/img/logo.png">
+    <link rel="icon" type="image/png" href="{{ asset('logo/2-modified.png') }}">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">

@@ -6,7 +6,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="shortcut icon" type="image/png" href="{{ asset('/resources/img/logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('logo/2-modified.png') }}">
 
     <title>Traverse</title>
 
@@ -67,39 +67,36 @@
             </div>
         </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
     </div>
 
-    <h2> Listed Cars </h2>
+    <h2 class="text-3xl font-bold ml-4 mt-4 mb-2 mr-5 text-blue-600"> Listed Cars </h2>
     <div class="row">
-    @foreach($cars as $car)
+        @foreach ($cars as $car)
+        <div class="hover:bg-blue-500 dark:bg-gray-800 dark:hover:bg-gray-700 left-1 mt-2 mr-3 ml-6 mb-4 pt-2 px-2 w-64 h-32 border border-gray-200 rounded-lg shadow-md dark:border-gray-700">
 
-    <div class="mx-auto mr-3 ml-3 mb-4 pt-2 px-2 w-64 h-32 border border-gray-200 rounded-lg shadow-md dark:border-gray-700">
-        <a href="#">
-            <img class="rounded-t-lg rounded-b-lg" src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" />
-
-        </a>
-        <div class="p-5">
-            <a href="#">
-                <h5 class="mx-auto mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>
+            <img class="rounded-t-lg rounded-b-lg" src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:250px;height:150px;"/>
+            <div class="p-3">
+                <a class="hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" href="{{ route('cars.show', $car->id) }}">
+                    <h5 class="mx-auto mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>
+                
+                <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Car Owner: {{ $car->owner->name }}</p>
+                <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Location: {{ $car->location }}</p>
+                <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Rental fee: Php{{ $car->rental_fee }}</p>
+                <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Status: {{ $car->status }}</p>
             </a>
-            <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Plate number: {{ $car->plate_number }}</p>
-            <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Location: {{ $car->location }}</p>
-            <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Rental fee: Php{{ $car->rental_fee }}</p>
-            <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Status: {{ $car->status }}</p>
+            </div>
+            <form action="{{ route('car_owner.delete_car', ['car_id' => $car->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to unlist this car?')">
+                @csrf
+                @method('DELETE')
+                <div class="flex justify-center mb-2">
+                <button type="submit" class="mx-auto inline-flex items-center px-3 py-2 text-sm font-medium text-center text-gray-900 btn btn-danger">Unlist Car</button>
+                </div>
+            </form>
+            
         </div>
-        <form action="{{ route('car_owner.delete_car', ['car_id' => $car->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to unlist this car?')">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-gray-900 btn btn-danger">Unlist Car</button>
-        </form>
-        
+        @endforeach
     </div>
 
-@endforeach
-</div>
 
 
 

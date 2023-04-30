@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Traverse</title>
-    <link rel="icon" type="image/x-icon" href="/img/logo.png">
+    <link rel="icon" type="image/png" href="{{ asset('logo/2-modified.png') }}">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -19,13 +19,19 @@
 
     {{-- Flowbite Tailwind --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+    <style>
+      body {
+          overflow-x: hidden;
+      }
+  </style>
 </head>
-<body>
+<body class="pt-5">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    Traverse
+                <a class="navbar-brand flex items-center" href="{{ url('/') }}">
+                    <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Flowbite Logo" />
+                    <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Traverse</span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -61,9 +67,7 @@
                 </div>
             </div>
         </nav>
-
-        {{-- @include('templates.header') --}}
-    </div>
+    </div>   
     <div class="flex items-center justify-between">
         <h1 class="text-3xl font-bold ml-4 mt-6 mb-2 mr-5 text-blue-600">Available Cars</h1>
       
@@ -98,13 +102,13 @@
       </div>
       
     
-    <div class="row ">
+    <div class="row justify-content-start ">
         @foreach ($cars as $car)
-        <div class="mx-auto mt-2 mr-3 ml-3 mb-4 pt-2 px-2 w-64 h-32 border border-gray-200 rounded-lg shadow-md dark:border-gray-700">
+        <div class=" hover:bg-blue-500 dark:bg-gray-800 dark:hover:bg-gray-700 mx-auto mt-2 mb-4 pt-2 px-2 w-64 h-32 border border-gray-200 rounded-lg shadow-md dark:border-gray-700">
 
             <img class="rounded-t-lg rounded-b-lg" src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:250px;height:150px;"/>
             <div class="p-3">
-                <a href="{{ route('cars.show', $car->id) }}">
+                <a class="hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" href="{{ route('cars.show', $car->id) }}">
                     <h5 class="mx-auto mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>
                 
                 <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Car Owner: {{ $car->owner->name }}</p>
@@ -114,12 +118,7 @@
             </a>
             </div>
         </div>
-
-
     @endforeach
-
-
-
 </div>
 
 <script>

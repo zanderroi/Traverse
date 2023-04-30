@@ -19,6 +19,33 @@
 
     {{-- Flowbite Tailwind --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+
+    {{-- Modal Script --}}
+    <script>
+		document.getElementById('book-car-button').addEventListener('click', function() {
+		    // Set the car owner
+
+		    // Set the pickup date and time
+		    var pickupDateTime = document.getElementById('pickup_date_time').value;
+		    document.getElementById('pickup_date_time').innerText = pickupDateTime;
+
+		    // Set the return date and time
+		    var returnDateTime = document.getElementById('return_date_time').value;
+		    document.getElementById('return_date_time').innerText = returnDateTime;
+
+		    // Calculate and set the rental fee
+		    var pickupDate = new Date(pickupDateTime);
+		    var returnDate = new Date(returnDateTime);
+		    var rentalDays = Math.ceil((returnDate - pickupDate) / (1000 * 60 * 60 * 24));
+		    var rentalFee = rentalDays * {{ $car->price_per_day }};
+		    document.getElementById('rental_fee').innerText = rentalFee.toFixed(2);
+
+		    // Show the modal
+		    var modalToggle = document.getElementById('book-car-button').getAttribute('data-modal-toggle');
+		    var modal = document.getElementById(modalToggle);
+		    modal.classList.add('is-active');
+		});
+	</script>
 </head>
 <body>
     <div id="app">
@@ -73,7 +100,7 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('bookings.store', $car->id) }}">
                         @csrf
-
+                        <p class="mb-1 font-normal"><strong>Rental fee per day: Php{{ $car->rental_fee }}</p>
                         <div class="form-group row">
                             <label for="pickup_date_time" class="col-md-4 col-form-label text-md-right">{{ __('Pickup Date and Time') }}</label>
 
@@ -118,7 +145,7 @@
 
                         <div class="form-group row mb-0 mt-2">
                             <div class="col-md-6 offset-md-4">
-                                <button data-modal-target="defaultModal" data-modal-toggle="defaultModal" type="button" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <button id="book-car-button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" type="button" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     {{ __('Book Car') }}
                                 </button>
                                 <a href="{{ route('customer.dashboard') }}" class="btn btn-secondary">
@@ -150,7 +177,10 @@
               </div>
               <!-- Modal body -->
               <div class="p-6 space-y-6">
-                 
+                <p><strong>Car Owner:</strong> <span id="car-owner"></span></p>
+                <p><strong>Pickup Date and Time:</strong> <span id="pickup_date_time"></span></p>
+                <p><strong>Return Date and Time:</strong> <span id="return_date_time"></span></p>
+                <p><strong>Rental Fee:</strong> <span id="rental_fee"></span></p>
               
               </div>
               <!-- Modal footer -->
@@ -161,6 +191,8 @@
           </div>
       </div>
   </div>
+
+
 
 </body>
 </html>
