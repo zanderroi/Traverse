@@ -49,7 +49,7 @@ class CarOwnerController extends Controller
         'vehicle_identification_number' => ['required', 'string', 'max:255'],
         'location' => ['required', 'string', 'max:255'],
         'certificate_of_registration' => ['required', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
-        'car_description' => ['required', 'string', 'max:255'],
+        'car_description' => ['required', 'string', 'max:1000'],
         'rental_fee' => 'required|numeric|min:0',
         'add_picture1' => ['required', 'mimes:jpg,jpeg,png', 'max:2048'],
         'add_picture2' => ['required', 'mimes:jpg,jpeg,png', 'max:2048'],
