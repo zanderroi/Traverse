@@ -26,18 +26,22 @@ class UserFactory extends Factory
             // 'remember_token' => Str::random(10),
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
-            'password' => Hash::make('password'), // you can set a default password
+            'password' => Hash::make('password'),
             'address' => $this->faker->address,
+            'phone_number' => $this->faker->phoneNumber,
+            'birthday' => $this->faker->date(),
             'govtid' => $this->faker->uuid,
             'govtid_image' => $this->faker->imageUrl(),
             'driverslicense' => $this->faker->uuid,
             'driverslicense_image' => $this->faker->imageUrl(),
+            'selfie_image' => $this->faker->imageUrl(),
             'contactperson1' => $this->faker->name,
             'contactperson1number' => $this->faker->phoneNumber,
             'contactperson2' => $this->faker->name,
             'contactperson2number' => $this->faker->phoneNumber,
             'user_type' => $this->faker->randomElement(['car_owner', 'customer']),
             'remember_token' => Str::random(10),
+            'account_status' => 'Active',
         ];
     }
 
