@@ -22,7 +22,7 @@ class AdminController extends Controller
         $data = DB::table('users')->count();
         $carsCount = DB::table('cars')->count();
         $carOwners = DB::table('users')->where('user_type', 'car_owner')->count();
-        $customers = DB::table('users')->where('user_type', 'car_owner')->count();
+        $customers = DB::table('users')->where('user_type', 'customer')->count();
         // return view('admin.dashboard', ['cars' => $data]);
         return view('admin.dashboard', compact('data', 'carsCount', 'carOwners', 'customers'));
     }

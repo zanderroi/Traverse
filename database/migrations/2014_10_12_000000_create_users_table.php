@@ -32,6 +32,7 @@ return new class extends Migration
             $table->enum('user_type', ['admin', 'customer', 'car_owner']);
             $table->enum('account_status', ['Active', 'Deactivated'])->default('Active');
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
