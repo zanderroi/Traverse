@@ -7,8 +7,8 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Traverse</title>
-    <link rel="icon" type="image/png" href="{{ asset('logo/2-modified.png') }}">
+    <title>Traverse - Customer</title>
+    <link rel="icon" type="image/png" href="{{ asset('logo/icon.png') }}">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -87,9 +87,9 @@
       
           <form action="{{ route('customer.available_cars') }}" method="GET" class="ml-4">
             <div class="form-group">
-              <label class="text-xs ml-1" for="sort_by_rental_fee">Sort by rental fee</label>
-              <div class="flex">
-                <select class="w-32 h-7 text-xs order border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" name="sort_by_rental_fee" id="sort_by_rental_fee">
+              <div class="mt-2">
+                <select class="w-32 h-10 text-xs order border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" name="sort_by_rental_fee" id="sort_by_rental_fee">
+                  <option value="">Rental Fee</option>
                   <option value="asc">Lowest to highest</option>
                   <option value="desc">Highest to lowest</option>
                 </select>
@@ -104,7 +104,7 @@
     
     <div class="row justify-content-start ">
         @foreach ($cars as $car)
-        <div class=" hover:bg-blue-500 dark:bg-gray-800 dark:hover:bg-gray-700 mx-auto mt-2 mb-4 pt-2 px-2 w-64 h-32 border border-gray-200 rounded-lg shadow-md dark:border-gray-700">
+        <div class=" hover:bg-blue-500 dark:bg-gray-800 dark:hover:bg-gray-700 left-1 mt-2 mr-3 ml-6 mb-4 pt-2 px-2 w-64 h-32 border border-gray-200 rounded-lg shadow-md dark:border-gray-700">
 
             <img class="rounded-t-lg rounded-b-lg" src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:250px;height:150px;"/>
             <div class="p-3">

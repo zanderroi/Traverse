@@ -22,18 +22,25 @@ class User extends Authenticatable
         'email',
         'password',
         'address',
+        'phone_number',
+        'birthday',
         'govtid',
         'govtid_image',
         'driverslicense',
         'driverslicense_image',
+        'selfie_image',
         'contactperson1',
         'contactperson1number',
         'contactperson2',
         'contactperson2number',
         'user_type',
         'remember_token',
+        'account_status',
     ];
 
+    protected $attributes = [
+        'account_status' => 'Active', // set the default value of status to 'available'
+    ];
     /**
      * The attributes that should be hidden for serialization.
      *

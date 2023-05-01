@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Rules\UnderEighteen;
+
 
 class RegisterController extends Controller
 {
@@ -72,10 +74,13 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'address' => ['required', 'string', 'max:255'],
+            'phone_number' => ['required', 'string', 'max:255'],
+            'birthday' => ['required', 'date', new UnderEighteen],
             'govtid' => ['required', 'string', 'max:255'],
             'govtid_image' => ['required', 'mimes:jpg,jpeg,png', 'max:2048'],
             'driverslicense' => ['required', 'string', 'max:255'],
             'driverslicense_image' => ['required', 'image', 'max:2048'],
+            'selfie_image' => ['required', 'image', 'max:2048'],
             'contactperson1' => ['required', 'string', 'max:255'],
             'contactperson1number' => ['required', 'string', 'max:255'],
             'contactperson2' => ['required', 'string', 'max:255'],
@@ -85,6 +90,7 @@ class RegisterController extends Controller
         ]);
         $govtidImage = $data['govtid_image']->store('public/images');
         $driversLicenseImage = $data['driverslicense_image']->store('public/images');
+        $selfieImage = $data['selfie_image']->store('public/images');
         return $validator;
     }
 
@@ -96,22 +102,28 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        
         $govtidImage = $data['govtid_image']->store('public/images');
         $driversLicenseImage = $data['driverslicense_image']->store('public/images');
+        $selfieImage = $data['selfie_image']->store('public/images');
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'address' => $data['address'],
+            'phone_number' => $data['phone_number'],
+            'birthday' => $data['birthday'],
             'govtid' => $data['govtid'],
             'govtid_image' => $govtidImage,
             'driverslicense' => $data['driverslicense'],
             'driverslicense_image' => $driversLicenseImage,
+            'selfie_image'=> $selfieImage,
             'contactperson1' => $data['contactperson1'],
             'contactperson1number' => $data['contactperson1number'],
             'contactperson2' => $data['contactperson2'],
             'contactperson2number' => $data['contactperson2number'],
             'user_type' => $data['user_type'] == 'car_owner' ? 'car_owner' : ($data['user_type'] == 'admin' ? 'admin' : 'customer'),
+            'account_status' => 'Active'
 
         ]);
     }

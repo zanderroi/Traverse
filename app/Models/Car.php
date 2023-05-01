@@ -15,16 +15,22 @@ class Car extends Model
         'display_picture',
         'car_brand',
         'car_model',
+        'year',
+        'seats',
         'plate_number',
         'vehicle_identification_number',
         'location',
         'certificate_of_registration',
         'car_description',
         'rental_fee',
+        'add_picture1',
+        'add_picture2',
+        'add_picture3',
         'car_owner_id',
         'status',
     ];
 
+    
     protected $attributes = [
         'status' => 'available', // set the default value of status to 'available'
     ];
@@ -34,8 +40,4 @@ class Car extends Model
         return $this->belongsTo(User::class, 'car_owner_id');
     }
 
-    public function carImages()
-    {
-        return $this->hasMany(CarImage::class, 'car_id');
-    }
 }

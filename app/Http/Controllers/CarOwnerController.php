@@ -6,6 +6,7 @@ use App\Models\CarImage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use App\Models\User;
 
 
 class CarOwnerController extends Controller
@@ -22,10 +23,11 @@ class CarOwnerController extends Controller
     public function dashboard()
     {
         $cars = Car::where('car_owner_id', auth()->id())->get();
-
+        $users = User::where('id', auth()->id())->get();
         return view('car_owner.dashboard', [
             'addCarLink' => route('car_owner.car_details'),
-            'cars' => $cars
+            'cars' => $cars,
+            'users' => $users
         ]);
     }    
 
@@ -41,14 +43,17 @@ class CarOwnerController extends Controller
         'display_picture' => ['required', 'mimes:jpg,jpeg,png', 'max:2048'],
         'car_brand' => ['required', 'string', 'max:255'],
         'car_model' => ['required', 'string', 'max:255'],
+        'year' => ['required', 'integer', 'min:1900', 'max:' . date('Y')],
+        'seats' => ['required', 'integer', 'min:1'],
         'plate_number' => ['required', 'string', 'max:255'],
         'vehicle_identification_number' => ['required', 'string', 'max:255'],
         'location' => ['required', 'string', 'max:255'],
         'certificate_of_registration' => ['required', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
         'car_description' => ['required', 'string', 'max:255'],
         'rental_fee' => 'required|numeric|min:0',
-        'car_images' => 'required|array|min:1',
-        'car_images.*' => ['required', 'mimes:jpg,jpeg,png', 'max:2048'],
+        'add_picture1' => ['required', 'mimes:jpg,jpeg,png', 'max:2048'],
+        'add_picture2' => ['required', 'mimes:jpg,jpeg,png', 'max:2048'],
+        'add_picture3' => ['required', 'mimes:jpg,jpeg,png', 'max:2048'],
     ]);
 
     // Create new car instance
@@ -56,24 +61,21 @@ class CarOwnerController extends Controller
     $car->display_picture = $request->file('display_picture')->store('public/dp');
     $car->car_brand = $request->car_brand;
     $car->car_model = $request->car_model;
+    $car->year = $request->year;
+    $car->seats = $request->seats;
     $car->plate_number = $request->plate_number;
     $car->vehicle_identification_number = $request->vehicle_identification_number;
     $car->location = $request->location;
     $car->certificate_of_registration = $request->file('certificate_of_registration')->store('public/cor');
     $car->car_description = $request->car_description;
     $car->rental_fee = $request->rental_fee;
+    $car->add_picture1 = $request->file('add_picture1')->store('public/dp');
+    $car->add_picture2 = $request->file('add_picture2')->store('public/dp');
+    $car->add_picture3 = $request->file('add_picture3')->store('public/dp');
     $car->status = 'available';
     $car->car_owner_id = Auth::id();
     $car->save();
 
-    // Save car images
-    foreach ($request->car_images as $image) {
-        $filename = $image->store('public/car_images');
-        CarImage::create([
-            'car_id' => $car->id,
-            'filename' => $filename
-        ]);
-    }
 
     // Redirect to car details page
     return redirect()->route('car_owner.dashboard', ['addCarLink' => $addCarLink])->with('success', 'Car details added successfully!');

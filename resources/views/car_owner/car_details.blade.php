@@ -120,7 +120,37 @@
                                         @enderror
                                     </div>
                                 </div>
+                                <div class="row mb-3">
+                                    <label for="year" class="col-md-4 col-form-label text-md-end">Year</label>
+                                    <div class="col-md-6">
+                                        <select id="year" name="year" class="form-control @error('year') is-invalid @enderror" required>
+                                            <option value="">-- Select Year --</option>
+                                            @for ($i = date('Y'); $i >= 1900; $i--)
+                                                <option value="{{ $i }}" @if (old('year') == $i) selected @endif>{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                        @error('year')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
                                 
+
+                                <div class="row mb-3">
+                                    <label for="seats" class="col-md-4 col-form-label text-md-end">Number of seats</label>
+                                    <div class="col-md-6">
+                                    <input id="seats" type="number" min="1" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 form-control @error('seats') is-invalid @enderror" name="seats" value="{{ old('seats') }}" required autocomplete="seats" autofocus>
+                            
+                                    @error('seats')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
                                 <div class="row mb-3">
                                     <label for="plate_number" class="col-md-4 col-form-label text-md-end">{{ __('Plate Number') }}</label>
         
@@ -202,13 +232,50 @@
                                         @enderror
                                     </div>
                                 </div>
-
-                                <div class="row mb-3">
+                                <div class="row mb-1">
+                                    <label for="add_picture1" class="col-md-4 col-form-label text-md-end">{{ __('Additional Pictures') }}</label>
+        
+                                    <div class="col-md-6">
+                                        <input id="add_picture1" type="file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 form-control-file @error('add_picture1') is-invalid @enderror" name="add_picture1" required>
+        
+                                        @error('add_picture1')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="row mb-1">
+                                <label for="add_picture2" class="col-md-4 col-form-label text-md-end">{{ __('') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="add_picture2" type="file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 form-control-file @error('add_picture2') is-invalid @enderror" name="add_picture2" required>
+        
+                                        @error('add_picture2')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="row mb-1">
+                                    <label for="add_picture3" class="col-md-4 col-form-label text-md-end">{{ __('') }}</label>
+                                    <div class="mb-2 col-md-6">
+                                        <input id="add_picture3" type="file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 form-control-file @error('add_picture3') is-invalid @enderror" name="add_picture3" required>
+        
+                                        @error('add_picture3')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                
+                                {{-- <div class="row mb-3">
                                     <label for="car_images" class="col-md-4 col-form-label text-md-end">Car Images:</label>
                                     <div class="col-md-6">
                                     <input type="file" id="car_images" name="car_images[]" accept="image/*" multiple class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 form-control-file @error('car_images') is-invalid @enderror" name="car_images" required>
                                     </div>
-                                </div>
+                                </div> --}}
 
 
                                 
