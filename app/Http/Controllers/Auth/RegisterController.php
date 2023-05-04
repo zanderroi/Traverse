@@ -123,7 +123,8 @@ class RegisterController extends Controller
             'contactperson2' => $data['contactperson2'],
             'contactperson2number' => $data['contactperson2number'],
             'user_type' => $data['user_type'] == 'car_owner' ? 'car_owner' : ($data['user_type'] == 'admin' ? 'admin' : 'customer'),
-            'account_status' => 'Active'
+            'account_status' => 'Active',
+            'booking_status' => 'Available'
 
         ]);
     }

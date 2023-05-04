@@ -20,7 +20,7 @@ class CreateBookingsTable extends Migration
             $table->timestamp('return_date_time')->nullable();
             $table->double('total_rental_fee');
             $table->double('late_fee')->default(0);
-            $table->text('notes')->nullable();
+            $table->string('notes')->nullable();
             $table->timestamps();
         });
     }
