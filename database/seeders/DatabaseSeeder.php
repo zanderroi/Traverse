@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {   
         User::create([
-            'name' => 'Admin',
+            'first_name' => 'Admin',
+            'last_name' => 'Admin',
             'email' => 'traverseadmin@gmail.com',
             'password' => Hash::make('password'),
             'user_type' => 'admin',
@@ -29,6 +30,7 @@ class DatabaseSeeder extends Seeder
             'govtid_image' => '',
             'driverslicense' => '',
             'driverslicense_image' => '',
+            'driverslicense2_image' => '',
             'selfie_image' => '',
             'contactperson1' => '',
             'contactperson1number' => '',
@@ -53,35 +55,6 @@ class DatabaseSeeder extends Seeder
             }
         });
 
-        
-        // User::factory()
-        //     ->count(5)
-        //     ->state(new Sequence(
-        //         ['user_type' => 'car_owner'],
-        //         ['user_type' => 'customer'],
-        //     ))
-        //     ->create([
-        //         'password' => Hash::make('password'),
-        //     ])
-        //     ->each(function ($user) {
-        //         // Generate cars for each car owner
-        //         $user->cars()->saveMany(
-        //             Car::factory()->count(1)->create([
-        //                 'car_owner_id' => $user->id,
-        //             ])
-        //         );
-
-        //     });
-        // \App\Models\Cars::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+    
     }
-<<<<<<< HEAD
-
 }
-=======
-}
->>>>>>> e5c7281a54a757ccc924924986095ac51749e3ea

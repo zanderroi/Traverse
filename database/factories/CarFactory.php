@@ -45,9 +45,9 @@ class CarFactory extends Factory
             'certificate_of_registration' =>  Storage::url('cor/' . $this->faker->image('public/storage/cor', 640, 480, 'cats', false)),
             'car_description' => $this->faker->sentence(10),
             'rental_fee' => $this->faker->randomElement($rentalFees),
-            'add_picture1' => Storage::url('car_images/' . $this->faker->image('public/storage/car_images', 640, 480, 'cars', false)),
-            'add_picture2' => Storage::url('car_images/' . $this->faker->image('public/storage/car_images', 640, 480, 'cars', false)),
-            'add_picture3' => Storage::url('car_images/' . $this->faker->image('public/storage/car_images', 640, 480, 'cars', false)),
+            'add_picture1' => Storage::url('dp/' . $this->faker->image('public/storage/dp', 640, 480, 'cars', false)),
+            'add_picture2' => Storage::url('dp/' . $this->faker->image('public/storage/dp', 640, 480, 'cars', false)),
+            'add_picture3' => Storage::url('dp/' . $this->faker->image('public/storage/dp', 640, 480, 'cars', false)),
             'status' => 'available',
         ];
     }
