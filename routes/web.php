@@ -9,6 +9,8 @@ use App\Http\Controllers\BookingController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -50,16 +52,18 @@ Route::get('/customer/cars', [CustomerController::class, 'availableCars'])->name
 //Booking Screen
 Route::get('/cars/{id}', [CarController::class, 'show'])->name('cars.show');
 
-Route::get('/cars/{id}/book', [CarController::class, 'book'])->name('cars.book');
-
-//Booking Form Submission
-Route::post('/bookings/store/{car}', [BookingController::class, 'store'])->name('bookings.store');
-
-
 //Route to Book Now
-Route::get('/bookings/create/{id}', [BookingController::class, 'createBooking'])->name('bookings.create');
+Route::post('/bookings/confirm/{car_id}', [BookingController::class, 'confirm'])->name('bookings.confirm');
 
-//Booking Form
+// Route::get('/bookings/confirm', [BookingController::class, 'confirm'])->name('bookings.confirm');
+
+Route::get('bookings/{booking}/receipt', [BookingController::class, 'download'])->name('bookings.receipt');
+// Route::get('/bookings/confirm/{id}', [BookingController::class, 'confirmBooking'])->name('bookings.confirm');
+
+//Cancel Booking
+Route::delete('/bookings/{id}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
+
+
 
 
 

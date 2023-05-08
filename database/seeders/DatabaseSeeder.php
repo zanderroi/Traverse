@@ -79,5 +79,9 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
     }
+<<<<<<< HEAD
 
 }
+=======
+}
+>>>>>>> e5c7281a54a757ccc924924986095ac51749e3ea

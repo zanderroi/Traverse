@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Traverse</title>
-        <link rel="shortcut icon" type="image/png" href="img/logo.png">
+        <link rel="icon" type="image/png" href="{{ asset('logo/2-modified.png') }}">
         <link rel="stylesheet" href="css/styles.css">
 
         <!-- Fonts -->
