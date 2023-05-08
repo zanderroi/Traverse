@@ -42,10 +42,16 @@
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul>
+                    <ul class="navbar-nav ms-auto">
+                        <li>
+                          <a href="{{ route('customer.garage') }}" class="mr-5 block py-2 pl-3 pr-4 text-black rounded md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent" aria-current="page">Garage</a>
+                        </li>
+                        <li>
+                          <a href="{{ route('customer.history') }}" class="mr-5 block py-2 pl-3 pr-4 text-black rounded md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent" aria-current="page">History</a>
+                        </li>
                         <li>
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->name }}
+                                {{ Auth::user()->first_name }}
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -105,7 +111,7 @@
                     <h5 class="mb-2  mt-2 text-2xl font-bold tracking-tight  text-blue-600 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>
                     <div class="flex mx-auto">
                         <i class="fa-solid fa-user mb-1" style="color: #152238;"></i>
-                        <p class="mb-1 ml-2 font-normal text-gray-700 dark:text-gray-400">{{ $car->owner->name }}</p>
+                        <p class="mb-1 ml-2 font-normal text-gray-700 dark:text-gray-400">{{ $car->owner->first_name }} {{ $car->owner->last_name }}</p>
                   
                         <i class="fa-solid fa-location-dot mb-3 ml-2" style="color: #152238;"></i>
                         <p class="mb-1 ml-2 font-normal text-gray-700 dark:text-gray-400">{{ $car->location }}</p>
@@ -153,7 +159,7 @@
                 <div class="flex align-items-center">
                     <div class="w-1/2">
                       <label for="car_owner" class="block font-medium text-gray-700">Car Owner</label>
-                      <input id="car_owner" type="text" class="form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" value="{{ $car->owner->name }}" readonly>
+                      <input id="car_owner" type="text" class="form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" value="{{ $car->owner->first_name }} {{ $car->owner->last_name }}" readonly>
                     </div>
                     <div class="w-1/2">
                       <label for="rental_fee" class="block font-medium text-gray-700">Rental Fee Per Day</label>

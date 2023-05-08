@@ -28,6 +28,7 @@ class Car extends Model
         'add_picture1',
         'add_picture2',
         'add_picture3',
+        'ratings',
         'car_owner_id',
         'status',
     ];

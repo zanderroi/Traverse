@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('first_name');
+            $table->string('last_name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at');
             $table->string('password');
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->binary('govtid_image')->nullable();
             $table->string('driverslicense');
             $table->binary('driverslicense_image')->nullable();
+            $table->binary('driverslicense2_image')->nullable();
             $table->binary('selfie_image')->nullable();
             $table->string('contactperson1');
             $table->string('contactperson1number');

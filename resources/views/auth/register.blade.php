@@ -13,12 +13,26 @@
                         @csrf
 
                         <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+                            <label for="first_name" class="col-md-4 col-form-label text-md-end">{{ __('First Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="first_name" type="text" class="form-control @error('first_name') is-invalid @enderror" name="first_name" value="{{ old('first_name') }}" required autocomplete="first_name" autofocus>
 
-                                @error('name')
+                                @error('first_name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="last_name" class="col-md-4 col-form-label text-md-end">{{ __('Last Name') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="last_name" type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="last_name" autofocus>
+
+                                @error('last_name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -93,7 +107,7 @@
                     
             
                         <div class="row mb-3">
-                            <label for="govtid" class="col-md-4 col-form-label text-md-end">{{ __('Government ID Number') }}</label>
+                            <label for="govtid" class="col-md-4 col-form-label text-md-end">{{ __('Primary ID Number') }}</label>
 
                             <div class="col-md-6">
                                 <input id="govtid" type="text" class="form-control @error('govtid') is-invalid @enderror" name="govtid" value="{{ old('govtid') }}" required autocomplete="govtid" autofocus>
@@ -107,7 +121,7 @@
                         </div>
                         <!-- Government ID image upload field -->
                         <div class="row mb-3">
-                            <label for="govtid_image" class="col-md-4 col-form-label text-md-right block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('Upload a photo of your Government ID') }}</label>
+                            <label for="govtid_image" class="col-md-4 col-form-label text-md-right block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('Upload a photo of your Primary ID') }}</label>
 
                             <div class="col-md-6">
                                 <input id="govtid_image" type="file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 form-control-file @error('govtid_image') is-invalid @enderror" name="govtid_image" required>
@@ -140,6 +154,20 @@
                                 <input id="driverslicense_image" type="file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 form-control-file  form-control-file @error('driverslicense_image') is-invalid @enderror" name="driverslicense_image" required>
                     
                                 @error('driverslicense_image')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="driverslicense2_image" class="col-md-4 col-form-label text-md-right block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('Upload the back photo of your Driver\'s License') }}</label>
+                    
+                            <div class="col-md-6">
+                                <input id="driverslicense2_image" type="file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 form-control-file  form-control-file @error('driverslicense2_image') is-invalid @enderror" name="driverslicense2_image" required>
+                    
+                                @error('driverslicense2_image')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

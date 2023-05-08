@@ -12,12 +12,12 @@
     <h1>Booking Receipt</h1>
     <h2>Customer Details</h2>
     <ul>
-        <li>Name: {{ $booking->user->name }}</li>
+        <li>Name: {{ $booking->user->first_name }} {{ $booking->user->last_name }} </li>
         <li>Email: {{ $booking->user->email }}</li>
     </ul>
     <h2>Car Owner Details</h2>
     <ul>
-        <li>Name: {{ $booking->car->owner->name }}</li>
+        <li>Name: {{ $booking->car->owner->first_name }} {{ $booking->car->owner->last_name }}</li>
         <li>Email: {{ $booking->car->owner->email }}</li>
         <li>Phone Number: {{ $booking->car->owner->phone_number }}</li>
     </ul>

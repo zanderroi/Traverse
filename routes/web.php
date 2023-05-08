@@ -60,6 +60,16 @@ Route::get('bookings/{booking}/receipt', [BookingController::class, 'download'])
 //Cancel Booking
 Route::delete('/bookings/{id}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
 
+//Customer Garage
+Route::get('/customer/garage', [CustomerController::class, 'garage'])->name('customer.garage');
+
+//Return Car
+Route::get('/bookings/{booking_id}', [BookingController::class, 'returnCar'])->name('returncar');
+
+//Booking History
+Route::get('/history', [CustomerController::class, 'history'])->name('customer.history');
+
+
 
 
 

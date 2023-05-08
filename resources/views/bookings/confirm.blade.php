@@ -42,10 +42,16 @@
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul>
+                    <ul class="navbar-nav ms-auto">
+                        <li>
+                          <a href="{{ route('customer.garage') }}" class="mr-5 block py-2 pl-3 pr-4 text-black rounded md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent" aria-current="page">Garage</a>
+                        </li>
+                        <li>
+                          <a href="{{ route('customer.history') }}" class="mr-5 block py-2 pl-3 pr-4 text-black rounded md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent" aria-current="page">History</a>
+                        </li>
                         <li>
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->name }}
+                                {{ Auth::user()->first_name }}
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -67,8 +73,8 @@
         </nav>
         <h1>Booking Confirmation</h1>
 
-        <p>Customer Name: {{ $user->name }}</p>
-        <p>Car Owner Name: {{ $car_owner_name }}</p>
+        <p>Customer Name: {{ $user->first_name }} {{ $user->last_name }}</p>
+        <p>Car Owner Name: {{ $car_owner_first_name }} {{ $car_owner_last_name }}</p>
         
         <h2>Car Details</h2>
         <p>Brand: {{ $car->car_brand }}</p>
@@ -81,7 +87,7 @@
         <p>Notes: {{ $booking->notes }}</p>
         
         <h2>Total Rental Fee</h2>
-        <p>{{ $total_rental_fee }}</p>
+        <p>Php {{ $total_rental_fee }}</p>
         
         <div class="mt-5">
             <a href="{{ route('bookings.receipt', ['booking' => $booking->id]) }}" class="btn btn-primary">Download Receipt</a>

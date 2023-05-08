@@ -70,7 +70,8 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         $validator = Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'address' => ['required', 'string', 'max:255'],
@@ -80,6 +81,7 @@ class RegisterController extends Controller
             'govtid_image' => ['required', 'mimes:jpg,jpeg,png', 'max:2048'],
             'driverslicense' => ['required', 'string', 'max:255'],
             'driverslicense_image' => ['required', 'image', 'max:2048'],
+            'driverslicense2_image' => ['required', 'image', 'max:2048'],
             'selfie_image' => ['required', 'image', 'max:2048'],
             'contactperson1' => ['required', 'string', 'max:255'],
             'contactperson1number' => ['required', 'string', 'max:255'],
@@ -90,6 +92,7 @@ class RegisterController extends Controller
         ]);
         $govtidImage = $data['govtid_image']->store('public/images');
         $driversLicenseImage = $data['driverslicense_image']->store('public/images');
+        $driversLicense2Image = $data['driverslicense2_image']->store('public/images');
         $selfieImage = $data['selfie_image']->store('public/images');
         return $validator;
     }
@@ -105,9 +108,11 @@ class RegisterController extends Controller
         
         $govtidImage = $data['govtid_image']->store('public/images');
         $driversLicenseImage = $data['driverslicense_image']->store('public/images');
+        $driversLicense2Image = $data['driverslicense2_image']->store('public/images');
         $selfieImage = $data['selfie_image']->store('public/images');
         return User::create([
-            'name' => $data['name'],
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'address' => $data['address'],
@@ -117,6 +122,7 @@ class RegisterController extends Controller
             'govtid_image' => $govtidImage,
             'driverslicense' => $data['driverslicense'],
             'driverslicense_image' => $driversLicenseImage,
+            'driverslicense2_image' => $driversLicense2Image,
             'selfie_image'=> $selfieImage,
             'contactperson1' => $data['contactperson1'],
             'contactperson1number' => $data['contactperson1number'],

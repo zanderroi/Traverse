@@ -14,6 +14,7 @@ class Booking extends Model
         'car_id',
         'pickup_date_time',
         'return_date_time',
+        'returned_at',
         'total_rental_fee',
         'late_fee',
         'notes',

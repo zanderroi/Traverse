@@ -20,7 +20,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
         'address',
@@ -30,6 +31,7 @@ class User extends Authenticatable
         'govtid_image',
         'driverslicense',
         'driverslicense_image',
+        'driverslicense2_image',
         'selfie_image',
         'contactperson1',
         'contactperson1number',

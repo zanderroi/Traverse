@@ -10,7 +10,7 @@ use App\Models\Car;
 use App\Models\CarImage;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
-
+use Carbon\Carbon;
 
 
 class BookingController extends Controller
@@ -61,7 +61,8 @@ class BookingController extends Controller
         }
     
         $rental_fee = $car->rental_fee;
-        $car_owner_name = $car->owner ? $car->owner->name : 'Unknown';
+        $car_owner_first_name = $car->owner ? $car->owner->first_name : 'Unknown';
+        $car_owner_last_name = $car->owner ? $car->owner->last_name : 'Unknown';
         $car_owner_email = $car->owner ? $car->owner->email : 'Unknown';
         $car_owner_phone_number = $car->owner ? $car->owner->phone_number : 'Unknown';
     
@@ -85,19 +86,30 @@ class BookingController extends Controller
     
         $car->status = 'booked';
         $car->save();
-    return view('bookings.confirm', compact('booking', 'user', 'car', 'car_owner_name', 'total_rental_fee', 'car_owner_email', 'car_owner_phone_number'));
+    return view('bookings.confirm', compact('booking', 'user', 'car', 'car_owner_first_name', 'car_owner_last_name', 'total_rental_fee', 'car_owner_email', 'car_owner_phone_number'));
 }
 
 
-    public function download(Booking $booking)
-    {
-        $pdf = PDF::loadView('bookings.receipt', [
-            'booking' => $booking,
-            'car_owner' => $booking->car->user,
-            'customer' => $booking->user,
-        ]);
-        return $pdf->download('booking_receipt.pdf');
-    }
+public function download(Booking $booking)
+{
+    $pdf = PDF::loadView('bookings.receipt', [
+        'booking' => $booking,
+        'car_owner' => $booking->car->user,
+        'customer' => $booking->user,
+    ]);
+    
+    $fileName = 'booking_receipt.pdf';
+    
+    // Download the PDF file
+    return $pdf->download($fileName)
+                ->withHeaders([
+                    'Content-Disposition' => 'attachment; filename="'.$fileName.'"',
+                ]);
+
+    // Set the success message and redirect to the dashboard
+    return redirect()->route('customer.dashboard')->with('success', 'Receipt downloaded successfully!');
+}
+
 
     
     public function cancel($id)
@@ -110,8 +122,47 @@ class BookingController extends Controller
     $user = Auth::user();
     $user->booking_status = 'Available';
     $user->save();
-    return redirect()->route('customer.dashboard')->with('success', 'Booking cancelled successfully.');
+    return redirect()->route('customer.dashboard')->with('cancelled', 'Booking cancelled successfully.');
 }
+
+public function returnCar(Request $request, $booking_id)
+{
+    $booking = Booking::find($booking_id);
+
+    if (!$booking) {
+        // If the booking is not found, return an error message or redirect to an error page
+        return redirect()->back()->with('error', 'Booking not found');
+    }
+
+    // Update car status to "available"
+    $booking->car->update(['status' => 'available']);
+
+    // Update customer booking status to "Available"
+    $booking->user->update(['booking_status' => 'Available']);
+
+    // Save returned date to booking record
+    $booking->returned_at = Carbon::now('Asia/Manila');
+    $booking->save();
+
+    return redirect()->route('customer.garage')->with('success', 'Car returned successfully!');
+}
+
+public function history()
+{
+    $user_id = Auth::user()->id;
+
+    // Get bookings for the logged-in customer where the booking status is "Returned"
+    $bookings = Booking::where('user_id', $user_id)
+        ->whereNotNull('returned_at')
+        ->with(['car' => function ($query) {
+            $query->withTrashed();
+        }])
+        ->get();
+
+    return view('customer.history', ['bookings' => $bookings]);
+}
+
+
 
 
 }

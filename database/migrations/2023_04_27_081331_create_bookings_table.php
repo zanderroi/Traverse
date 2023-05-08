@@ -18,10 +18,13 @@ class CreateBookingsTable extends Migration
             $table->unsignedBigInteger('car_id');
             $table->timestamp('pickup_date_time');
             $table->timestamp('return_date_time')->nullable();
+            $table->timestamp('returned_at')->nullable();
             $table->double('total_rental_fee');
             $table->double('late_fee')->default(0);
             $table->string('notes')->nullable();
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
         });
     }
 
