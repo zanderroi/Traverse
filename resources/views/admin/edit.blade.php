@@ -74,7 +74,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-header">{{ __('Edit Car ')}}{{$car->id}}{{ __(' - Owner ')}}{{$carOwnersWithCars[0]->name}}</div>
+                        <div class="card-header">{{ __('Edit Car ')}}{{$car->id}}{{ __(' - Owner ')}}{{$carOwnersWithCars[0]->first_name}} {{$carOwnersWithCars[0]->last_name}}</div>
         
                         <div class="card-body">
                             <form method="POST" action="/car/{{$car->id}}" enctype="multipart/form-data">

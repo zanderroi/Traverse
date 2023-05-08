@@ -31,9 +31,19 @@ class AdminController extends Controller
         $cars = Car::all();
         $carOwnersWithCars = DB::table('users')
         ->join('cars', 'users.id', '=', 'cars.car_owner_id')
-        ->select('users.name')
+        ->select('users.first_name', 'users.last_name')
         ->get();
         return view('admin.cars', compact('cars', 'carOwnersWithCars'));
+  
+    }
+    public function ownershow()
+    {
+        $users = User::where('user_type', 'car_owner')->get();
+        $carsWithOwners = DB::table('cars')
+        ->join('users', 'cars.car_owner_id', '=', 'users.id' )
+        ->select('users.first_name', 'users.last_name', 'cars.car_brand', 'cars.car_model', 'cars.year', 'cars.car_owner_id')
+        ->get();
+        return view('admin.owners', compact('users', 'carsWithOwners'));
   
     }
     public function show($id)
@@ -42,7 +52,7 @@ class AdminController extends Controller
         // dd($data);
         $carOwnersWithCars = DB::table('users')
         ->join('cars', 'users.id', '=', 'cars.car_owner_id')
-        ->select('users.name')
+        ->select('users.first_name', 'users.last_name')
         ->where('cars.id', $id)
         ->get();
         return view('admin.edit', ['car' => $data, 'carOwnersWithCars' => $carOwnersWithCars]);

@@ -44,7 +44,7 @@
                 </table>
                 <hr>
                 <div class="d-flex justify-content-center">
-                    <a href="#" class="btn btn-outline-light">
+                    <a href="/owners/details" class="btn btn-outline-light">
                         View more details
                     </a>
                 </div>

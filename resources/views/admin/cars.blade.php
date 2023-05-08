@@ -12,6 +12,7 @@
                 <th scope="col" class="py-3 px-6">Owner</th>
                 <th scope="col" class="py-3 px-6">Status</th>
                 <th scope="col" class="py-3 px-6"> </th>
+                <th scope="col" class="py-3 px-6"> </th>
 
             </tr>
         </thead>
@@ -23,7 +24,7 @@
                     <td>{{ $car->car_model }}</td>
                     <td>{{ $car->year }}</td>
                     <td>{{ $car->rental_fee }}</td>
-                    <td>{{ $carOwnersWithCars[$index]->name }}</td>
+                    <td>{{ $carOwnersWithCars[$index]->first_name }}{{ $carOwnersWithCars[$index]->last_name }}</td>
                     <td>{{ $car->status }}</td>  
                     <td class="py-2 px-6">
                         <a href="/car/{{$car->id}}" class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-1 rounded">
