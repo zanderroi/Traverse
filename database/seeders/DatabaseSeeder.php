@@ -17,8 +17,27 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {   
+        User::create([
+            'name' => 'Admin',
+            'email' => 'traverseadmin@gmail.com',
+            'password' => Hash::make('password'),
+            'user_type' => 'admin',
+            'address' => '',
+            'phone_number' => '',
+            'birthday' => '1995-01-01',
+            'govtid' => '',
+            'govtid_image' => '',
+            'driverslicense' => '',
+            'driverslicense_image' => '',
+            'selfie_image' => '',
+            'contactperson1' => '',
+            'contactperson1number' => '',
+            'contactperson2' => '',
+            'contactperson2number' => '',
+        ]);
+
         $carOwners = User::factory()
-            ->count(5)
+            ->count(10)
             ->state(new Sequence(
                 ['user_type' => 'car_owner'],
                 ['user_type' => 'customer'],
@@ -28,9 +47,13 @@ class DatabaseSeeder extends Seeder
             ]);
 
         $carOwners->each(function ($owner) {
+            if ($owner->user_type === 'car_owner') {
             $cars = Car::factory()->count(2)->make();
             $owner->cars()->saveMany($cars);
+            }
         });
+
+        
         // User::factory()
         //     ->count(5)
         //     ->state(new Sequence(
@@ -56,4 +79,5 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
     }
+
 }

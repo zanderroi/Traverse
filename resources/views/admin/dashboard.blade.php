@@ -65,7 +65,7 @@
                         <td> 0 </td>
                     </tr>
                     <tr>
-                        <td>Free</td>
+                        <td>Vacant</td>
                         <td> 3 </td>
                     </tr>
                 </table>
