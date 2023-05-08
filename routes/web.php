@@ -33,6 +33,9 @@ Auth::routes();
 
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 Route::get('/cars/details', [AdminController::class, 'carshow'])->name('car.details');
+Route::get('/car/{id}', [AdminController::class, 'show']);
+Route::put('/car/{car}', [AdminController::class, 'update']);
+Route::delete('/car/{car}', [AdminController::class, 'destroy']);
 
 
 

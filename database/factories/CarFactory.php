@@ -34,7 +34,7 @@ class CarFactory extends Factory
         $rentalFees = [2000, 3000, 4000, 5000];
 
         return [
-            'display_picture' => Storage::url('dp/' . $this->faker->image('public/storage/dp', 640, 480, null, false)),
+            'display_picture' => Storage::url('dp/' . $this->faker->image('public/storage/dp', 640, 480, 'cars' , false)),
             'car_brand' => $this->faker->randomElement($carBrands),
             'car_model' => $this->faker->randomElement($carModels),
             'year' => $this->faker->year($max = 'now'),
@@ -42,12 +42,12 @@ class CarFactory extends Factory
             'plate_number' => $this->faker->unique()->regexify('[A-Z]{3}-[0-9]{3}'),
             'vehicle_identification_number' => $this->faker->unique()->regexify('[A-Z0-9]{17}'),
             'location' => $this->faker->randomElement($locations),
-            'certificate_of_registration' => 'public/storage/cor/dummy-certificate-of-registration.pdf',
+            'certificate_of_registration' =>  Storage::url('cor/' . $this->faker->image('public/storage/cor', 640, 480, 'cats', false)),
             'car_description' => $this->faker->sentence(10),
             'rental_fee' => $this->faker->randomElement($rentalFees),
-            'add_picture1' => Storage::url('car_images/' . $this->faker->image('public/storage/car_images', 640, 480, null, false)),
-            'add_picture2' => Storage::url('car_images/' . $this->faker->image('public/storage/car_images', 640, 480, null, false)),
-            'add_picture3' => Storage::url('car_images/' . $this->faker->image('public/storage/car_images', 640, 480, null, false)),
+            'add_picture1' => Storage::url('car_images/' . $this->faker->image('public/storage/car_images', 640, 480, 'cars', false)),
+            'add_picture2' => Storage::url('car_images/' . $this->faker->image('public/storage/car_images', 640, 480, 'cars', false)),
+            'add_picture3' => Storage::url('car_images/' . $this->faker->image('public/storage/car_images', 640, 480, 'cars', false)),
             'status' => 'available',
         ];
     }
