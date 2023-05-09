@@ -9,8 +9,7 @@ use App\Models\CarImage;
 
 class CarController extends Controller
 {
-    // Booking Screen
-// In your controller method for displaying the cars.show view
+
 public function show($car_id) {
     $car = Car::find($car_id);
     $car_owner = $car->owner;
@@ -20,15 +19,5 @@ public function show($car_id) {
         'car_owner' => $car_owner
     ]);
 }
-
-    
-    public function book($id)
-{
-    $car = Car::findOrFail($id);
-    return view('cars.book', compact('car'));
-}
-
-    
-
 
 }

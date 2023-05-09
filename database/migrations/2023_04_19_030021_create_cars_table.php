@@ -29,7 +29,7 @@ class CreateCarsTable extends Migration
             $table->binary('add_picture1')->nullable();
             $table->binary('add_picture2')->nullable();
             $table->binary('add_picture3')->nullable();
-            $table->integer('ratings')->default(0);
+            $table->float('ratings')->nullable();
             $table->enum('status', ['available', 'booked'])->default('available');
             $table->foreignId('car_owner_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();

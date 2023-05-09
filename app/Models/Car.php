@@ -28,8 +28,8 @@ class Car extends Model
         'add_picture1',
         'add_picture2',
         'add_picture3',
-        'ratings',
         'car_owner_id',
+        'ratings',
         'status',
     ];
 
@@ -42,5 +42,11 @@ class Car extends Model
     {
         return $this->belongsTo(User::class, 'car_owner_id');
     }
+
+    public function carRatings()
+{
+    return $this->hasMany(CarRating::class);
+}
+
 
 }

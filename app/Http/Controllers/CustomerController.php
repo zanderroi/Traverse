@@ -69,7 +69,6 @@ class CustomerController extends Controller
         return view('customer.garage', ['bookings' => $bookings]);
     }
     
-    
     public function history()
     {
         $user_id = Auth::user()->id;
@@ -77,11 +76,12 @@ class CustomerController extends Controller
         // Get bookings for the logged-in customer where the booking status is "Returned"
         $bookings = Booking::where('user_id', $user_id)
             ->whereNotNull('returned_at')
-            ->with('car')
+            ->with('car.carRatings')
             ->get();
     
         return view('customer.history', ['bookings' => $bookings]);
     }
+    
     
     
 

@@ -19,18 +19,22 @@
 
     {{-- Flowbite Tailwind --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+
+          {{-- Font Awesome --}}
+          <script src="https://kit.fontawesome.com/57a798c9bb.js" crossorigin="anonymous"></script>
     <style>
       body {
           overflow-x: hidden;
       }
   </style>
+
 </head>
 <body class="pt-5 bg-slate-500">
 
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top">
             <div class="container">
-                <a class="navbar-brand flex items-center" href="{{ url('/') }}">
+                <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
                     <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Flowbite Logo" />
                     <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Traverse</span>
                 </a>
@@ -72,8 +76,19 @@
             </div>
         </nav>
     </div>   
+
+    @if(session('success'))
+    <div class="alert alert-success mt-3">
+        {{ session('success') }}
+    </div>
+@endif
     <h1 class="text-3xl font-bold ml-4 mt-6 mb-2 mr-5 text-blue-600">Booking History</h1>
 
+    @if ($bookings->isEmpty())
+    <div class="h-56 w-1/2 ml-3 bg-gray-200">
+    <h1 class="pt-20 ml-6 text-2xl">Your booking history will display here!</h1> 
+    <div>
+@else
         <div class="mt-6  mx-auto " >
             <table class="text-sm text-left text-blue-100 dark:text-blue-100 mx-auto shadow-md sm:rounded-lg max-w-full xs:max-w-none sm:max-w-xs md:max-w-sm  lg:max-w-md xl:max-w-lg">
                 <thead class="text-xs text-white uppercase bg-gray-700 dark:text-white">
@@ -117,8 +132,11 @@
                             {{ date('F d, Y h:i A', strtotime($booking->returned_at)) }}
                         </td>
                         <td class="px-2 py-4">
+                            @if ($booking->car->carRatings->where('customer_id', auth()->user()->id)->count() > 0)
+                            <p>You have already rated this car.</p>
+                            @else
                             <a href="#" class="font-medium text-white hover:underline" ddata-modal-target="popup-modal" data-modal-toggle="popup-modal" data-modal-toggle="defaultModal">Rate Car</a><br>
-                            
+                            @endif
                         </td>
                     </tr>
                     @endforeach
@@ -128,7 +146,11 @@
         
         {{-- Main Modal --}}
 
-
+        <form method="POST" action="{{ route('car.rating.store', ['booking_id' => $booking->id, 'car_owner_id' => $booking->car->owner->id, 'customer_id' => auth()->user()->id]) }}">
+            @csrf
+            <input type="hidden" name="car_id" value="{{ $booking->car->id }}">
+            <input type="hidden" name="car_owner_id" value="{{ $booking->car->owner->id }}">
+            <input type="hidden" name="customer_id" value="{{ auth()->user()->id }}">
           
           <div id="popup-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
               <div class="relative w-full max-w-md max-h-full">
@@ -138,18 +160,79 @@
                           <span class="sr-only">Close modal</span>
                       </button>
                       <div class="p-6 text-center">
-                          <svg aria-hidden="true" class="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                          <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Return the car now?</h3>
-                          <button data-modal-hide="popup-modal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            <a href="{{ route('returncar', ['booking_id' => $booking->id]) }}"> Return now </a>
+    
+                          <h3 class="mt-2 mb-3 text-lg font-normal text-blue-600 dark:text-gray-400">Rate your experience!</h3>
+                          <div class="flex items-center">
+                            <div class="mr-2 col-md-4">
+                              <span class="text-sm">Rate</span>
+                            </div>
+                            <div class="flex">
+                                <input type="radio" id="rating-1" name="rating" value="1" class="hidden" />
+                                <label for="rating-1">
+                                  <i class="fa-solid fa-star fa-lg cursor-pointer text-gray-400" onclick="setColor(1)"></i>
+                                </label>
+                                <input type="radio" id="rating-2" name="rating" value="2" class="hidden" />
+                                <label for="rating-2">
+                                  <i class="fa-solid fa-star fa-lg cursor-pointer text-gray-400" onclick="setColor(2)"></i>
+                                </label>
+                                <input type="radio" id="rating-3" name="rating" value="3" class="hidden" />
+                                <label for="rating-3">
+                                  <i class="fa-solid fa-star fa-lg cursor-pointer text-gray-400" onclick="setColor(3)"></i>
+                                </label>
+                                <input type="radio" id="rating-4" name="rating" value="4" class="hidden" />
+                                <label for="rating-4">
+                                  <i class="fa-solid fa-star fa-lg cursor-pointer text-gray-400" onclick="setColor(4)"></i>
+                                </label>
+                                <input type="radio" id="rating-5" name="rating" value="5" class="hidden" />
+                                <label for="rating-5">
+                                  <i class="fa-solid fa-star fa-lg cursor-pointer text-gray-400" onclick="setColor(5)"></i>
+                                </label>
+                              </div>
+                              
+                              <script>
+                              function setColor(value) {
+                                // Reset all stars to gray
+                                document.querySelectorAll('input[name="rating"]').forEach((elem) => {
+                                  elem.nextElementSibling.firstElementChild.classList.remove('text-yellow-300');
+                                  elem.checked = false;
+                                });
+                              
+                                // Set selected stars to yellow
+                                for (let i = 1; i <= value; i++) {
+                                  document.getElementById(`rating-${i}`).nextElementSibling.firstElementChild.classList.add('text-yellow-300');
+                                }
+                              
+                                // Check the corresponding radio button
+                                document.getElementById(`rating-${value}`).checked = true;
+                              }
+                              </script>
+                              
+                          </div>
+                          
+                          <div class="form-group row mt-1">
+                            <label for="description" class="col-md-4 col-form-label text-md-right">Description</label>
+        
+                            <div class="col-md-6">
+                                <textarea id="description" class="form-control mb-3 @error('description') is-invalid @enderror  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" name="description">{{ old('description') }}</textarea>
+        
+                                @error('description')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                          <button data-modal-hide="popup-modal" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            Confirm rating
                           </button>
+                        </form>
                           <button data-modal-hide="popup-modal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Cancel</button>
                       </div>
                   </div>
               </div>
           </div>
         
-    
+          @endif
 
 </body>
 </html>

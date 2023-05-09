@@ -19,6 +19,9 @@
 
     {{-- Flowbite Tailwind --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+    
+    {{-- Font Awesome --}}
+    <script src="https://kit.fontawesome.com/57a798c9bb.js" crossorigin="anonymous"></script>
     <style>
       body {
           overflow-x: hidden;
@@ -40,7 +43,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top">
             <div class="container">
-                <a class="navbar-brand flex items-center" href="{{ url('/') }}">
+                <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
                     <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Flowbite Logo" />
                     <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Traverse</span>
                 </a>
@@ -132,6 +135,8 @@
                 <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Location: {{ $car->location }}</p>
                 <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Rental fee: Php{{ $car->rental_fee }}</p>
                 <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Status: {{ $car->status }}</p>
+                <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Rating: {{ $car->ratings }} <i class="fa-solid fa-star fa-lg cursor-pointer text-yellow-300"></i></p>
+                
             </a>
             </div>
         </div>

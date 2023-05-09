@@ -30,7 +30,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top">
             <div class="container">
-                <a class="navbar-brand flex items-center" href="{{ url('/') }}">
+                <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
                     <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Flowbite Logo" />
                     <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Traverse</span>
                 </a>
@@ -83,9 +83,9 @@
     <p class="mt-3"style="font-size:2vw">Your car bookings will display here!</p> 
     <div>
 @else
-        <div class="mt-6  mx-auto " >
+        <div class="mt-6 pt-5  mx-auto " >
             <table class="text-sm text-left text-blue-100 dark:text-blue-100 mx-auto shadow-md sm:rounded-lg max-w-full xs:max-w-none sm:max-w-xs md:max-w-sm  lg:max-w-md xl:max-w-lg">
-                <thead class="text-xs text-white uppercase bg-gray-700 dark:text-white">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:text-white">
                     <tr>
                         <th scope="col" class="px-6 py-3">
                             Car Model
@@ -113,28 +113,28 @@
                 <tbody>
                     
                     @foreach ($bookings as $booking)
-                    <tr class="bg-gray-500 border-b border-blue-400">
-                        <th scope="row" class="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100">
+                    <tr class="bg-gray-300 border-b border-blue-400">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-800 whitespace-nowrap dark:text-blue-100">
                             {{ $booking->car->car_brand }} - {{ $booking->car->car_model }}
                         </th>
-                        <td class="px-1 py-4">
+                        <td class="px-1 py-4 text-gray-800">
                             {{ $booking->car->owner->first_name }} {{ $booking->car->owner->last_name }}
                         </td>
-                        <td class="px-1 py-4">
+                        <td class="px-1 py-4 text-gray-800">
                             Php {{ $booking->total_rental_fee }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 text-gray-800">
                             {{ $booking->user->booking_status }}
                         </td>
-                        <td class="pl-1 py-4">
-                            {{ $booking->pickup_date_time }}
+                        <td class="pl-1 py-4 text-gray-800">
+                            {{ date('F d, Y h:i A', strtotime($booking->pickup_date_time)) }}
                         </td>
-                        <td class="px-6 py-4">
-                            {{ $booking->return_date_time }}
+                        <td class="px-6 py-4 text-gray-800">
+                            {{ date('F d, Y h:i A', strtotime($booking->return_date_time)) }}
                         </td>
                         <td class="px-2 py-4">
-                            <a href="#" class="font-medium text-white hover:underline" ddata-modal-target="popup-modal" data-modal-toggle="popup-modal" data-modal-toggle="defaultModal">Return Car</a><br>
-                            <a href="#" class="font-medium text-white hover:underline">Extend</a>
+                            <a href="#" class="font-medium text-blue-700 hover:underline" ddata-modal-target="popup-modal" data-modal-toggle="popup-modal" data-modal-toggle="defaultModal">Return Car</a><br>
+                            <a href="#" class="font-medium text-blue-700 hover:underline">Extend</a>
                         </td>
                     </tr>
                     @endforeach
