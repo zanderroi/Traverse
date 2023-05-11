@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center ">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Login to continue...') }}</div>
@@ -70,6 +71,7 @@
         </div>
     </div>
 </div>
+
 {{-- <section class="bg-gray-50 dark:bg-gray-900 w-1/2">
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
 

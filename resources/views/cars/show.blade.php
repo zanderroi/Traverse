@@ -25,7 +25,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top">
             <div class="container">
                 <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
                     <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Flowbite Logo" />
@@ -78,19 +78,19 @@
             <div class="relative h-56 overflow-hidden md:h-96">
                  <!-- Item 1 -->
                 <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    <img class="mx-auto mt-0" src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:1000px; height:400px;" />
+                    <img class="mx-auto mt-0" src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width: 100%; height: 100%; object-fit: cover;" />
                 </div>
                 <!-- Item 2 -->
                 <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
-                    <img class="mx-auto mt-0" src="{{ asset('storage/'.$car->add_picture1) }}" alt="Car Image" />
+                    <img class="mx-auto mt-0" src="{{ asset('storage/'.$car->add_picture1) }}" alt="Car Image" style="width: 100%; height: 100%; object-fit: cover;" />
                 </div>
                 <!-- Item 3 -->
                 <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    <img class="mx-auto mt-0" src="{{ asset('storage/'.$car->add_picture2) }}" alt="Car Image" style="width:1000px; height:400px;" />
+                    <img class="mx-auto mt-0" src="{{ asset('storage/'.$car->add_picture2) }}" alt="Car Image" style="width: 100%; height: 100%; object-fit: cover;" />
                 </div>
                 <!-- Item 4 -->
                 <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    <img class="mx-auto mt-0" src="{{ asset('storage/'.$car->add_picture3) }}" alt="Car Image" style="width:1000px; height:400px;" />
+                    <img class="mx-auto mt-0" src="{{ asset('storage/'.$car->add_picture3) }}" alt="Car Image" style="width: 100%; height: 100%; object-fit: cover;" />
                 </div>
             </div>
             <!-- Slider controls -->
