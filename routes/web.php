@@ -37,6 +37,7 @@ Route::get('/cars/details', [AdminController::class, 'carshow'])->name('car.deta
 Route::get('/car/{id}', [AdminController::class, 'show']);
 Route::put('/car/{car}', [AdminController::class, 'update']);
 Route::delete('/car/{car}', [AdminController::class, 'destroy']);
+Route::get('/owners/details', [AdminController::class, 'ownershow'])->name('owners.details');
 
 
 
