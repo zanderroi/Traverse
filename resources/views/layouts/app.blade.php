@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,6 +18,10 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
       {{-- Flowbite Tailwind --}}
       {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" /> --}}
+
+      
+    {{-- Font Awesome --}}
+    <script src="https://kit.fontawesome.com/57a798c9bb.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <div id="app">

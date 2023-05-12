@@ -119,17 +119,32 @@
                         <i class="fa-solid fa-users mb-1 ml-3" style="color: #152238;"></i>
                         <p class="mb-1 ml-2 font-normal text-gray-700 dark:text-gray-400">{{ $car->seats }} seater</p>
 
-                        <i class="fa-solid fa-peso-sign mt-1 ml-3" style="color: #152238;"></i>
-                        <p class="mb-1 font-normal text-gray-700 dark:text-gray-400"> {{ $car->rental_fee }}</p>
+
+                        <p class="mb-1 font-normal text-gray-700 dark:text-gray-400 ml-3">{{ $car->ratings }} <i class="fa-solid fa-star fa-lg cursor-pointer text-yellow-300"></i></p>
                     </div>
+
+                    <div class="flex items-center">
+                        <div class="flex-grow">
+                          <div class="flex items-center">
+                            <i class="fa-solid fa-peso-sign fa-2xl mr-2" style="color: #0054e6;"></i>
+                            <p class="font-normal text-3xl text-blue-600 dark:text-blue-600">{{ $car->rental_fee }}</p>
+                          </div>
+                        </div>
+                        <div class="flex ml-auto">
+                          <button id="book-car-button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" type="button" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            {{ __('Book Car') }}
+                          </button>
+                          <button type="button" class="ml-1 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-green-600 dark:hover:bg-blue-700 dark:focus:ring-green-800">
+                            Message Owner
+                          </button>
+                        </div>
+                      </div>
+                      
                     
-                    <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Plate number: {{ $car->plate_number }}</p>
-                    
-                    
-                    <p class="mb-3 text-gray-500 dark:text-gray-400">Description: {{ $car->car_description}}</p>
-                    <button id="book-car-button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" type="button" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        {{ __('Book Car') }}
-                    </button>
+                    <h3 class="text-lg mt-2"> Description</h3>
+                    <hr class=mt-1>
+                    <p class="mt-2 text-gray-500 dark:text-gray-400">{{ $car->car_description}}</p>
+  
                 </div>  
             </div>
          <!-- Main modal -->
