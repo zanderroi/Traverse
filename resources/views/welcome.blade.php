@@ -121,6 +121,7 @@
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
                     </svg>
                   </button>
+
                     
                 </div>
     
@@ -131,8 +132,16 @@
 
     <hr>
 
-    <div class="h-screen">
+    <div class="h-screen" id="next-div">
         <h1 class="text-6xl">Next</h1>
     </div>
+    <script>
+        const scrollToNext = document.getElementById("scroll-to-next");
+        const nextDiv = document.getElementById("next-div");
+    
+        scrollToNext.addEventListener("click", () => {
+            nextDiv.scrollIntoView({ behavior: "smooth" });
+        });
+    </script>
     </body>
 </html>
