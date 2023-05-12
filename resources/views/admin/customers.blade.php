@@ -1,6 +1,6 @@
 @include('components.header')
 @section('content')
-    <h1 class="pt-4 pb-2">All Car Owners</h1>
+    <h1 class="pt-4 pb-2">All Customers</h1>
     <table class="table">
         <thead>
             <tr>
@@ -11,7 +11,7 @@
                 <th scope="col" class="py-3 px-6">Contact Number</th>
                 <th scope="col" class="py-3 px-6">Contact Persons</th>
                 <th scope="col" class="py-3 px-6 text-center">Documents Provided</th>
-                <th scope="col" class="py-3 px-6">Car Owned</th>
+                <th scope="col" class="py-3 px-6">Rented Cars</th>
                 <th scope="col" class="py-3 px-6">Account Status</th>
                 <th scope="col" class="py-3 px-6">Account Status</th>
                 <th scope="col" class="py-3 px-6">Account Status</th>
@@ -84,7 +84,7 @@
                     </td>
                      <!-- Button trigger modal -->
                     <td><button type="button" class="btn btn-primary bg-blue-500" data-bs-toggle="modal" data-bs-target="#carModal{{ $user->id }}">
-                            View Cars
+                        {{ $user->bookings_count }}
                         </button>
                         
                         <!-- Modal -->
@@ -92,16 +92,22 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="carModalLabel{{ $user->id }}">Car/s Owned</h5>
+                                        <h5 class="modal-title" id="carModalLabel{{ $user->id }}">History</h5>
                                         <button type="button" class="btn-close bg-red-800 text-white" data-bs-dismiss="modal" aria-label="Close">X</button>
                                     </div>
                                     <div class="modal-body">
                                         <ul>
-                                            @foreach ($carsWithOwners as $car)
-                                            @if ($car->car_owner_id == $user->id)
-                                            <li>{{ $car->car_brand }} {{ $car->car_model }} {{ $car->year }}<br/><br/></li>
-                                             @endif
-                                            @endforeach
+                                            @foreach ($users as $user)
+                                            <li>
+                                                Dates:
+                                                @foreach ($user->bookings as $booking)
+                                                    {{ $booking->pickup_date_time->format('Y-m-d') }} - {{ $booking->return_date_time->format('Y-m-d') }}<br>
+                                                    Type of Car: {{ $booking->car->car_brand }} {{ $booking->car->car_model }} ({{ $booking->car->year }})<br>
+                                                    Owner: {{ $booking->car->owner->name }} <br>
+                                                @endforeach
+                                                <br>
+                                            </li>
+                                        @endforeach
                                         </ul>
                                     </div>
                                     <div class="modal-footer">
@@ -115,10 +121,10 @@
                         {{ $user->account_status }}
                     </td>
                     <td class="py-2 px-6">
-                        <a href="/owner/{{$user->id}}" class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-1 rounded">
+                        <a href="/customer/{{$user->id}}" class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-1 rounded">
                             Edit
                         </a></td>
-                    <td><form action="/owner/{{$user->id}}" method="POST">
+                    <td><form action="/customer/{{$user->id}}" method="POST">
                         @method('delete')
                         @csrf
                         <button type="submit" class="bg-red-700 hover:bg-red-800 text-white py-1 px-4 rounded shadow-lg hover:shadow-xl transition duration-duration-200" type="submit">Delete</button>
