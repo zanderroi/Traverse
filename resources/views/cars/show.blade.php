@@ -25,7 +25,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top">
             <div class="container">
                 <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
                     <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Flowbite Logo" />
@@ -78,19 +78,19 @@
             <div class="relative h-56 overflow-hidden md:h-96">
                  <!-- Item 1 -->
                 <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    <img class="mx-auto mt-0" src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:1000px; height:400px;" />
+                    <img class="mx-auto mt-0" src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width: 100%; height: 100%; object-fit: cover;" />
                 </div>
                 <!-- Item 2 -->
                 <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
-                    <img class="mx-auto mt-0" src="{{ asset('storage/'.$car->add_picture1) }}" alt="Car Image" />
+                    <img class="mx-auto mt-0" src="{{ asset('storage/'.$car->add_picture1) }}" alt="Car Image" style="width: 100%; height: 100%; object-fit: cover;" />
                 </div>
                 <!-- Item 3 -->
                 <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    <img class="mx-auto mt-0" src="{{ asset('storage/'.$car->add_picture2) }}" alt="Car Image" style="width:1000px; height:400px;" />
+                    <img class="mx-auto mt-0" src="{{ asset('storage/'.$car->add_picture2) }}" alt="Car Image" style="width: 100%; height: 100%; object-fit: cover;" />
                 </div>
                 <!-- Item 4 -->
                 <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    <img class="mx-auto mt-0" src="{{ asset('storage/'.$car->add_picture3) }}" alt="Car Image" style="width:1000px; height:400px;" />
+                    <img class="mx-auto mt-0" src="{{ asset('storage/'.$car->add_picture3) }}" alt="Car Image" style="width: 100%; height: 100%; object-fit: cover;" />
                 </div>
             </div>
             <!-- Slider controls -->
@@ -119,17 +119,32 @@
                         <i class="fa-solid fa-users mb-1 ml-3" style="color: #152238;"></i>
                         <p class="mb-1 ml-2 font-normal text-gray-700 dark:text-gray-400">{{ $car->seats }} seater</p>
 
-                        <i class="fa-solid fa-peso-sign mt-1 ml-3" style="color: #152238;"></i>
-                        <p class="mb-1 font-normal text-gray-700 dark:text-gray-400"> {{ $car->rental_fee }}</p>
+
+                        <p class="mb-1 font-normal text-gray-700 dark:text-gray-400 ml-3">{{ $car->ratings }} <i class="fa-solid fa-star fa-lg cursor-pointer text-yellow-300"></i></p>
                     </div>
+
+                    <div class="flex items-center">
+                        <div class="flex-grow">
+                          <div class="flex items-center">
+                            <i class="fa-solid fa-peso-sign fa-2xl mr-2" style="color: #0054e6;"></i>
+                            <p class="font-normal text-3xl text-blue-600 dark:text-blue-600">{{ $car->rental_fee }}</p>
+                          </div>
+                        </div>
+                        <div class="flex ml-auto">
+                          <button id="book-car-button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" type="button" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            {{ __('Book Car') }}
+                          </button>
+                          <button type="button" class="ml-1 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-green-600 dark:hover:bg-blue-700 dark:focus:ring-green-800">
+                            Message Owner
+                          </button>
+                        </div>
+                      </div>
+                      
                     
-                    <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Plate number: {{ $car->plate_number }}</p>
-                    
-                    
-                    <p class="mb-3 text-gray-500 dark:text-gray-400">Description: {{ $car->car_description}}</p>
-                    <button id="book-car-button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" type="button" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        {{ __('Book Car') }}
-                    </button>
+                    <h3 class="text-lg mt-2"> Description</h3>
+                    <hr class=mt-1>
+                    <p class="mt-2 text-gray-500 dark:text-gray-400">{{ $car->car_description}}</p>
+  
                 </div>  
             </div>
          <!-- Main modal -->

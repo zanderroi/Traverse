@@ -71,6 +71,11 @@
                 </div>
             </div>
         </nav>
+        @if(session('success'))
+        <div class="alert alert-success mt-3">
+            {{ session('success') }}
+        </div>
+        @endif
         <h1>Booking Confirmation</h1>
 
         <p>Customer Name: {{ $user->first_name }} {{ $user->last_name }}</p>

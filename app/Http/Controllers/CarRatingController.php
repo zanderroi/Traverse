@@ -39,6 +39,7 @@ class CarRatingController extends Controller
     $carRating->description = $request->input('description');
     $carRating->customer_id = $customer_id;
     $carRating->car_id = $car->id;
+    $carRating->car_owner_id = $car_owner_id;
     $carRating->save();
 
     // Calculate and update car rating

@@ -85,4 +85,3 @@ Route::get('/history', [CustomerController::class, 'history'])->name('customer.h
 
 //Car Rating
 Route::post('car/rating/{booking_id}/{car_owner_id}/{customer_id}', [CarRatingController::class, 'store'])->name('car.rating.store');
-
