@@ -33,21 +33,12 @@ Auth::routes();
 
 
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-
 Route::get('/cars/details', [AdminController::class, 'carshow'])->name('car.details');
 Route::get('/car/{id}', [AdminController::class, 'show']);
 Route::put('/car/{car}', [AdminController::class, 'update']);
 Route::delete('/car/{car}', [AdminController::class, 'destroy']);
-
 Route::get('/owners/details', [AdminController::class, 'ownershow'])->name('owners.details');
-Route::get('/owner/{id}', [AdminController::class, 'showOwner']);
-Route::put('/owner/{user}', [AdminController::class, 'ownerUpdate']);
-Route::delete('/owner/{user}', [AdminController::class, 'ownerDestroy']);
 
-Route::get('/customers/details', [AdminController::class, 'customershow'])->name('customers.details');
-Route::get('/customer/{id}', [AdminController::class, 'showCustomer'])->name('customer.show');
-Route::put('/customer/{user}', [AdminController::class, 'customerUpdate']);
-Route::delete('/customer/{user}', [AdminController::class, 'customerDestroy']);
 
 
 Route::get('/customer/dashboard', [CustomerController::class, 'index'])->name('customer.dashboard');
