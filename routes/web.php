@@ -37,7 +37,16 @@ Route::get('/cars/details', [AdminController::class, 'carshow'])->name('car.deta
 Route::get('/car/{id}', [AdminController::class, 'show']);
 Route::put('/car/{car}', [AdminController::class, 'update']);
 Route::delete('/car/{car}', [AdminController::class, 'destroy']);
+
 Route::get('/owners/details', [AdminController::class, 'ownershow'])->name('owners.details');
+Route::get('/owner/{id}', [AdminController::class, 'showOwner']);
+Route::put('/owner/{user}', [AdminController::class, 'ownerUpdate']);
+Route::delete('/owner/{user}', [AdminController::class, 'ownerDestroy']);
+
+Route::get('/customers/details', [AdminController::class, 'customershow'])->name('customers.details');
+Route::get('/customers/{id}', [AdminController::class, 'showCustomer']);
+Route::put('/customer/{user}', [AdminController::class, 'customerUpdate']);
+Route::delete('/customer/{user}', [AdminController::class, 'customerDestroy']);
 
 
 
