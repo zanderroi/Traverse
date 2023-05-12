@@ -14,7 +14,7 @@
                     </tr>
                     <tr>
                         <td>Available</td>
-                        <td> 5 </td>
+                        <td> 10 </td>
                     </tr>
                 </table>
                 <hr>
@@ -66,12 +66,12 @@
                     </tr>
                     <tr>
                         <td>Vacant</td>
-                        <td> 3 </td>
+                        <td> 5 </td>
                     </tr>
                 </table>
                 <hr>
                 <div class="d-flex justify-content-center">
-                    <a href="#" class="btn btn-outline-light">
+                    <a href="/customers/details" class="btn btn-outline-light">
                         View more details
                     </a>
                 </div>

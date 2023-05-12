@@ -8,7 +8,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
+use App\Rules\UnderEighteen;
+use App\Models\Booking;
 class AdminController extends Controller
 {
     public function __construct()
@@ -46,6 +47,12 @@ class AdminController extends Controller
         return view('admin.owners', compact('users', 'carsWithOwners'));
   
     }
+    public function customerShow()
+    {
+        $users = User::where('user_type', 'customer')->withCount('bookings')->get();
+        return view('admin.customers',compact('users'));
+    }
+    
     public function show($id)
     {
         $data = Car::findOrFail($id);
@@ -56,6 +63,17 @@ class AdminController extends Controller
         ->where('cars.id', $id)
         ->get();
         return view('admin.edit', ['car' => $data, 'carOwnersWithCars' => $carOwnersWithCars]);
+    }
+    public function showOwner($id)
+    {
+        $user = User::findOrFail($id);
+
+        return view('admin.ownerEdit', ['user' => $user]);
+    }
+    public function showCustomer($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.editCustomer', ['user' => $user]);
     }
     public function update(Request $request, Car $car){
       
@@ -80,9 +98,68 @@ class AdminController extends Controller
         
         return redirect('/cars/details')->with('message', 'Data was successfully updated');
     }
+    public function ownerUpdate(Request $request, User $user){
+            $validated = $request->validate([
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'password' => ['string', 'min:8'],
+            'address' => ['required', 'string', 'max:255'],
+            'phone_number' => ['required', 'string', 'max:255'],
+            'birthday' => ['required', 'date', new UnderEighteen],
+            'govtid' => ['required', 'string', 'max:255'],
+            'govtid_image' => ['mimes:jpg,jpeg,png', 'max:2048'],
+            'driverslicense' => ['required', 'string', 'max:255'],
+            'driverslicense_image' => [ 'image', 'max:2048'],
+            'driverslicense2_image' => [ 'image', 'max:2048'],
+            'selfie_image' => ['image', 'max:2048'],
+            'contactperson1' => ['required', 'string', 'max:255'],
+            'contactperson1number' => ['required', 'string', 'max:255'],
+            'contactperson2' => ['required', 'string', 'max:255'],
+            'contactperson2number' => ['required', 'string', 'max:255'],
+        ]);
+        $user->update($validated);
+        
+        return redirect('/owners/details')->with('message', 'Data was successfully updated');
+    }
+    public function customerUpdate(Request $request, User $user){
+        $validated = $request->validate([
+        'first_name' => ['required', 'string', 'max:255'],
+        'last_name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255'],
+        'password' => ['string', 'min:8'],
+        'address' => ['required', 'string', 'max:255'],
+        'phone_number' => ['required', 'string', 'max:255'],
+        'birthday' => ['required', 'date', new UnderEighteen],
+        'govtid' => ['required', 'string', 'max:255'],
+        'govtid_image' => ['mimes:jpg,jpeg,png', 'max:2048'],
+        'driverslicense' => ['required', 'string', 'max:255'],
+        'driverslicense_image' => [ 'image', 'max:2048'],
+        'driverslicense2_image' => [ 'image', 'max:2048'],
+        'selfie_image' => ['image', 'max:2048'],
+        'contactperson1' => ['required', 'string', 'max:255'],
+        'contactperson1number' => ['required', 'string', 'max:255'],
+        'contactperson2' => ['required', 'string', 'max:255'],
+        'contactperson2number' => ['required', 'string', 'max:255'],
+    ]);
+    $user->update($validated);
+    
+    return redirect('/customers/details')->with('message', 'Data was successfully updated');
+}
+    
     public function destroy(Car $car){
         $car->delete();
         return redirect('/cars/details')->with('message', 'Data was successfully deleted');
+    }
+    public function ownerDestroy(User $user){
+        $user->cars()->delete(); // Delete associated cars
+        $user->delete(); // Delete the owner
+        return redirect('/owners/details')->with('message', 'Data was successfully deleted');
+    }
+    public function customerDestroy(User $user){
+        $user->bookings()->delete(); // Delete associated bookings
+        $user->delete(); // Delete the customer
+        return redirect('/customers/details')->with('message', 'Data was successfully deleted');
     }
 
 }
