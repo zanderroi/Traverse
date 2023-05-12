@@ -47,7 +47,7 @@ class AdminController extends Controller
         return view('admin.owners', compact('users', 'carsWithOwners'));
   
     }
-    public function customerShow()
+    public function customershow()
     {
         $users = User::where('user_type', 'customer')->withCount('bookings')->get();
         return view('admin.customers',compact('users'));
