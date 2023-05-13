@@ -22,11 +22,15 @@ use Illuminate\Http\Request;
 | be assigned to the "web" middleware group. Make something great!
 |
 // */
- Route::get('/', function () {
-     return view('welcome');
+Route::get('/', function () {
+    $cars = \App\Models\Car::where('status', 'available')->get();
+    return view('welcome', compact('cars'));
+});
 
-    
- });
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
 
 Auth::routes();
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
