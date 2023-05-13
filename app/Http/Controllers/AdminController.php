@@ -21,11 +21,36 @@ class AdminController extends Controller
     {   
         // $data = Car::all();
         $data = DB::table('users')->count();
-        $carsCount = DB::table('cars')->count();
-        $carOwners = DB::table('users')->where('user_type', 'car_owner')->count();
-        $customers = DB::table('users')->where('user_type', 'customer')->count(); 
-        // return view('admin.dashboard', ['cars' => $data]);
-        return view('admin.dashboard', compact('data', 'carsCount', 'carOwners', 'customers'));
+        $carsCount = DB::table('cars')->whereNull('deleted_at')->count();
+        // $carOwners = DB::table('users')->where('user_type', 'car_owner')->count();
+        // $customers = DB::table('users')->where('user_type', 'customer')->count(); 
+
+        $bookedCarsCount = Booking::count();
+        $availableCarsCount = $carsCount - $bookedCarsCount;
+
+        $carOwnersOnTransactions = User::where('user_type', 'car_owner')
+                                ->whereHas('cars', function ($query) {
+                                    $query->whereHas('bookings');
+                                })
+                                ->count();
+
+        $carOwnersVacant = User::where('user_type', 'car_owner')
+                        ->whereDoesntHave('cars', function ($query) {
+                            $query->whereHas('bookings');
+                        })
+                        ->count();
+
+        $customersOnTransactions = User::where('user_type', 'customer')
+                                ->whereHas('bookings')
+                                ->count();
+
+        $customersVacant = User::where('user_type', 'customer')
+                        ->whereDoesntHave('bookings')
+                        ->count();
+
+        $carOwners = $carOwnersOnTransactions + $carOwnersVacant;
+        $customers = $customersOnTransactions + $customersVacant;
+        return view('admin.dashboard', compact('data', 'carsCount', 'carOwners', 'customers', 'bookedCarsCount', 'availableCarsCount', 'carOwnersOnTransactions', 'carOwnersVacant', 'customersOnTransactions', 'customersVacant'));
     }
     public function carshow()
     {
@@ -50,6 +75,10 @@ class AdminController extends Controller
     public function customershow()
     {
         $users = User::where('user_type', 'customer')->withCount('bookings')->get();
+
+        // Load the related bookings, cars, and their owners
+        $users->load('bookings.car.owner');
+
         return view('admin.customers',compact('users'));
     }
     

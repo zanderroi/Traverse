@@ -100,14 +100,15 @@ public function download(Booking $booking)
     
     $fileName = 'booking_receipt.pdf';
     
-    // Download the PDF file
-    return $pdf->download($fileName)
-                ->withHeaders([
-                    'Content-Disposition' => 'attachment; filename="'.$fileName.'"',
-                ]);
 
-    // Set the success message and redirect to the dashboard
-    return redirect()->route('customer.dashboard')->with('success', 'Receipt downloaded successfully!');
+    // Save the PDF file to a temporary location
+    $pdf->save(public_path('temp/'.$fileName));
+
+    // Set the success message
+    session()->flash('success', 'Receipt downloaded successfully!');
+
+    // Redirect to the customer.dashboard route
+    return redirect()->route('customer.dashboard');
 }
 
 

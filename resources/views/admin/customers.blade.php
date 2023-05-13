@@ -11,7 +11,7 @@
                 <th scope="col" class="py-3 px-6">Contact Number</th>
                 <th scope="col" class="py-3 px-6">Contact Persons</th>
                 <th scope="col" class="py-3 px-6 text-center">Documents Provided</th>
-                <th scope="col" class="py-3 px-6">Customers</th>
+                <th scope="col" class="py-3 px-6">Cars Rented</th>
                 <th scope="col" class="py-3 px-6">Account Status</th>
                 <th scope="col" class="py-3 px-6">Account Status</th>
                 <th scope="col" class="py-3 px-6">Account Status</th>
@@ -23,7 +23,7 @@
             @foreach ($users as $index => $user)
                 <tr>
                     <td>{{ $user->id }}</td>
-                    <td>{{ $user->first_name }}{{ $user->last_name }}</td>
+                    <td>{{ $user->first_name. ' ' .$user->last_name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->address }}</td>
                     <td>{{ $user->phone_number }}</td>
@@ -84,7 +84,7 @@
                     </td>
                      <!-- Button trigger modal -->
                     <td><button type="button" class="btn btn-primary bg-blue-500" data-bs-toggle="modal" data-bs-target="#carModal{{ $user->id }}">
-                            View Cars
+                        {{ $user->bookings_count }}
                         </button>
                         
                         <!-- Modal -->
@@ -92,16 +92,21 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="carModalLabel{{ $user->id }}">Car/s Owned</h5>
+                                        <h5 class="modal-title" id="carModalLabel{{ $user->id }}">History</h5>
                                         <button type="button" class="btn-close bg-red-800 text-white" data-bs-dismiss="modal" aria-label="Close">X</button>
                                     </div>
                                     <div class="modal-body">
                                         <ul>
-                                            {{-- @foreach ($carsWithOwners as $car)
-                                            @if ($car->car_owner_id == $user->id)
-                                            <li>{{ $car->car_brand }} {{ $car->car_model }} {{ $car->year }}<br/><br/></li>
-                                             @endif
-                                            @endforeach --}}
+                                            @foreach ($user->bookings as $booking)
+                                            <li>
+                                            Date Pick Up: {{ $booking->pickup_date_time->format('Y-m-d') }}<br>
+                                            Date Returned: {{ $booking->return_date_time->format('Y-m-d') }}<br>
+                                            Type of Car: {{ $booking->car->car_brand }} {{ $booking->car->car_model }} ({{ $booking->car->year }})<br>   
+                                            Owner: {{ $booking->car->owner->first_name. ' ' .$booking->car->owner->last_name  }}<br>
+                                            <br>
+                                            <hr>
+                                            </li>
+                                            @endforeach
                                         </ul>
                                     </div>
                                     <div class="modal-footer">
