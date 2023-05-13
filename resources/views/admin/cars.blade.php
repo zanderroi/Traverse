@@ -26,8 +26,8 @@
                     <td>{{ $car->car_model }}</td>
                     <td>{{ $car->year }}</td>
                     <td>{{ $car->rental_fee }}</td>
-                    <td>{{ $carOwnersWithCars[$index]->first_name }}{{ $carOwnersWithCars[$index]->last_name }}</td>
-                    <td></td>
+                    <td>{{ $carOwnersWithCars[$index]->first_name. ' ' .$carOwnersWithCars[$index]->last_name }}</td>
+                    <td>{{ $car->bookings->count() }}</td>
                     <td>{{ $car->status }}</td>  
                     <td class="py-2 px-6">
                         <a href="/car/{{$car->id}}" class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-1 rounded">

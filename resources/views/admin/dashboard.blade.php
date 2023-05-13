@@ -10,11 +10,11 @@
                 <table class="table table-borderless text-white">
                     <tr>
                         <td>Booked</td>
-                        <td> 0 </td>
+                        <td> {{ $bookedCarsCount }} </td>
                     </tr>
                     <tr>
                         <td>Available</td>
-                        <td> 10 </td>
+                        <td> {{ $availableCarsCount }} </td>
                     </tr>
                 </table>
                 <hr>
@@ -35,11 +35,11 @@
                 <table class="table table-borderless text-white">
                     <tr>
                         <td>On Transanctions</td>
-                        <td> 0 </td>
+                        <td> {{ $carOwnersOnTransactions }} </td>
                     </tr>
                     <tr>
                         <td>Vacant</td>
-                        <td> 5 </td>
+                        <td> {{ $carOwnersVacant }} </td>
                     </tr>
                 </table>
                 <hr>
@@ -62,11 +62,11 @@
                 <table class="table table-borderless text-white">
                     <tr>
                         <td>On Transactions</td>
-                        <td> 0 </td>
+                        <td> {{ $customersOnTransactions }} </td>
                     </tr>
                     <tr>
                         <td>Vacant</td>
-                        <td> 5 </td>
+                        <td> {{ $customersVacant }} </td>
                     </tr>
                 </table>
                 <hr>
@@ -79,5 +79,7 @@
         </div>
     </div>
 </div>
+ </html>
+
 
 

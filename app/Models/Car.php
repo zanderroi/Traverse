@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Booking;
 
 class Car extends Model
 {
@@ -44,9 +45,13 @@ class Car extends Model
     }
 
     public function carRatings()
-{
-    return $this->hasMany(CarRating::class);
-}
+    {
+         return $this->hasMany(CarRating::class);
+    }
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }   
 
 
 }
