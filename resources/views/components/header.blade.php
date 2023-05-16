@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Traverse</title>
-    <link rel="shortcut icon" type="image/png" href="resources/img/logo.png">
+    <link rel="icon" type="image/png" href="{{ asset('logo/icon.png') }}">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -23,13 +23,15 @@
              overflow-x: hidden;
          }
      </style>
+     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}" class="btn btn-outline-black ml-auto">
-                    Traverse
+                <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
+                    <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Flowbite Logo" />
+                    <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Traverse</span>
                 </a>
                 {{-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -47,11 +49,23 @@
                         <a href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}" class="btn btn-outline-black ml-auto mt-0.5">
                             Home
                         </a>
+                        <a href="/cars/details" class="btn btn-outline-black ml-auto mt-0.5">
+                            Cars
+                        </a>
+                        <a href="/owners/details" class="btn btn-outline-black ml-auto mt-0.5">
+                            Owners
+                        </a>
+                        <a href="/customers/details" class="btn btn-outline-black ml-auto mt-0.5">
+                            Customers
+                        </a>
+                        <a href="/reservation/details" class="btn btn-outline-black ml-auto mt-0.5">
+                            Bookings
+                        </a>
                     
                      <ul class="navbar-nav ms-auto">
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                    {{ Auth::user()->first_name }}
                                 </a>
                               
                    
@@ -73,6 +87,7 @@
                     </div>
             </div>
         </nav>
+        @yield('content')
 
     </div>
 

@@ -70,9 +70,19 @@
                                         <ul>
                                             <li>Government ID</li>
                                             <li>{{ $user->govtid }}</li>
+                                            <li>  @if ($user->govtid_image)
+                                                <div>
+                                                    <img src="{{ asset($user->govtid_image) }}" class="h-20">
+                                                </div>
+                                            @endif</li>
                                         <br/><br/>
                                             <li>Driver's License</li>
                                             <li>{{ $user->driverslicense }}</li>
+                                            <li>  @if ($user->driverslicense_image)
+                                                <div>
+                                                    <img src="{{ asset($user->driverslicense_image) }}" class="h-20">
+                                                </div>
+                                            @endif</li>
                                         </ul>
                                     </div>
                                     <div class="modal-footer">

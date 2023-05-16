@@ -48,6 +48,10 @@ Route::get('/customers/{id}', [AdminController::class, 'showCustomer']);
 Route::put('/customer/{user}', [AdminController::class, 'customerUpdate']);
 Route::delete('/customer/{user}', [AdminController::class, 'customerDestroy']);
 
+Route::get('/reservation/details', [AdminController::class, 'bookshow']);
+Route::get('/bookings/graph', [AdminController::class, 'showGraph']);
+
+
 
 
 Route::get('/customer/dashboard', [CustomerController::class, 'index'])->name('customer.dashboard');

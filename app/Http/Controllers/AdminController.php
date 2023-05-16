@@ -54,7 +54,7 @@ class AdminController extends Controller
     }
     public function carshow()
     {
-        $cars = Car::all();
+        $cars = Car::with('owner', 'bookings.customer')->get();
         $carOwnersWithCars = DB::table('users')
         ->join('cars', 'users.id', '=', 'cars.car_owner_id')
         ->select('users.first_name', 'users.last_name')
@@ -191,4 +191,37 @@ class AdminController extends Controller
         return redirect('/customers/details')->with('message', 'Data was successfully deleted');
     }
 
+    public function bookshow()
+    {
+        $bookings = Booking::all();
+        $bookings->load('car.owner');
+        $bookingClient = DB::table('users')
+        ->join('bookings', 'users.id', '=', 'bookings.user_id')
+        ->select('users.first_name', 'users.last_name')
+        ->get();
+        
+
+        return view('admin.bookings', compact('bookings', 'bookingClient'));
+    }
+
+   public function showGraph()
+    {
+        // Fetch the booking data from the database
+        $bookings = DB::table('bookings')
+            ->select(
+                DB::raw('DATE(created_at) AS date'),
+                DB::raw('COUNT(*) AS count')
+            )
+            ->groupBy('date')
+            ->get();
+
+        // Process the data and extract necessary information for the chart
+        $labels = $bookings->pluck('date')->toArray();
+        $bookingCounts = $bookings->pluck('count')->toArray();
+
+        // Return the processed data to the view
+        return view('admin.graph', compact('labels', 'bookingCounts'));
+    }
+
 }
+

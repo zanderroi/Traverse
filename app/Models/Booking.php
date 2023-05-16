@@ -35,6 +35,10 @@ class Booking extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function customer()
+    {
+    return $this->belongsTo(User::class, 'user_id');
+    }
 
     public function getLateFeeAttribute()
     {

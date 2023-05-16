@@ -1,4 +1,5 @@
 @include('components.header')
+ 
 <h2 class="text-center p-4"> WELCOME ADMIN </h2>
 <div class="row">
     <div class="col-md-4">
@@ -75,11 +76,41 @@
                         View more details
                     </a>
                 </div>
+                <hr>
+                <div class="d-flex justify-content-center">
+                    <a href="/bookings/graph" class="btn btn-outline-light">
+                        View more details
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mt-2">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h5 class="card-title text-center">Overall Bookings</h5>
+                <p class="card-text text-center"></p>
+                <hr>
+                <table class="table table-borderless text-white">
+                    <tr>
+                        <td>Done</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>On Going</td>
+                        <td> </td>
+                    </tr>
+                </table>
+                <hr>
+                <div class="d-flex justify-content-center">
+                    <a href="/reservation/details" class="btn btn-outline-light">
+                        View more details
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 </html>
 
 

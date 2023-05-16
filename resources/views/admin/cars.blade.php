@@ -27,8 +27,39 @@
                     <td>{{ $car->year }}</td>
                     <td>{{ $car->rental_fee }}</td>
                     <td>{{ $carOwnersWithCars[$index]->first_name. ' ' .$carOwnersWithCars[$index]->last_name }}</td>
-                    <td>{{ $car->bookings->count() }}</td>
-                    <td>{{ $car->status }}</td>  
+                    <td>
+                        <button type="button" class="btn btn-link text-primary text-center" data-bs-toggle="modal" data-bs-target="#bookingModal{{ $car->id }}">
+                            {{ $car->bookings->count() }}
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="bookingModal{{ $car->id }}" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel{{ $car->id }}" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="bookingModalLabel{{ $car->id }}">History</h5>
+                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        @foreach ($car->bookings as $loopIndex => $booking)
+                                        <p><strong>{{ $loopIndex + 1 }}</strong></p>
+                                            <p><strong>Customer:  </strong>{{$booking->customer->first_name}} {{$booking->customer->last_name}}<br></p>
+                                            
+                                            <p><strong>Pick-up Date:  </strong>{{$booking->pickup_date_time}}<br></p>  
+                                            <p><strong>Return Date:  </strong>{{$booking->return_date_time}}<hr><br><br></p> 
+                                            @if (!$loop->last)
+                                            <hr>
+                                            @endif
+                                                
+
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div></td>
+
+                    <td> {{ $car->status }} </td>
                     <td class="py-2 px-6">
                         <a href="/car/{{$car->id}}" class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-1 rounded">
                             Edit

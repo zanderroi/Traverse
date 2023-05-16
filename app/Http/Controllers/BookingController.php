@@ -2,16 +2,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use PDF;
 use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\User;
 use App\Models\Car;
 use App\Models\CarImage;
+use PDF;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
 use Carbon\Carbon;
-
+use Dompdf\Adapter\PDFLib;
 
 class BookingController extends Controller
 {
@@ -100,15 +100,14 @@ public function download(Booking $booking)
     
     $fileName = 'booking_receipt.pdf';
     
+    // Download the PDF file
+    return $pdf->download($fileName)
+                ->withHeaders([
+                    'Content-Disposition' => 'attachment; filename="'.$fileName.'"',
+                ]);
 
-    // Save the PDF file to a temporary location
-    $pdf->save(public_path('temp/'.$fileName));
-
-    // Set the success message
-    session()->flash('success', 'Receipt downloaded successfully!');
-
-    // Redirect to the customer.dashboard route
-    return redirect()->route('customer.dashboard');
+    // Set the success message and redirect to the dashboard
+    return redirect()->route('customer.dashboard')->with('success', 'Receipt downloaded successfully!');
 }
 
 
