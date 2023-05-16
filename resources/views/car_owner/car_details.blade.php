@@ -18,11 +18,7 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
-    <style>
-        body {
-          background-image: url('resources/img/bgimage.jpg');
-        }
-        </style>
+
 </head>
 <body>
     <div id="app">

@@ -95,7 +95,7 @@
                                         @enderror
                                         @if ($car->display_picture)
                                         <div>
-                                            <img src="{{ asset($car->display_picture) }}" class="h-20">
+                                            <img src="{{ asset('storage/'.$car->display_picture) }}" class="h-20">
                                         </div>
                                     @endif
                                     </div>
@@ -215,7 +215,7 @@
                                         @enderror
                                         @if ($car->certificate_of_registration)
                                         <div>
-                                            <img src="{{ asset($car->certificate_of_registration) }}" alt="{{ $car->car_brand }} {{ $car->car_model }}" class="h-20">
+                                            <img src="{{ asset('storage/'.$car->certificate_of_registration) }}" alt="{{ $car->car_brand }} {{ $car->car_model }}" class="h-20">
                                         </div>
                                     @endif
                                     </div>
@@ -257,7 +257,7 @@
                                         @enderror
                                         @if ($car->add_picture1)
                                         <div>
-                                            <img src="{{ asset($car->add_picture1) }}" alt="{{ $car->car_brand }} {{ $car->car_model }}" class="h-20">
+                                            <img src="{{ asset('storage/'.$car->add_picture1) }}" alt="{{ $car->car_brand }} {{ $car->car_model }}" class="h-20">
                                             
                                         </div>
                                     @endif
@@ -275,7 +275,7 @@
                                         @enderror
                                         @if ($car->add_picture2)
                                         <div>
-                                            <img src="{{ asset($car->add_picture2) }}" alt="{{ $car->car_brand }} {{ $car->car_model }}" class="h-20">
+                                            <img src="{{ asset('storage/'.$car->add_picture2) }}" alt="{{ $car->car_brand }} {{ $car->car_model }}" class="h-20">
                                         </div>
                                     @endif
                                     </div>
@@ -292,7 +292,7 @@
                                         @enderror
                                         @if ($car->add_picture3)
                                         <div>
-                                            <img src="{{ asset($car->add_picture3) }}" alt="{{ $car->car_brand }} {{ $car->car_model }}" class="h-20">
+                                            <img src="{{ asset('storage/'.$car->add_picture3) }}" alt="{{ $car->car_brand }} {{ $car->car_model }}" class="h-20">
                                         </div>
                                     @endif
                                     </div>

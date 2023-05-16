@@ -134,7 +134,7 @@
                                 @enderror
                                 @if ($user->govtid_image)
                                 <div>
-                                    <img src="{{ asset($user->govtid_image) }}" class="h-20">
+                                    <img src="{{ asset('storage/'.$user->govtid_image) }}" class="h-20">
                                 </div>
                             @endif
                             </div>
@@ -166,7 +166,7 @@
                                 @enderror
                                 @if ($user->driverslicense_image)
                                 <div>
-                                    <img src="{{ asset($user->driverslicense_image) }}" class="h-20">
+                                    <img src="{{ asset('storage/'.$user->driverslicense_image) }}" class="h-20">
                                 </div>
                             @endif
                             </div>
@@ -185,7 +185,7 @@
                                 @enderror
                                 @if ($user->driverslicense2_image)
                                 <div>
-                                    <img src="{{ asset($user->driverslicense2_image) }}" class="h-20">
+                                    <img src="{{ asset('storage/'.$user->driverslicense2_image) }}" class="h-20">
                                 </div>
                             @endif
                             </div>
@@ -204,7 +204,7 @@
                                 @enderror
                                 @if ($user->selfie_image)
                                 <div>
-                                    <img src="{{ asset($user->selfie_image) }}" class="h-20">
+                                    <img src="{{ asset('storage/'.$user->selfie_image) }}" class="h-20">
                                 </div>
                             @endif
                             </div>
