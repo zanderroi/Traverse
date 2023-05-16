@@ -16,12 +16,17 @@
 
     <!-- Scripts -->
    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+   @vite('resources/js/bookingcalendar.js')
 
     {{-- Flowbite Tailwind --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
 
     {{-- Font Awesome --}}
     <script src="https://kit.fontawesome.com/57a798c9bb.js" crossorigin="anonymous"></script>
+
+    
+    
+   
 </head>
 <body>
     <div id="app">
@@ -120,20 +125,31 @@
                         <p class="mb-1 ml-2 font-normal text-gray-700 dark:text-gray-400">{{ $car->seats }} seater</p>
 
 
-                        <p class="mb-1 font-normal text-gray-700 dark:text-gray-400 ml-3">{{ $car->ratings }} <i class="fa-solid fa-star fa-lg cursor-pointer text-yellow-300"></i></p>
+                        
+                        <p class="mb-1 font-bold text-gray-700 dark:text-gray-400 ml-3">{{ $car->ratings }} out of 5 <i class="fa-solid fa-star fa-lg cursor-pointer text-yellow-300"></i></p>
                     </div>
 
                     <div class="flex items-center">
                         <div class="flex-grow">
                           <div class="flex items-center">
                             <i class="fa-solid fa-peso-sign fa-2xl mr-2" style="color: #0054e6;"></i>
-                            <p class="font-normal text-3xl text-blue-600 dark:text-blue-600">{{ $car->rental_fee }}</p>
+                            <p class="font-black text-3xl text-blue-600 dark:text-blue-600">
+                                {{ number_format($car->rental_fee) }}
+                            </p>
+                            
                           </div>
                         </div>
                         <div class="flex ml-auto">
-                          <button id="book-car-button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" type="button" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            {{ __('Book Car') }}
-                          </button>
+                            @if ($bookingStatus === 'Pending')
+                            <p class="pt-2 text-red-700 font-semibold">You still have a pending booking!</p>
+                        @else
+                            <button id="book-car-button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" type="button" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                {{ __('Book Car') }}
+                            </button>
+                        @endif
+                        
+
+
                           <button type="button" class="ml-1 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-green-600 dark:hover:bg-blue-700 dark:focus:ring-green-800">
                             Message Owner
                           </button>
@@ -144,9 +160,79 @@
                     <h3 class="text-lg mt-2"> Description</h3>
                     <hr class=mt-1>
                     <p class="mt-2 text-gray-500 dark:text-gray-400">{{ $car->car_description}}</p>
-  
+                    
                 </div>  
-            </div>
+                
+                <div class="mx-auto w-1/2 content-center">
+                    <hr class=mt-3>
+       <div class="flex justify-center mt-4">
+            @for ($i = 1; $i <= 5; $i++)
+                @if ($i <= $car->ratings)
+                    <svg aria-hidden="true" class="w-10 h-10 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                     <title>Star</title>
+                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                     </svg>
+                 @else
+                    <svg aria-hidden="true" class="w-10 h-10 text-gray-300 dark:text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <title>Star</title>
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                    </svg>
+                @endif
+            @endfor
+        </div>
+                                                
+
+        <!-- Average Rating -->
+        <p class="text-center text-lg font-semibold text-gray-900 dark:text-white">{{ $car->ratings }} out of 5</p>
+
+
+                @foreach ($percentageArray as $index => $percentage)
+                <div class="flex justify-center mt-2">
+                    <span class="text-sm font-medium text-blue-600 dark:text-blue-500">{{ 5 - $index }} star</span>
+                    <div class="w-96 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                        <div class="h-5 bg-yellow-400 rounded" style="width: {{ $percentage }}%"></div>
+                    </div>
+                    <span class="text-sm font-medium text-blue-600 dark:text-blue-500">{{ $percentage }}%</span>
+                </div>
+            @endforeach
+                <!-- Display ratings -->
+                @if (count($ratings) > 0)
+                <h2 class="font-extrabold text-lg mt-3">Reviews</h2>
+                <ul>
+                    @foreach ($ratings as $rating)
+                    <div class="flex items-center mb-4 space-x-4 mt-5">
+                        <img class="w-10 h-10 rounded-full" src="{{ asset('avatar/default-avatar.png')}}" alt="">
+                        <div class="space-y-1 font-medium dark:text-white">
+                            <p class="font-bold">{{ $rating->customer->first_name }} {{ $rating->customer->last_name }} <time datetime="2014-08-16 19:00" class="block text-sm text-gray-500 dark:text-gray-400">{{ $rating->created_at->format('F, j Y') }}</time></p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($i <= $rating->rating)
+                                <svg aria-hidden="true" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                 <title>Star</title>
+                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                 </svg>
+                             @else
+                                <svg aria-hidden="true" class="w-5 h-5 text-gray-300 dark:text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <title>Star</title>
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                </svg>
+                            @endif
+                        @endfor
+                    </div>
+                        
+                        <li class="font-semibold">{{ $rating->description }}</li>
+                     
+                    @endforeach
+                </ul>
+                @else
+                <p>No ratings available.</p>
+                @endif
+ 
+ 
+    </div>
+
          <!-- Main modal -->
          <form action="{{ route('bookings.confirm', ['car_id' => $car->id]) }}" method="post">
 
@@ -181,12 +267,10 @@
                       <input id="rental_fee" type="text" class="form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" value="{{'Php '}}{{ $car->rental_fee }}" readonly>
                     </div>
                   </div>
-                <div class="form-group row">
+                  <div class="form-group row">
                     <label for="pickup_date_time" class="col-md-4 col-form-label text-md-right">{{ __('Pickup Date and Time') }}</label>
-
                     <div class="col-md-6">
-                        <input id="pickup_date_time" type="datetime-local" class="form-control @error('pickup_date_time') is-invalid @enderror  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" name="pickup_date_time" value="{{ old('pickup_date_time') }}" required autofocus>
-
+                        <input id="pickup_date_time" type="datetime-local" class="form-control @error('pickup_date_time') is-invalid @enderror  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" name="pickup_date_time" value="{{ old('pickup_date_time') }}" min="{{ date('Y-m-d\TH:i:s', strtotime('today')) }}" max="{{ date('Y-m-d\TH:i:s', strtotime('+1 week')) }}" required autofocus>
                         @error('pickup_date_time')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -197,10 +281,8 @@
                 
                 <div class="form-group row">
                     <label for="return_date_time" class="col-md-4 col-form-label text-md-right">{{ __('Return Date and Time') }}</label>
-
-                    <div class="col-md-6 mt-1">
-                        <input id="return_date_time" type="datetime-local" class="form-control @error('return_date_time') is-invalid @enderror  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" name="return_date_time" value="{{ old('return_date_time') }}" required>
-
+                    <div class="col-md-6">
+                        <input id="return_date_time" type="datetime-local" class="form-control @error('return_date_time') is-invalid @enderror border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" name="return_date_time" value="{{ old('return_date_time') }}" required autofocus>
                         @error('return_date_time')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -208,6 +290,7 @@
                         @enderror
                     </div>
                 </div>
+              
 
                 <div class="form-group row mt-1">
                     <label for="notes" class="col-md-4 col-form-label text-md-right">{{ __('Note to Car Owner') }}</label>
@@ -235,12 +318,8 @@
         </div>
     </div>
 </div>
-
-
- 
-
-        
     </div>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 </body>

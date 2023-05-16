@@ -5,18 +5,48 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Car;
+use App\Models\Booking;
+use App\Models\User;
+use App\Models\CarRating;
 
 class CarController extends Controller
 {
 
-public function show($car_id) {
+    public function show($car_id)
+{
     $car = Car::find($car_id);
     $car_owner = $car->owner;
 
+    // Fetch the booking status for the customer
+    $user = auth()->user();
+    $bookingStatus = $user->booking_status ?? null;
+
+    // Fetch the ratings for the car
+    $ratings = CarRating::where('car_id', $car->id)->get();
+
+    // Calculate the average rating
+    $averageRating = $ratings->avg('rating');
+
+    // Calculate the percentage for each rating category
+    $totalRatings = $ratings->count();
+    $percentageArray = [];
+
+    for ($i = 5; $i >= 1; $i--) {
+        $count = $ratings->where('rating', $i)->count();
+        $percentage = $totalRatings > 0 ? ($count / $totalRatings) * 100 : 0;
+        $percentageArray[] = $percentage;
+    }
+
     return view('cars.show')->with([
         'car' => $car,
-        'car_owner' => $car_owner
+        'car_owner' => $car_owner,
+        'bookingStatus' => $bookingStatus,
+        'averageRating' => $averageRating,
+        'ratings' => $ratings, // Add the 'ratings' variable to the view data
+        'percentageArray' => $percentageArray,
     ]);
 }
+    
+    
 
 }
