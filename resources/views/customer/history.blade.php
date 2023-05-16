@@ -114,7 +114,7 @@
                 </thead>
                 <tbody>
                     
-                    @foreach ($bookings as $booking)
+                    @foreach ($bookings->sortByDesc('created_at') as $booking)   
                     <tr class="bg-gray-500 border-b border-blue-400">
                         <th scope="row" class="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100">
                             {{ $booking->car->car_brand ?? 'Unlisted Car' }}   {{ $booking->car->car_model ?? ' ' }}

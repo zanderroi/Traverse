@@ -21,6 +21,7 @@
         <script src="https://kit.fontawesome.com/57a798c9bb.js" crossorigin="anonymous"></script>
 
         <style>
+
         #scroll-to-next {
         animation: fadeInDown 2s ease-in-out infinite;
         }
@@ -39,6 +40,11 @@
             transform: translateY(20px);
         }
         }
+        /* Scale effect on hover */
+        .hover-scale:hover {
+            transform: scale(1.05);
+            transition: all 0.2s ease-in-out;
+        }
 
             </style>
 
@@ -48,7 +54,7 @@
             <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top">
                 <div class="container">
                     <a class="navbar-brand flex items-center" href="#">
-                        <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Flowbite Logo" />
+                        <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
                         <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Traverse</span>
                     </a>
                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -67,7 +73,7 @@
                                 <a href="#" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"> FAQ </a>
                             </div>
                             <div class="sm:fixed sm:top-0 sm:right-0 text-right mr-6 mt-1.5">
-                                <a href="#" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"> About</a>
+                                <a href="#" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"> Our Team</a>
                             </div>
                            
                                 @if (Route::has('login'))
@@ -84,8 +90,10 @@
                                     </div>
                                 @endif
 
-                                <div class="sm:fixed sm:top-0 sm:right-0 text-right ml-3">
-                                    <button type="button" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Contact Us! </button>
+                                <div class="sm:fixed sm:top-0 sm:right-0 text-right ml-6">
+
+                                        <a href="{{ route('contact') }}" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Contact Us! </a>
+
                        
 
     
@@ -132,8 +140,24 @@
 
     <hr>
 
-    <div class="h-screen" id="next-div">
-        <h1 class="text-6xl">Next</h1>
+    <div class="h-screen bg-cover bg-center" id="next-div" style="background-image: url('{{ asset('logo/bgimage4.jpg') }}');">
+        <div class="bg-cover bg-gray-400 bg-opacity-50 backdrop-blur-lg w-full h-full bg-center">
+
+            <h1 class="pt-20 text-4xl font-semibold text-center">Available Cars!</h1>
+            <div class="ml-6 row justify-content-start mt-3 pt-4 h-96">
+                @foreach ($cars as $car)
+                <div class="hover-scale bg-white hover:bg-blue-500 dark:bg-gray-800 dark:hover:bg-gray-700 left-1 mt-2 mr-3 ml-6 mb-4 pt-2 px-2 w-64 h-32 border border-gray-200 rounded-lg shadow-md dark:border-gray-700" style="background-image: url('{{ asset('storage/'.$car->display_picture) }}'); background-size: cover; background-position: center;">
+                    <div class="p-1 text-center bg-gray-100">
+                        <a class="hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" href="{{ Auth::check() ? (Auth::user()->user_type === 'customer' ? '/customer/dashboard' : '/car_owner/dashboard') : '/login' }}">
+                            <h5 class="text-xl font-bold text-gray-900 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>               
+                        </a>
+                    </div>
+                </div>
+                
+            @endforeach
+        </div>
+        
+        </div>
     </div>
     <script>
         const scrollToNext = document.getElementById("scroll-to-next");
@@ -143,5 +167,6 @@
             nextDiv.scrollIntoView({ behavior: "smooth" });
         });
     </script>
+    @include('components.footer')
     </body>
 </html>

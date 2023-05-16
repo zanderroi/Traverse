@@ -26,6 +26,10 @@
       body {
           overflow-x: hidden;
       }
+      .hover-scale:hover {
+            transform: scale(1.05);
+            transition: all 0.2s ease-in-out;
+        }
   </style>
 </head>
 <body class="pt-5">
@@ -89,7 +93,7 @@
         </nav>
     </div>   
     <div class="flex items-center justify-between">
-        <h1 class="text-3xl font-bold ml-4 mt-6 mb-2 mr-5 text-blue-600">Available Cars</h1>
+        <h1 class="text-3xl font-bold pl-7 ml-4 mt-6 mb-2 mr-5 text-blue-600">Available Cars</h1>
       
         <div class="flex items-center">
           <form method="GET" action="{{ route('customer.available_cars') }}">
@@ -122,9 +126,9 @@
       </div>
       
     
-    <div class="row justify-content-start ">
+    <div class="pl-9 ml-4 row justify-content-start ">
         @foreach ($cars as $car)
-        <div class=" hover:bg-blue-500 dark:bg-gray-800 dark:hover:bg-gray-700 left-1 mt-2 mr-3 ml-6 mb-4 pt-2 px-2 w-64 h-32 border border-gray-200 rounded-lg shadow-md dark:border-gray-700">
+        <div class="hover-scale hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 left-1 mt-2 mr-3 ml-4 mb-4 pt-2 px-2 w-64 h-32 border border-gray-200 rounded-lg shadow-md dark:border-gray-700">
 
             <img class="rounded-t-lg rounded-b-lg" src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:250px;height:150px;"/>
             <div class="p-3">

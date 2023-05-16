@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class CarRating extends Model
 {
@@ -24,8 +25,9 @@ class CarRating extends Model
 
     public function customer()
     {
-        return $this->belongsTo(User::class, 'customer_id');
+        return $this->belongsTo(User::class, 'customer_id')->select('id', 'first_name', 'last_name');
     }
+    
 
     public function carOwner()
     {
