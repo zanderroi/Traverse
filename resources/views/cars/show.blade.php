@@ -186,23 +186,25 @@
         <p class="text-center text-lg font-semibold text-gray-900 dark:text-white">{{ $car->ratings }} out of 5</p>
 
 
-                @foreach ($percentageArray as $index => $percentage)
-                <div class="flex justify-center mt-2">
-                    <span class="text-sm font-medium text-blue-600 dark:text-blue-500">{{ 5 - $index }} star</span>
-                    <div class="w-96 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-                        <div class="h-5 bg-yellow-400 rounded" style="width: {{ $percentage }}%"></div>
-                    </div>
-                    <span class="text-sm font-medium text-blue-600 dark:text-blue-500">{{ $percentage }}%</span>
-                </div>
-            @endforeach
+        @foreach ($percentageArray as $index => $percentage)
+        <div class="flex justify-center mt-2">
+            <span class="text-sm font-medium text-blue-600 dark:text-blue-500">{{ 5 - $index }} star</span>
+            <div class="w-96 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                <div class="h-5 bg-yellow-400 rounded" style="width: {{ $percentage }}%"></div>
+            </div>
+            <span class="text-sm font-medium text-blue-600 dark:text-blue-500">{{ intval($percentage) }}%</span>
+        </div>
+    @endforeach
+    
                 <!-- Display ratings -->
                 @if (count($ratings) > 0)
                 <h2 class="font-extrabold text-lg mt-3">Reviews</h2>
+                <hr class="mt-1">
                 <ul>
                     @foreach ($ratings as $rating)
-                    <div class="flex items-center mb-4 space-x-4 mt-5">
+                    <div class="flex items-center mb-4 space-x-4 mt-2">
                         <img class="w-10 h-10 rounded-full" src="{{ asset('avatar/default-avatar.png')}}" alt="">
-                        <div class="space-y-1 font-medium dark:text-white">
+                        <div class="font-medium dark:text-white">
                             <p class="font-bold">{{ $rating->customer->first_name }} {{ $rating->customer->last_name }} <time datetime="2014-08-16 19:00" class="block text-sm text-gray-500 dark:text-gray-400">{{ $rating->created_at->format('F, j Y') }}</time></p>
                         </div>
                     </div>
