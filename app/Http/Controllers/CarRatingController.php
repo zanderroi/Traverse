@@ -25,13 +25,17 @@ class CarRatingController extends Controller
         abort(403, 'You are not authorized to perform this action.');
     }
 
-    // Check if the customer has already rated the car
-    $existingRating = CarRating::where('customer_id', $customer_id)
-        ->where('car_id', $car->id)
-        ->first();
-    if ($existingRating) {
-        abort(400, 'You have already rated this car.');
-    }
+// Check if the customer has already rated the car
+$existingRating = CarRating::where('car_id', $car->id)
+    ->where('customer_id', $customer_id)
+    ->first();
+
+dd($existingRating); // Add this line for debugging
+
+if ($existingRating) {
+    abort(400, 'You have already rated this car.');
+}
+
 
     // Create and save the car rating
     $carRating = new CarRating();
@@ -40,6 +44,7 @@ class CarRatingController extends Controller
     $carRating->customer_id = $customer_id;
     $carRating->car_id = $car->id;
     $carRating->car_owner_id = $car_owner_id;
+    $carRating->booking_id = $booking_id;
     $carRating->save();
 
     // Calculate and update car rating
@@ -48,6 +53,7 @@ class CarRatingController extends Controller
 
     return redirect()->back()->with('success', 'Thank you for your rating and review.');
 }
+
 
    
 

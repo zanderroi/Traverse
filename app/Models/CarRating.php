@@ -15,7 +15,8 @@ class CarRating extends Model
         'rating',
         'car_id',
         'customer_id',
-        'car_owner_id'
+        'car_owner_id',
+        'booking_id'
     ];
 
     public function car()
