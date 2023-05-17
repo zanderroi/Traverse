@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use DateTime;
 use Carbon\Carbon;
 use Dompdf\Adapter\PDFLib;
+use PDF;
 
 class BookingController extends Controller
 {
@@ -38,65 +39,53 @@ class BookingController extends Controller
     
 
     public function confirm(Request $request)
-{
-    $request->validate([
-        'pickup_date_time' => 'required|date|after_or_equal:today',
-        'return_date_time' => 'required|date|after_or_equal:pickup_date_time|before_or_equal:' . date('Y-m-d H:i:s', strtotime('+3 days', strtotime($request->input('pickup_date_time')))),
-        'notes' => 'nullable|string|max:255',
-    ]);
-
-    $user_id = Auth::id();
-    $user = Auth::user();
-    $car_id = $request->input('car_id');
-
-    $pickup_date_time = $request->input('pickup_date_time');
-    $return_date_time = $request->input('return_date_time');
-    $notes = $request->input('notes');
-    $car = Car::with('owner')->findOrFail($car_id);
-
-    if (!$car) {
-        // The car with the given $car_id was not found
-        return redirect()->back()->with('error', 'Car not found.');
-    }
-
-    $rental_fee = $car->rental_fee;
-    $car_owner_first_name = $car->owner ? $car->owner->first_name : 'Unknown';
-    $car_owner_last_name = $car->owner ? $car->owner->last_name : 'Unknown';
-    $car_owner_email = $car->owner ? $car->owner->email : 'Unknown';
-    $car_owner_phone_number = $car->owner ? $car->owner->phone_number : 'Unknown';
-
-    $pickup_date = new DateTime($pickup_date_time);
-    $return_date = new DateTime($return_date_time);
-    $duration = $pickup_date->diff($return_date)->days;
-
-    $total_rental_fee = $duration * $rental_fee;
-
-    $booking = Booking::create([
-        'user_id' => $user_id,
-        'car_id' => $car_id,
-        'pickup_date_time' => $pickup_date_time,
-        'return_date_time' => $return_date_time,
-        'notes' => $notes,
-        'total_rental_fee' => $total_rental_fee,
-    ]);
-
-    $user->booking_status = 'Pending';
-    $user->save();
-
-    // Update car status based on booking dates
-    $car->status = 'available';
-    $car->save();
-
-    $car_bookings = Booking::where('car_id', $car_id)->where('return_date_time', '>', $pickup_date_time)->orderBy('pickup_date_time')->get();
-
-    foreach ($car_bookings as $car_booking) {
-        if ($car_booking->pickup_date_time > $return_date_time) {
-            break;
+    {
+        $request->validate([
+            'pickup_date_time' => 'required|date|after_or_equal:today',
+            'return_date_time' => 'required|date|after_or_equal:pickup_date_time',
+            'notes' => 'nullable|string|max:255',
+        ]);
+    
+        $user_id = Auth::id();
+        $user = Auth::user();
+        $car_id = $request->input('car_id');
+    
+        $pickup_date_time = $request->input('pickup_date_time');
+        $return_date_time = $request->input('return_date_time');
+        $notes = $request->input('notes');
+        $car = Car::with('owner')->findOrFail($car_id);
+    
+        if (!$car) {
+            // The car with the given $car_id was not found
+            return redirect()->back()->with('error', 'Car not found.');
         }
+    
+        $rental_fee = $car->rental_fee;
+        $car_owner_first_name = $car->owner ? $car->owner->first_name : 'Unknown';
+        $car_owner_last_name = $car->owner ? $car->owner->last_name : 'Unknown';
+        $car_owner_email = $car->owner ? $car->owner->email : 'Unknown';
+        $car_owner_phone_number = $car->owner ? $car->owner->phone_number : 'Unknown';
+    
+        $pickup_date = new DateTime($pickup_date_time);
+        $return_date = new DateTime($return_date_time);
+        $duration = $pickup_date->diff($return_date)->days;
+    
+        $total_rental_fee = $duration * $rental_fee;
+    
+        $booking = Booking::create([
+            'user_id' => $user_id,
+            'car_id' => $car_id,
+            'pickup_date_time' => $pickup_date_time,
+            'return_date_time' => $return_date_time,
+            'notes' => $notes,
+            'total_rental_fee' => $total_rental_fee,
+        ]);
+    
+        $user->booking_status = 'Pending';
+        $user->save();
+    
         $car->status = 'booked';
         $car->save();
-    }
-
     return view('bookings.confirm', compact('booking', 'user', 'car', 'car_owner_first_name', 'car_owner_last_name', 'total_rental_fee', 'car_owner_email', 'car_owner_phone_number'));
 }
 

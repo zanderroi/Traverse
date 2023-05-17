@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CarRatingController;
+use App\Http\Controllers\CarLocationController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -93,3 +94,6 @@ Route::get('/history', [CustomerController::class, 'history'])->name('customer.h
 
 //Car Rating
 Route::post('car/rating/{booking_id}/{car_owner_id}/{customer_id}', [CarRatingController::class, 'store'])->name('car.rating.store');
+
+//Track Location
+Route::get('/car_owner/location/{carId}', [CarLocationController::class,'showLocation'])->name('car_owner.location');

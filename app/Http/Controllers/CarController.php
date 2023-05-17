@@ -8,6 +8,7 @@ use App\Models\Car;
 use App\Models\Booking;
 use App\Models\User;
 use App\Models\CarRating;
+use app\Models\CarLocation;
 
 class CarController extends Controller
 {
@@ -46,7 +47,23 @@ class CarController extends Controller
         'percentageArray' => $percentageArray,
     ]);
 }
-    
+public function showLocation($car_id)
+{
+    $car = Car::findOrFail($car_id);
+
+    // Fetch the booking status for the customer
+    $user = auth()->user();
+    $bookingStatus = $user->booking_status ?? null;
+
+    // Fetch the GPS location data for the car
+    $locations = CarLocation::where('car_id', $car->id)->orderBy('timestamp', 'desc')->get();
+
+    return view('cars.location')->with([
+        'car' => $car,
+        'bookingStatus' => $bookingStatus,
+        'locations' => $locations,
+    ]);
+}
     
 
 }
