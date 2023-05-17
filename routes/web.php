@@ -7,11 +7,10 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CarRatingController;
-<<<<<<< HEAD
+
 use App\Http\Controllers\GraphController;
-=======
+
 use App\Http\Controllers\CarLocationController;
->>>>>>> 1672735a86790b19e4c4946fc9be3d1f25ce6aba
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
