@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use DateTime;
 use Carbon\Carbon;
 use Dompdf\Adapter\PDFLib;
+use PDF;
 
 class BookingController extends Controller
 {

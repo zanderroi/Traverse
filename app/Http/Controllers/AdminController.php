@@ -204,24 +204,5 @@ class AdminController extends Controller
         return view('admin.bookings', compact('bookings', 'bookingClient'));
     }
 
-   public function showGraph()
-    {
-        // Fetch the booking data from the database
-        $bookings = DB::table('bookings')
-            ->select(
-                DB::raw('DATE(created_at) AS date'),
-                DB::raw('COUNT(*) AS count')
-            )
-            ->groupBy('date')
-            ->get();
-
-        // Process the data and extract necessary information for the chart
-        $labels = $bookings->pluck('date')->toArray();
-        $bookingCounts = $bookings->pluck('count')->toArray();
-
-        // Return the processed data to the view
-        return view('admin.graph', compact('labels', 'bookingCounts'));
-    }
-
 }
 

@@ -76,12 +76,6 @@
                         View more details
                     </a>
                 </div>
-                <hr>
-                <div class="d-flex justify-content-center">
-                    <a href="/bookings/graph" class="btn btn-outline-light">
-                        View more details
-                    </a>
-                </div>
             </div>
         </div>
     </div>
