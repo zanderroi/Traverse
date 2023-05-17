@@ -199,7 +199,7 @@
                 <!-- Display ratings -->
                 @if (count($ratings) > 0)
                 <h2 class="font-extrabold text-lg mt-3">Reviews</h2>
-                <hr class="mt-1">
+                <hr class="mt1">
                 <ul>
                     @foreach ($ratings as $rating)
                     <div class="flex items-center mb-4 space-x-4 mt-2">

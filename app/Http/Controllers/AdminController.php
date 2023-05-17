@@ -116,13 +116,35 @@ class AdminController extends Controller
         'vehicle_identification_number' => ['required', 'string', 'max:255'],
         'location' => ['required', 'string', 'max:255'],
         'certificate_of_registration' => ['mimes:jpg,jpeg,png,pdf', 'max:2048'],
-        'car_description' => ['required', 'string', 'max:255'],
+        'car_description' => ['required', 'string', 'max:1000'],
         'rental_fee' => 'required|numeric|min:0',
         'add_picture1' => ['mimes:jpg,jpeg,png', 'max:2048'],
         'add_picture2' => ['mimes:jpg,jpeg,png', 'max:2048'],
         'add_picture3' => ['mimes:jpg,jpeg,png', 'max:2048'],
 
         ]);
+        if ($request->hasFile('display_picture')) {
+            $displaypicture = $request->file('display_picture')->store('public/dp');
+            $validated['display_picture'] = $displaypicture;
+        }
+    
+        if ($request->hasFile('add_picture1')) {
+            $add_picture1 = $request->file('add_picture1')->store('public/dp');
+            $validated['add_picture1'] = $add_picture1;
+        }
+        if ($request->hasFile('add_picture2')) {
+            $add_picture2 = $request->file('add_picture2')->store('public/dp');
+            $validated['add_picture2'] = $add_picture2;
+        }
+        if ($request->hasFile('add_picture3')) {
+            $add_picture3 = $request->file('add_picture3')->store('public/dp');
+            $validated['add_picture3'] = $add_picture3;
+        }
+        if ($request->hasFile('certificate_of_registration')) {
+            $certificate_of_registration = $request->file('certificate_of_registration')->store('public/cor');
+            $validated['certificate_of_registration'] = $certificate_of_registration;
+        }
+       
         $car->update($validated);
         
         return redirect('/cars/details')->with('message', 'Data was successfully updated');
@@ -147,6 +169,25 @@ class AdminController extends Controller
             'contactperson2' => ['required', 'string', 'max:255'],
             'contactperson2number' => ['required', 'string', 'max:255'],
         ]);
+        if ($request->hasFile('govtid_image')) {
+            $govtidImage = $request->file('govtid_image')->store('public/images');
+            $validated['govtid_image'] = $govtidImage;
+        }
+    
+        if ($request->hasFile('driverslicense_image')) {
+            $driversLicenseImage = $request->file('driverslicense_image')->store('public/images');
+            $validated['driverslicense_image'] = $driversLicenseImage;
+        }
+    
+        if ($request->hasFile('driverslicense2_image')) {
+            $driversLicense2Image = $request->file('driverslicense2_image')->store('public/images');
+            $validated['driverslicense2_image'] = $driversLicense2Image;
+        }
+    
+        if ($request->hasFile('selfie_image')) {
+            $selfieImage = $request->file('selfie_image')->store('public/images');
+            $validated['selfie_image'] = $selfieImage;
+        }
         $user->update($validated);
         
         return redirect('/owners/details')->with('message', 'Data was successfully updated');
@@ -171,6 +212,26 @@ class AdminController extends Controller
         'contactperson2' => ['required', 'string', 'max:255'],
         'contactperson2number' => ['required', 'string', 'max:255'],
     ]);
+
+    if ($request->hasFile('govtid_image')) {
+        $govtidImage = $request->file('govtid_image')->store('public/images');
+        $validated['govtid_image'] = $govtidImage;
+    }
+
+    if ($request->hasFile('driverslicense_image')) {
+        $driversLicenseImage = $request->file('driverslicense_image')->store('public/images');
+        $validated['driverslicense_image'] = $driversLicenseImage;
+    }
+
+    if ($request->hasFile('driverslicense2_image')) {
+        $driversLicense2Image = $request->file('driverslicense2_image')->store('public/images');
+        $validated['driverslicense2_image'] = $driversLicense2Image;
+    }
+
+    if ($request->hasFile('selfie_image')) {
+        $selfieImage = $request->file('selfie_image')->store('public/images');
+        $validated['selfie_image'] = $selfieImage;
+    }
     $user->update($validated);
     
     return redirect('/customers/details')->with('message', 'Data was successfully updated');

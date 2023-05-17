@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Booking;
+use App\Models\CarLocation;
+
 
 class Car extends Model
 {
@@ -52,6 +54,12 @@ class Car extends Model
     {
         return $this->hasMany(Booking::class);
     }   
+
+    public function locations()
+{
+    return $this->hasMany(CarLocation::class);
+}
+
 
 
 }

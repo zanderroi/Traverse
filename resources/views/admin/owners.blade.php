@@ -72,7 +72,7 @@
                                             <li>{{ $user->govtid }}</li>
                                             <li>  @if ($user->govtid_image)
                                                 <div>
-                                                    <img src="{{ asset($user->govtid_image) }}" class="h-20">
+                                                    <img src="{{ asset('storage/'.$user->govtid_image) }}" class="h-20">
                                                 </div>
                                             @endif</li>
                                         <br/><br/>
@@ -80,7 +80,7 @@
                                             <li>{{ $user->driverslicense }}</li>
                                             <li>  @if ($user->driverslicense_image)
                                                 <div>
-                                                    <img src="{{ asset($user->driverslicense_image) }}" class="h-20">
+                                                    <img src="{{ asset('storage/'.$user->driverslicense_image) }}" class="h-20">
                                                 </div>
                                             @endif</li>
                                         </ul>
