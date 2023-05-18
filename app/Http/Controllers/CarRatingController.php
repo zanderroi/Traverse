@@ -14,29 +14,24 @@ class CarRatingController extends Controller
     //
     public function store(Request $request, $booking_id, $car_owner_id, $customer_id)
 {
-    // Retrieve the booking, car, and car owner objects
     $booking = Booking::findOrFail($booking_id);
-    $car = $booking->car;
-    $car_owner = $car->owner;
-
+    $car_owner = $booking->car->owner;
+    
     // Make sure the user is the customer who booked the car
     $customer = User::findOrFail($customer_id);
     if ($customer->id !== $request->user()->id) {
         abort(403, 'You are not authorized to perform this action.');
     }
-
-// Check if the customer has already rated the car
-$existingRating = CarRating::where('car_id', $car->id)
-    ->where('customer_id', $customer_id)
-    ->first();
-
-dd($existingRating); // Add this line for debugging
-
-if ($existingRating) {
-    abort(400, 'You have already rated this car.');
-}
-
-
+    
+    // Retrieve the car object
+    $car = Car::findOrFail($booking->car_id);
+    
+    // Check if the customer has already rated the car
+    $existingRating = CarRating::where('car_id', $car->id)
+        ->where('customer_id', $customer_id)
+        ->first();
+    
+    
     // Create and save the car rating
     $carRating = new CarRating();
     $carRating->rating = $request->input('rating');
@@ -46,11 +41,11 @@ if ($existingRating) {
     $carRating->car_owner_id = $car_owner_id;
     $carRating->booking_id = $booking_id;
     $carRating->save();
-
+    
     // Calculate and update car rating
     $car->ratings = $car->carRatings()->avg('rating');
     $car->save();
-
+    
     return redirect()->back()->with('success', 'Thank you for your rating and review.');
 }
 

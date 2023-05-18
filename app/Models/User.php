@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Chatify\Traits\ChatifyMessenger;
+use App\Models\Avatar;
 
 class User extends Authenticatable
 {
@@ -74,4 +75,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Booking::class, 'user_id');
     }
+    public function avatar()
+{
+    return $this->hasOne(Avatar::class);
+}
+
 }

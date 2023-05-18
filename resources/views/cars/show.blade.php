@@ -17,6 +17,8 @@
     <!-- Scripts -->
    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
    @vite('resources/js/bookingcalendar.js')
+   @vite('resources/js/popupmodal.js')
+
 
     {{-- Flowbite Tailwind --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
@@ -60,6 +62,9 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('customer.profile') }}">
+                                    Profile
+                                </a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
@@ -321,6 +326,28 @@
     </div>
 </div>
     </div>
+    {{-- Popup Modal --}}
+    <div id="popupModal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-50 hidden z-50">
+        <div class="max-w-lg mx-auto bg-white rounded-lg shadow-lg dark:bg-gray-700">
+          <div class="flex items-start justify-between p-3 border-b dark:border-gray-600">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+              You might want to read this!
+            </h3>
+            <button id="closeModalBtn" class="text-lg ml-4 items-end">&times;</button>
+          </div>
+          <div class="p-4">
+            <!-- Modal content goes here -->
+            <div class="flex items-center space-x-2">
+              <label for="avoidModalCheckbox" class="modal-checkbox-label">
+                <input type="checkbox" id="avoidModalCheckbox" class="modal-checkbox"> Do not show this again
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
