@@ -237,7 +237,8 @@
                 <p>No ratings available.</p>
                 @endif
  
- 
+            </div>
+        </div>
     </div>
 
          <!-- Main modal -->
@@ -324,8 +325,7 @@
         
         </div>
     </div>
-</div>
-    </div>
+
     {{-- Popup Modal --}}
     <div id="popupModal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-50 hidden z-50">
         <div class="max-w-lg mx-auto bg-white rounded-lg shadow-lg dark:bg-gray-700">

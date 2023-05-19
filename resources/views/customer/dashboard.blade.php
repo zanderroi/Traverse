@@ -105,8 +105,8 @@
             </div>
         </nav>
     </div>   
-    <div class="bg-cover bg-center h-screen" style="background-image: url('{{ asset('logo/bgimage5.jpg') }}');">
-      <div class="bg-cover bg-gray-400 bg-opacity-50 backdrop-blur-lg w-full h-full bg-center">
+    <div class="bg-cover bg-center min-h-screen" style="background-image: url('{{ asset('logo/bgimage5.jpg') }}');">
+      <div class="bg-cover bg-gray-400 bg-opacity-50 backdrop-blur-lg w-full min-h-screen bg-center">
         <div class="bg-gray-700 p-3 sticky top-6 z-10">
           <div class="flex justify-between items-center">
             <h1 class="text-3xl font-bold pl-7 ml-4 mt-6 mb-3 mr-5 text-white">Available Cars</h1>
@@ -142,12 +142,12 @@
         </div>
       
       
-    
-    <div class="pl-9 ml-4 row justify-content-start mt-2 ">
+  
+    <div class="ml-4 pl-5 row justify-content-start mt-2 flex-row">
         @foreach ($cars as $car)
         <div class="bg-white hover-scale hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 left-1 mt-2 mr-3 ml-4 mb-4 pt-2 px-2 w-64 h-32 border border-gray-200 rounded-lg shadow-md dark:border-gray-700">
 
-            <img class="rounded-t-lg rounded-b-lg" src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:250px;height:150px;"/>
+            <img src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:250px;height:150px;"/>
             <div class="p-3">
                 <a class="hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" href="{{ route('cars.show', $car->id) }}">
                     <h5 class="mx-auto mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>
@@ -180,7 +180,7 @@
 </div>
       </div>
     </div>
-    
+  
   
 
 <script>

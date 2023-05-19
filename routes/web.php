@@ -110,5 +110,26 @@ Route::get('/car_owner/location/{carId}', [CarLocationController::class,'showLoc
 //Customer Profile
 Route::get('/customer/profile', [CustomerController::class, 'profile'])->name('customer.profile');
 
-//User Profile Picture
+//Customer Profile Picture
 Route::post('/customer/profile', [AvatarController::class, 'store'])->name('avatar.store');
+
+//Customer Update Profile
+Route::put('/profile', [CustomerController::class, 'updateProfile'])->name('customer.updateProfile');
+
+//Customer Change Password
+Route::post('/change-password', [CustomerController::class, 'changePassword'])->name('change-password');
+
+//Car Owner Profile
+Route::get('/car_owner/profile', [CarOwnerController::class, 'profile'])->name('car_owner.profile');
+
+//Car Owner Profile Picture
+Route::post('/car_owner/profile', [AvatarController::class, 'store'])->name('carowneravatar.store');
+
+//Car Owner Update Profile
+Route::put('/profile', [CarOwnerController::class, 'updateProfile'])->name('carowner.updateProfile');
+
+//Car Owner Change Password
+Route::post('/change-password', [CarOwnerController::class, 'changePassword'])->name('carowner.change-password');
+
+
+

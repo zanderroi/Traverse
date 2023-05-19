@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Traverse - Customer</title>
+    <title>Traverse - Car Owner</title>
     <link rel="icon" type="image/png" href="{{ asset('logo/icon.png') }}">
 
     <!-- Fonts -->
@@ -59,10 +59,10 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                       <li>
-                        <a href="{{ route('customer.garage') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-600" aria-current="page">Garage</a>
+                        <a href="#" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-600" aria-current="page">Earnings!</a>
                       </li>
                       <li>
-                        <a href="{{ route('customer.history') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-600" aria-current="page">History</a>
+                        <a href="{{ route('car_owner.car_details') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-600" aria-current="page">List a Car</a>
                       </li>
                             <li>
                               <div class="flex items-center">
@@ -82,7 +82,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     
-                                  <a class="dropdown-item" href="{{ route('customer.profile') }}">
+                                  <a class="dropdown-item" href="{{ route('car_owner.profile') }}">
                                     Profile
                                 </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
@@ -169,7 +169,7 @@
         @endif
           </div>
           <div class="flex justify-center">
-            <form action="{{ route('avatar.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('carowneravatar.store') }}" method="POST" enctype="multipart/form-data">
               @csrf
             <input id="image-input" type="file" class="hidden" name="avatar" accept="image/*" required>
             <label for="image-input" class="px-4 py-2 bg-gray-700 text-white rounded-lg cursor-pointer hover:bg-gray-800">
@@ -199,6 +199,7 @@
               <i class="fas fa-circle text-green-500 mr-2 text-sm"></i> <!-- Online Icon -->
               {{ $user->first_name }} {{ $user->last_name }}
             </h2>
+        
             <h2 class="text-md font-semibold mb-4 text-blue-600">{{ $user->user_type }}</h2>
           </div>
         </div>
@@ -286,7 +287,7 @@
           <!-- Modal body -->
           <div class="p-4">
             <h3 class="text-lg font-bold">ACCOUNT INFORMATION</h3>
-            <form action="{{ route('customer.updateProfile') }}" method="POST">
+            <form action="{{ route('carowner.updateProfile') }}" method="POST">
               @csrf
               @method('PUT')
             <div class="flex flex-row">
@@ -372,7 +373,7 @@
           <!-- Modal body -->
           <div class="p-4">
               
-                <form action="{{ route('change-password') }}" method="POST">
+                <form action="{{ route('carowner.change-password') }}" method="POST">
                   @csrf
                   <div class="w-full mt-1">
                     <label class="text-left block font-medium text-gray-700" for="old_password">Old Password</label>

@@ -23,6 +23,10 @@
         body {
             overflow-x: hidden;
         }
+        .hover-scale:hover {
+            transform: scale(1.05);
+            transition: all 0.2s ease-in-out;
+        }
     </style>
 </head>
 <body>
@@ -46,43 +50,61 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <li>
-                            <a href="#" class="mr-5 block py-2 pl-3 pr-4 text-black rounded md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent" aria-current="page">Earnings</a>
-                          </li>
+                          <a href="#" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-600" aria-current="page">Earnings!</a>
+                        </li>
                         <li>
-                            <a href="{{ $addCarLink }}" class="mr-5 block py-2 pl-3 pr-4 text-black rounded md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent" aria-current="page">List a Car</a>
-                          </li>
-
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                          <a href="{{ route('car_owner.car_details') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-600" aria-current="page">List a Car</a>
+                        </li>
+                              <li>
+                                <div class="flex items-center">
+                                  @if ($user->avatar)
+                                  @php
+                                      $latestAvatar = $user->avatar()->latest()->first();
+                                  @endphp
+                                  <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . $latestAvatar->avatar) }}" alt="Profile Picture">
+                              @else
+                                  <img class="w-8 h-8 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
+                              @endif
+                                  <a id="navbarDropdown" class="nav-link dropdown-toggle ml-2 text-blue-600 font-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->first_name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
+                                  </a>
+                                
+                                
+  
+                                  <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                      
+                                    <a class="dropdown-item" href="{{ route('car_owner.profile') }}">
+                                      Profile
+                                  </a>
+                                      <a class="dropdown-item" href="{{ route('logout') }}"
+                                         onclick="event.preventDefault();
+                                                       document.getElementById('logout-form').submit();">
+                                          {{ __('Logout') }}
+                                      </a>
+  
+                                      <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                          @csrf
+                                      </form>
+                                  </div>
                                 </div>
-                            </li>
-
-                    </ul>
-                
+                              </li>
+  
+                      </ul>
             </div>
         </nav>
 
     </div>
-
-    <h2 class="text-3xl font-bold ml-4 mt-4 mb-2 mr-5 text-blue-600"> Listed Cars </h2>
-
-    <div class="row">
+    <div class="bg-cover bg-center min-h-screen" style="background-image: url('{{ asset('logo/bgimage5.jpg') }}');">
+        <div class="bg-cover bg-gray-400 bg-opacity-50 backdrop-blur-lg w-full min-h-screen bg-center">
+            <div class="bg-gray-700 p-2 sticky top-6 z-10">
+                <div class="flex justify-between items-center">
+                  <h1 class="text-3xl font-bold pl-7 ml-4 mt-6 mb-3 mr-5 text-white">Listed Cars</h1>
+                </div>
+            </div>
+            <div class="ml-4 pl-5 row justify-content-start mt-2 flex-row">
         @foreach ($cars as $car)    
-        <div class="hover:bg-blue-500 dark:bg-gray-800 dark:hover:bg-gray-700 left-1 mt-2 mr-3 ml-6 mb-4 pt-2 px-2 w-64 h-32 border border-gray-200 rounded-lg shadow-md dark:border-gray-700">  
-            <img class="rounded-t-lg rounded-b-lg" src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:250px;height:150px;"/>
+        <div class="bg-white hover-scale hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 left-1 mt-2 mr-3 ml-4 mb-4 pt-2 px-2 w-64 h-32 border border-gray-200 rounded-lg shadow-md dark:border-gray-700">
+            <img  src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:250px;height:150px;"/>
             <div class="p-3">
                 <a class="hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" href="#">
                     <h5 class="mx-auto mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>
@@ -119,19 +141,14 @@
                         </div>
                     </div>
                 </div>
+               
             </form>
-
-
-            
+   
         </div>
         @endforeach
     </div>
-
-
-
-
-
-
+   
+    </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 
 </body>
