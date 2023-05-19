@@ -15,6 +15,7 @@ class CarController extends Controller
 
     public function show($car_id)
 {
+
     $car = Car::find($car_id);
     $car_owner = $car->owner;
 
@@ -40,6 +41,7 @@ class CarController extends Controller
 
     return view('cars.show')->with([
         'car' => $car,
+        'user' => $user,
         'car_owner' => $car_owner,
         'bookingStatus' => $bookingStatus,
         'averageRating' => $averageRating,
