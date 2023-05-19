@@ -11,6 +11,7 @@ use App\Http\Controllers\CarRatingController;
 use App\Http\Controllers\GraphController;
 
 use App\Http\Controllers\CarLocationController;
+use App\Models\Car;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,7 @@ use Illuminate\Http\Request;
 |
 // */
 Route::get('/', function () {
-    $cars = \App\Models\Car::where('status', 'available')->get();
+    $cars = Car::where('status', 'available')->get();
     return view('welcome', compact('cars'));
 });
 
