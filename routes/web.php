@@ -36,6 +36,11 @@ Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
+// Route::get('/traverse-chats', function () {
+//     return view('traverse-chats');
+// })->name('traverse-chats');
+
+
 
 Auth::routes();
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
