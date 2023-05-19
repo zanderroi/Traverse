@@ -9,16 +9,8 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CarRatingController;
 use App\Http\Controllers\GraphController;
 use App\Http\Controllers\CarLocationController;
-<<<<<<< HEAD
-
-use App\Models\Car;
-
-use App\Http\Controllers\AvatarController;
-
-=======
 use App\Models\Car;
 use App\Http\Controllers\AvatarController;
->>>>>>> f43a4e5f986ce70d50ed0dd59f720ea3e07fb456
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
