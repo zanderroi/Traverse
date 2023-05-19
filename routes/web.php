@@ -11,11 +11,11 @@ use App\Http\Controllers\CarRatingController;
 use App\Http\Controllers\GraphController;
 
 use App\Http\Controllers\CarLocationController;
-<<<<<<< HEAD
+
 use App\Models\Car;
-=======
+
 use App\Http\Controllers\AvatarController;
->>>>>>> e3d4b12680b9a3112414308d61fccde878c5f5cf
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
