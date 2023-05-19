@@ -48,17 +48,29 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                       <li>
-                        <a href="{{ route('customer.garage') }}" class="mr-5 block py-2 pl-3 pr-4 text-black rounded md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent" aria-current="page">Garage</a>
+                        <a href="{{ route('customer.garage') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-600" aria-current="page">Garage</a>
                       </li>
                       <li>
-                        <a href="{{ route('customer.history') }}" class="mr-5 block py-2 pl-3 pr-4 text-black rounded md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent" aria-current="page">History</a>
+                        <a href="{{ route('customer.history') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-600" aria-current="page">History</a>
                       </li>
-                            <li>
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->first_name }}
-                                </a>
+                      <li>
+                        <div class="flex items-center">
+                          @if ($user->avatar)
+                          @php
+                              $latestAvatar = $user->avatar()->latest()->first();
+                          @endphp
+                          <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . $latestAvatar->avatar) }}" alt="Profile Picture">
+                      @else
+                          <img class="w-8 h-8 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
+                      @endif
+                          <a id="navbarDropdown" class="nav-link dropdown-toggle ml-2 text-blue-600 font-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            {{ Auth::user()->first_name }}
+                          </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                  <a class="dropdown-item" href="{{ route('customer.profile') }}">
+                                    Profile
+                                </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -69,6 +81,7 @@
                                         @csrf
                                     </form>
                                 </div>
+                              </div>
                             </li>
 
                     </ul>
@@ -115,6 +128,8 @@
                 <tbody>
                     
                     @foreach ($bookings->sortByDesc('created_at') as $booking)   
+                    <form method="POST" action="{{ route('car.rating.store', ['booking_id' => $booking->id, 'car_owner_id' => $booking->car->owner->id, 'customer_id' => auth()->user()->id]) }}">
+                        @csrf
                     <tr class="bg-gray-500 border-b border-blue-400">
                         <th scope="row" class="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100">
                             {{ $booking->car->car_brand ?? 'Unlisted Car' }}   {{ $booking->car->car_model ?? ' ' }}
@@ -141,17 +156,11 @@
                     </tr>
                     @endforeach
                 </tbody>
+                  
             </table>
         </div>
         
         {{-- Main Modal --}}
-
-        <form method="POST" action="{{ route('car.rating.store', ['booking_id' => $booking->id, 'car_owner_id' => $booking->car->owner->id, 'customer_id' => auth()->user()->id]) }}">
-            @csrf
-            <input type="hidden" name="car_id" value="{{ $booking->car->id }}">
-            <input type="hidden" name="car_owner_id" value="{{ $booking->car->owner->id }}">
-            <input type="hidden" name="customer_id" value="{{ auth()->user()->id }}">
-          
           <div id="popup-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
               <div class="relative w-full max-w-md max-h-full">
                   <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -231,8 +240,8 @@
                   </div>
               </div>
           </div>
-        
+          
           @endif
-
+        
 </body>
 </html>

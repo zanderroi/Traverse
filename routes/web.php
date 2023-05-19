@@ -11,9 +11,14 @@ use App\Http\Controllers\CarRatingController;
 use App\Http\Controllers\GraphController;
 
 use App\Http\Controllers\CarLocationController;
+<<<<<<< HEAD
 use App\Models\Car;
+=======
+use App\Http\Controllers\AvatarController;
+>>>>>>> e3d4b12680b9a3112414308d61fccde878c5f5cf
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+
 
 
 
@@ -105,3 +110,9 @@ Route::post('car/rating/{booking_id}/{car_owner_id}/{customer_id}', [CarRatingCo
 
 //Track Location
 Route::get('/car_owner/location/{carId}', [CarLocationController::class,'showLocation'])->name('car_owner.location');
+
+//Customer Profile
+Route::get('/customer/profile', [CustomerController::class, 'profile'])->name('customer.profile');
+
+//User Profile Picture
+Route::post('/customer/profile', [AvatarController::class, 'store'])->name('avatar.store');
