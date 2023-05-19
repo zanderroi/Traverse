@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Avatar;
+use Illuminate\Support\Facades\Hash;
 
 
 class CustomerController extends Controller
@@ -94,5 +95,59 @@ class CustomerController extends Controller
         $user = Auth::user();
         return view('customer.profile', ['user' => $user]);
     }
+
+    public function updateProfile(Request $request)
+{
+    $user = Auth::user();
+
+    // Validate the input data
+    $request->validate([
+        'email' => 'required|email',
+        'birthday' => 'required|date',
+        'phone_number' => 'required',
+        'address' => 'required',
+        'contactperson1' => 'required',
+        'contactperson1number' => 'required',
+        'contactperson2' => 'required',
+        'contactperson2number' => 'required',
+    ]);
+
+    // Update the user details
+    $user->email = $request->input('email');
+    $user->birthday = $request->input('birthday');
+    $user->phone_number = $request->input('phone_number');
+    $user->address = $request->input('address');
+    $user->contactperson1 = $request->input('contactperson1');
+    $user->contactperson1number = $request->input('contactperson1number');
+    $user->contactperson2 = $request->input('contactperson2');
+    $user->contactperson2number = $request->input('contactperson2number');
+    $user->save();
+
+    // Redirect back to the profile page with a success message
+    return redirect()->route('customer.profile')->with('success', 'Profile updated successfully!');
+}
+public function changePassword(Request $request)
+{
+    // Validate the request data
+    $request->validate([
+        'old_password' => 'required',
+        'new_password' => 'required|min:8|confirmed',
+    ]);
+
+    // Retrieve the authenticated user
+    $user = Auth::user();
+
+    // Verify if the old password matches the current password
+    if (!Hash::check($request->old_password, $user->password)) {
+        return redirect()->route('customer.profile')->with('error', 'The old password is incorrect.');
+    }
+
+    // Update the user's password
+    $user->password = Hash::make($request->new_password);
+    $user->save();
+
+    return redirect()->route('customer.profile')->with('success', 'Password changed successfully.');
+}
+
     
 }

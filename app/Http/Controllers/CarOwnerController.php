@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 
 class CarOwnerController extends Controller
@@ -22,12 +23,14 @@ class CarOwnerController extends Controller
     }
     public function dashboard()
     {
+        $user = Auth::user();
         $cars = Car::where('car_owner_id', auth()->id())->get();
         $users = User::where('id', auth()->id())->get();
         return view('car_owner.dashboard', [
             'addCarLink' => route('car_owner.car_details'),
             'cars' => $cars,
-            'users' => $users
+            'users' => $users,
+            'user' => $user
         ]);
     }    
 
@@ -92,6 +95,65 @@ public function deleteCar(Request $request, $car_id)
     // Redirect back to the car owner dashboard
     return redirect()->route('car_owner.dashboard');
 }
+public function profile()
+{
+    $user = Auth::user();
+    return view('car_owner.profile', ['user' => $user]);
+}
+
+public function updateProfile(Request $request)
+{
+    $user = Auth::user();
+
+    // Validate the input data
+    $request->validate([
+        'email' => 'required|email',
+        'birthday' => 'required|date',
+        'phone_number' => 'required',
+        'address' => 'required',
+        'contactperson1' => 'required',
+        'contactperson1number' => 'required',
+        'contactperson2' => 'required',
+        'contactperson2number' => 'required',
+    ]);
+
+    // Update the user details
+    $user->email = $request->input('email');
+    $user->birthday = $request->input('birthday');
+    $user->phone_number = $request->input('phone_number');
+    $user->address = $request->input('address');
+    $user->contactperson1 = $request->input('contactperson1');
+    $user->contactperson1number = $request->input('contactperson1number');
+    $user->contactperson2 = $request->input('contactperson2');
+    $user->contactperson2number = $request->input('contactperson2number');
+    $user->save();
+
+    // Redirect back to the profile page with a success message
+    return redirect()->route('car_owner.profile')->with('success', 'Profile updated successfully!');
+}
+public function changePassword(Request $request)
+{
+    // Validate the request data
+    $request->validate([
+        'old_password' => 'required',
+        'new_password' => 'required|min:8|confirmed',
+    ]);
+
+    // Retrieve the authenticated user
+    $user = Auth::user();
+
+    // Verify if the old password matches the current password
+    if (!Hash::check($request->old_password, $user->password)) {
+        return redirect()->route('car_owner.profile')->with('error', 'The old password is incorrect.');
+    }
+
+    // Update the user's password
+    $user->password = Hash::make($request->new_password);
+    $user->save();
+
+    return redirect()->route('car_owner.profile')->with('success', 'Password changed successfully.');
+}
+
 
 
 }
