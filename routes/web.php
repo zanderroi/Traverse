@@ -12,6 +12,7 @@ use App\Http\Controllers\CarLocationController;
 use App\Http\Controllers\AvatarController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\Car;
 
 
 
@@ -116,11 +117,11 @@ Route::get('/customer/profile', [CustomerController::class, 'profile'])->name('c
 //Customer Profile Picture
 Route::post('/customer/profile', [AvatarController::class, 'store'])->name('avatar.store');
 
-//Customer Update Profile
-Route::put('/profile', [CustomerController::class, 'updateProfile'])->name('customer.updateProfile');
+// Customer Update Profile
+Route::put('/profile/update', [CustomerController::class, 'updateProfile'])->name('customer.updateProfile');
 
-//Customer Change Password
-Route::post('/change-password', [CustomerController::class, 'changePassword'])->name('change-password');
+// Customer Change Password
+Route::post('/profile/change-password', [CustomerController::class, 'changePassword'])->name('change-password');
 
 //Car Owner Profile
 Route::get('/car_owner/profile', [CarOwnerController::class, 'profile'])->name('car_owner.profile');

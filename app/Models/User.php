@@ -76,8 +76,9 @@ class User extends Authenticatable
         return $this->hasMany(Booking::class, 'user_id');
     }
     public function avatar()
-{
-    return $this->hasOne(Avatar::class);
-}
+    {
+        return $this->belongsTo(Avatar::class);
+    }
+    
 
 }

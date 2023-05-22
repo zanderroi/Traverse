@@ -20,22 +20,34 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
-        $user = Auth::user();
-        $location = $request->input('location', '');
-        $sort_by_rental_fee = $request->input('sort_by_rental_fee', 'asc');
+        if (auth()->check()) {
+            $user = auth()->user();
     
-        // Query for all available cars (where deleted_at is null and status is available)
-        $cars = Car::whereNull('deleted_at')
-            ->where('status', 'available')
-            ->when($location, function ($query) use ($location) {
-                return $query->where('location', $location);
-            })
-            ->orderBy('rental_fee', $sort_by_rental_fee)
-            ->get();
-            
-        // Pass the cars to the view to display
-        return view('customer.dashboard', ['cars' => $cars, 'location' => $location, 'user' => $user]);
+            // Check if the user has an associated avatar
+            $avatar = $user->avatar;
+    
+            $location = $request->input('location', '');
+            $sort_by_rental_fee = $request->input('sort_by_rental_fee', 'asc');
+    
+            // Query for all available cars (where deleted_at is null and status is available)
+            $cars = Car::whereNull('deleted_at')
+                ->where('status', 'available')
+                ->when($location, function ($query) use ($location) {
+                    return $query->where('location', $location);
+                })
+                ->orderBy('rental_fee', $sort_by_rental_fee)
+                ->get();
+    
+            // Pass the cars and avatar to the view to display
+            return view('customer.dashboard', ['cars' => $cars, 'location' => $location, 'user' => $user]);
+        }
+    
+        // Redirect to the login page if the user is not authenticated
+        return redirect()->route('login');
     }
+    
+    
+    
 
     public function availableCars(Request $request)
     {
@@ -92,7 +104,7 @@ class CustomerController extends Controller
     
     public function profile()
     {
-        $user = Auth::user();
+        $user = Auth::user()->load('avatar');
         return view('customer.profile', ['user' => $user]);
     }
 
