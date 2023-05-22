@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-
+use App\Models\Avatar;
 
 class CarOwnerController extends Controller
 {
