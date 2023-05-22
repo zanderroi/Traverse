@@ -8,7 +8,6 @@ use App\Http\Controllers\CarController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CarRatingController;
 use App\Http\Controllers\GraphController;
-use App\Models\Car;
 use App\Http\Controllers\CarLocationController;
 use App\Http\Controllers\AvatarController;
 use Illuminate\Support\Facades\Auth;
