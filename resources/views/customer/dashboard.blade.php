@@ -33,18 +33,8 @@
         }
   </style>
 </head>
-<body class="pt-5">
-  @if(session('success'))
-  <div class="alert alert-success mt-3">
-      {{ session('success') }}
-  </div>
-  @endif
-
-    @if(session('cancelled'))
-    <div class="alert alert-success mt-3">
-        {{ session('cancelled') }}
-    </div>
-    @endif
+<body class="pt-5 bg-cover bg-center" style="background-image: url('{{ asset('logo/bgimage7.jpg') }}');">
+  <div class="bg-black bg-opacity-75 backdrop-blur-lg w-full">
     <div id="app">
       <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
         <div class="container">
@@ -72,6 +62,11 @@
               </li>
               <li>
                 <div class="flex items-center">
+                  @if ($user->profilepicture)
+                  <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . $user->profilepicture) }}" alt="Profile Picture">
+              @else
+                  <img class="w-8 h-8 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
+              @endif
                   <a id="navbarDropdown" class="py-2 dropdown-toggle ml-2 text-gray-300 hover:bg-blue-80 font-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                     {{ Auth::user()->first_name }}
                   </a>
@@ -92,8 +87,8 @@
 
       
     </div>   
-    <div class="bg-cover bg-center h-screen" style="background-image: url('{{ asset('logo/bgimage5.jpg') }}');">
-      <div class="bg-cover bg-black bg-opacity-50 backdrop-blur-lg w-full h-full bg-center">
+   
+      
         <div class="p-3 sticky top-6 z-10" style="background-color: #0C0C0C;">
           <div class="flex justify-between items-center">
             <h1 class="text-3xl font-bold pl-7 ml-4 mt-6 mb-3 mr-5 text-white">Available Cars</h1>
@@ -129,7 +124,17 @@
         </div>
       
       
-  
+        @if(session('success'))
+        <div class="alert alert-success mt-3">
+            {{ session('success') }}
+        </div>
+        @endif
+      
+          @if(session('cancelled'))
+          <div class="alert alert-success mt-3">
+              {{ session('cancelled') }}
+          </div>
+          @endif
     <div class="ml-4 pl-5 row justify-content-start mt-2 flex-row">
         @foreach ($cars as $car)
         <div class="bg-white hover-scale hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 left-1 mt-2 mr-3 ml-4 mb-4 pt-2 px-2 w-64 h-32 border border-gray-200 rounded-md shadow-md dark:border-gray-700">
@@ -160,15 +165,14 @@
             @endfor
                   </div> 
                   <hr class="mt-1">
-                  <p class="mt-1 font-extrabold text-xl text-black dark:text-gray-400"><i class="fa-solid fa-peso-sign mr-1 text-black"></i>{{number_format ($car->rental_fee) }}</p>
+                  <p class="mt-1 font-extrabold text-xl text-black dark:text-gray-400"><i class="fa-solid fa-peso-sign mr-1 text-black"></i>{{number_format ($car->rental_fee, 2) }}</p>
             </a>
             </div>
         </div>
     @endforeach
 </div>
       </div>
-    </div>
-  
+
   
 
 <script>
@@ -179,4 +183,4 @@ function updateSortBox() {
   </script>
 
 </body>
-</html>
+

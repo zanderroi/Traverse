@@ -7,7 +7,7 @@ use App\Models\Booking;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Avatar;
+use App\Models\ProfilePicture;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -24,7 +24,7 @@ class CustomerController extends Controller
             $user = auth()->user();
     
             // Check if the user has an associated avatar
-            $avatar = $user->avatar;
+            $avatar = $user->profilepicture;
     
             $location = $request->input('location', '');
             $sort_by_rental_fee = $request->input('sort_by_rental_fee', 'asc');
@@ -52,6 +52,8 @@ class CustomerController extends Controller
     public function availableCars(Request $request)
     {
         $user = Auth::user();
+                    // Check if the user has an associated avatar
+                    $avatar = $user->profilepicture;
         $location = $request->input('location', '');
         $sort_by_rental_fee = $request->input('sort_by_rental_fee', 'asc');
     
@@ -104,7 +106,7 @@ class CustomerController extends Controller
     
     public function profile()
     {
-        $user = Auth::user()->load('avatar');
+        $user = Auth::user()->load('profilepicture');
         return view('customer.profile', ['user' => $user]);
     }
 

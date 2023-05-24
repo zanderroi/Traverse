@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 
-class Avatar extends Model
+class ProfilePicture extends Model
 {
-    protected $fillable = ['user_id', 'avatar'];
+    protected $fillable = ['user_id', 'profilepicture'];
 
     public function user()
     {

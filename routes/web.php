@@ -9,7 +9,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CarRatingController;
 use App\Http\Controllers\GraphController;
 use App\Http\Controllers\CarLocationController;
-use App\Http\Controllers\AvatarController;
+use App\Http\Controllers\ProfilePictureController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Car;
@@ -115,7 +115,7 @@ Route::get('/car_owner/location/{carId}', [CarLocationController::class,'showLoc
 Route::get('/customer/profile', [CustomerController::class, 'profile'])->name('customer.profile');
 
 //Customer Profile Picture
-Route::post('/customer/profile', [AvatarController::class, 'store'])->name('avatar.store');
+Route::post('/customer/profile', [ProfilePictureController::class, 'store'])->name('profilepicture.store');
 
 // Customer Update Profile
 Route::put('/profile/update', [CustomerController::class, 'updateProfile'])->name('customer.updateProfile');
@@ -127,7 +127,7 @@ Route::post('/profile/change-password', [CustomerController::class, 'changePassw
 Route::get('/car_owner/profile', [CarOwnerController::class, 'profile'])->name('car_owner.profile');
 
 //Car Owner Profile Picture
-Route::post('/car_owner/profile', [AvatarController::class, 'store'])->name('carowneravatar.store');
+Route::post('/car_owner/profile', [ProfilePictureController::class, 'store'])->name('carownerpicture.store');
 
 //Car Owner Update Profile
 Route::put('/profile', [CarOwnerController::class, 'updateProfile'])->name('carowner.updateProfile');

@@ -1,8 +1,92 @@
-@include('components.customer_header')
+<!doctype html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<body class="bg-cover bg-center h-full" style="background-image: url('{{ asset('logo/bgimage6.jpg') }}');">
-    <div class="bg-cover bg-black bg-opacity-50 backdrop-blur-lg w-full min-h-screen ">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <title>Traverse - Customer</title>
+    <link rel="icon" type="image/png" href="{{ asset('logo/icon.png') }}">
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+
+
+    <!-- Scripts -->
+   @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+   @vite(['resources/js/navbar.js'])
+
+    {{-- Flowbite Tailwind --}}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+    
+    {{-- Font Awesome --}}
+    <script src="https://kit.fontawesome.com/57a798c9bb.js" crossorigin="anonymous"></script>
+    <style>
+      body {
+          overflow-x: hidden;
+      }
+      .hover-scale:hover {
+            transform: scale(1.05);
+            transition: all 0.2s ease-in-out;
+        }
+  </style>
+</head>
+<body class="pt-5 bg-cover bg-no-repeat bg-center min-h-screen" style="background-image: url('{{ asset('logo/bgimage6.jpg') }}');">
+    <div class="bg-cover bg-black bg-opacity-75 backdrop-blur-lg w-screen h-screen">
+        <div id="app">
+            <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top" style="background-color: #0C0C0C;">
+              <div class="container">
+                <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
+                  <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
+                  <span class="self-center text-white text-xl font-semibold whitespace-nowrap dark:text-white">Traverse</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+            
+                <div id="navbarSupportedContent">
+                  <!-- Right Side Of Navbar -->
+                  <ul class="navbar-nav ml-auto">
+                    <li>
+                      <a href="{{ route('customer.garage') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">Garage</a>
+                    </li>
+                    <li>
+                      <a href="{{ route('customer.history') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">History</a>
+                    </li>
+                    <li>
+                      <div class="sm:fixed sm:top-0 sm:right-0 text-right mr-2">
+                        <a href="{{ route('traverse-chats') }}" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Traverse Chats</a>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="flex items-center">
+                        @if ($user->profilepicture)
+                        <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . $user->profilepicture) }}" alt="Profile Picture">
+                    @else
+                        <img class="w-8 h-8 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
+                    @endif
+                        <a id="navbarDropdown" class="py-2 dropdown-toggle ml-2 text-gray-300 hover:bg-blue-80 font-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                          {{ Auth::user()->first_name }}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                          <a class="dropdown-item" href="{{ route('customer.profile') }}">Profile</a>
+                          <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
+                          <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                          </form>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+            
+      
+            
+          </div>   
     @if(session('success'))
     <div class="alert alert-success mt-3">
         {{ session('success') }}
@@ -10,68 +94,30 @@
 @endif
 
     @if ($bookings->isEmpty())
-    <div class="h-56 grid grid-cols-3 gap-4 content-center bg-slate-100">
-    <p class="mt-3"style="font-size:2vw">Your car bookings will display here!</p> 
-    <div>
+    <div class="pt-3 w-1/2 mx-auto bg-blue-900">
+    <h2 class="p-4 text-4xl text-white font-bold text-center">Your car bookings will display here!</h2> 
+    </div>
+
 @else
-        <div class="pt-5  mx-auto " >
-            <table class="text-sm text-left text-blue-100 dark:text-blue-100 mx-auto shadow-md sm:rounded-lg max-w-full xs:max-w-none sm:max-w-xs md:max-w-sm  lg:max-w-md xl:max-w-lg">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:text-white">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Car Model
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Car Owner
-                        </th>
-                        <th scope="col" class="px-2 py-3">
-                            Total Rental Fee
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Status
-                        </th>
-                        <th scope="col" class="px-12 py-3">
-                            Pickup Date and Time
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Return Date and Time
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Actions
-                         </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                    @foreach ($bookings as $booking)
-                    <tr class="bg-gray-300 border-b border-blue-400">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-800 whitespace-nowrap dark:text-blue-100">
-                            {{ $booking->car->car_brand }} - {{ $booking->car->car_model }}
-                        </th>
-                        <td class="px-1 py-4 text-gray-800">
-                            {{ $booking->car->owner->first_name }} {{ $booking->car->owner->last_name }}
-                        </td>
-                        <td class="px-1 py-4 text-gray-800">
-                            Php {{ $booking->total_rental_fee }}
-                        </td>
-                        <td class="px-6 py-4 text-gray-800">
-                            {{ $booking->user->booking_status }}
-                        </td>
-                        <td class="pl-1 py-4 text-gray-800">
-                            {{ date('F d, Y h:i A', strtotime($booking->pickup_date_time)) }}
-                        </td>
-                        <td class="px-6 py-4 text-gray-800">
-                            {{ date('F d, Y h:i A', strtotime($booking->return_date_time)) }}
-                        </td>
-                        <td class="px-2 py-4">
-                            <a href="#" class="font-medium text-blue-700 hover:underline" ddata-modal-target="popup-modal" data-modal-toggle="popup-modal" data-modal-toggle="defaultModal">Return Car</a><br>
-                            <a href="#" class="font-medium text-blue-700 hover:underline">Extend</a>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+<div class="pt-5">
+@foreach ($bookings as $booking)
+<div class="mx-auto mt-4 w-1/2 h-64 flex flex-row " style="background-color: #121212;">
+    <div>
+        <img src="{{ asset('storage/'.$booking->car->display_picture) }}" alt="Car Image" style="width:380px; height:256px;"/>
+    </div>
+<div class="mt-5 ml-4">
+    <h3 class="text-white text-lg font-bold">{{$booking->car->car_brand}} - {{$booking->car->car_model}}</h3>
+    <p class="text-gray-400 text-md font-semi-bold">Car Owner: {{ $booking->car->owner->first_name }} {{ $booking->car->owner->last_name }}</p>
+    <p class="text-gray-400 text-md font-semi-bold">Total Rental Fee: Php {{number_format ($booking->total_rental_fee, 2) }}</p>
+    <p class="text-gray-400 text-md font-semi-bold">Pickup Date and Time: {{ date('F d, Y h:i A', strtotime($booking->pickup_date_time)) }}</p>
+    <p class="text-gray-400 text-md font-semi-bold">Return Date and Time: {{ date('F d, Y h:i A', strtotime($booking->return_date_time)) }}</p>
+    <a href="#" class="font-medium text-blue-700 hover:underline" ddata-modal-target="popup-modal" data-modal-toggle="popup-modal" data-modal-toggle="defaultModal">Return Car</a><br>
+    <a href="#" class="font-medium text-blue-700 hover:underline">Extend</a>
+</div>
+
+</div>
+@endforeach
+</div>
         
         {{-- Main Modal --}}
 
@@ -87,17 +133,20 @@
                       <div class="p-6 text-center">
                           <svg aria-hidden="true" class="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                           <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Return the car now?</h3>
+                          <a href="{{ route('returncar', ['booking_id' => $booking->id]) }}">
                           <button data-modal-hide="popup-modal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            <a href="{{ route('returncar', ['booking_id' => $booking->id]) }}"> Return now </a>
-                          </button>
+                            Return now </button> </a>
+                          
                           <button data-modal-hide="popup-modal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Cancel</button>
                       </div>
                   </div>
               </div>
+              @endif
           </div>
           
-          @endif
+      
         
     
         </div>
 </body>
+</html>

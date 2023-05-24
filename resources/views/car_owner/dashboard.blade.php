@@ -29,13 +29,14 @@
         }
     </style>
 </head>
-<body>
+<body class="pt-5 bg-cover bg-center h-screen" style="background-image: url('{{ asset('logo/bgimage5.jpg') }}'); background-repeat: repeat-y;">
+    <div class="bg-cover bg-black bg-opacity-50 backdrop-blur-lg h-screen bg-center bg-repeat">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
             <div class="container">
                 <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
-                    <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Flowbite Logo" />
-                    <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Traverse</span>
+                    <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
+                    <span class="self-center text-xl text-white font-semibold whitespace-nowrap dark:text-white">Traverse</span>
                 </a>
                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -94,16 +95,15 @@
         </nav>
 
     </div>
-    <div class="bg-cover bg-center min-h-screen" style="background-image: url('{{ asset('logo/bgimage5.jpg') }}');">
-        <div class="bg-cover bg-gray-400 bg-opacity-50 backdrop-blur-lg w-full h-full bg-center">
-            <div class="bg-gray-700 p-2 sticky top-6 z-10">
+    
+            <div class="p-2 sticky top-6 z-10" style="background-color: #0C0C0C;">
                 <div class="flex justify-between items-center">
                     <h1 class="text-3xl font-bold pl-7 ml-4 mt-6 mb-3 mr-5 text-white">Listed Cars</h1>
                 </div>
             </div>
             <div class="ml-4 pl-5 flex flex-wrap justify-start mt-2">
                 @foreach ($cars as $car)
-                <div class="bg-white hover-scale hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 mt-2 mr-3 ml-4 mb-4 pt-2 px-2 w-64 h-96 border border-gray-200 rounded-lg shadow-md dark:border-gray-700">
+                <div class="bg-white hover-scale hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 mt-2 mr-3 ml-4 mb-4 pt-2 px-2 w-64 h-96 border border-gray-200 rounded-sm shadow-md dark:border-gray-700">
                     <img src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:250px;height:150px;" />
                     <div class="p-3">
                         <a class="hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" href="#">
@@ -148,7 +148,7 @@
             @endforeach           
         </div>
     </div>
-    </div>
+   
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 
 </body>
