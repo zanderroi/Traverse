@@ -9,6 +9,7 @@ use App\Models\Booking;
 use App\Models\User;
 use App\Models\CarRating;
 use app\Models\CarLocation;
+use Illuminate\Support\Facades\DB;
 
 class CarController extends Controller
 {
@@ -65,7 +66,6 @@ public function showLocation($car_id)
         'bookingStatus' => $bookingStatus,
         'locations' => $locations,
     ]);
-}
-    
+}   
 
 }

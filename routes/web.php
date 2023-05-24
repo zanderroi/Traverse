@@ -17,6 +17,7 @@ use App\Models\Car;
 
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -85,6 +86,7 @@ Route::get('/customer/cars', [CustomerController::class, 'availableCars'])->name
 //Booking Screen
 Route::get('/cars/{id}', [CarController::class, 'show'])->name('cars.show');
 
+
 //Prevent double entry of booking
 Route::get('booking/confirmation', [BookingController::class, 'confirmation'])->name('booking.confirmation');
 
@@ -134,6 +136,4 @@ Route::put('/profile', [CarOwnerController::class, 'updateProfile'])->name('caro
 
 //Car Owner Change Password
 Route::post('/change-password', [CarOwnerController::class, 'changePassword'])->name('carowner.change-password');
-
-
 
