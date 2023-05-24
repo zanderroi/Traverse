@@ -16,6 +16,7 @@
 
     <!-- Scripts -->
    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+   @vite(['resources/js/navbar.js'])
 
     {{-- Flowbite Tailwind --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
@@ -45,98 +46,85 @@
     </div>
     @endif
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top">
-            <div class="container">
-                <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
-                    <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Flowbite Logo" />
-                    <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Traverse</span>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div>
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                      <li>
-                        <a href="{{ route('customer.garage') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-600" aria-current="page">Garage</a>
-                      </li>
-                      <li>
-                        <a href="{{ route('customer.history') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-600" aria-current="page">History</a>
-                      </li>
-                      <li>
-                        <div class="sm:fixed sm:top-0 sm:right-0 text-right mr-2">
-
-                            <a href="{{ route('traverse-chats') }}" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Traverse Chats </a>
-                    </div>
-                </li>
-                      <li>
-                        <div class="flex items-center">
-                      
-                          <a id="navbarDropdown" class="nav-link dropdown-toggle ml-2 text-blue-600 font-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ Auth::user()->first_name }}
-                          </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                  <a class="dropdown-item" href="{{ route('customer.profile') }}">
-                                    Profile
-                                </a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                              </div>
-                            </li>
-
-                    </ul>
+      <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
+        <div class="container">
+          <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
+            <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
+            <span class="self-center text-white text-xl font-semibold whitespace-nowrap dark:text-white">Traverse</span>
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      
+          <div id="navbarSupportedContent">
+            <!-- Right Side Of Navbar -->
+            <ul class="navbar-nav ml-auto">
+              <li>
+                <a href="{{ route('customer.garage') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">Garage</a>
+              </li>
+              <li>
+                <a href="{{ route('customer.history') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">History</a>
+              </li>
+              <li>
+                <div class="sm:fixed sm:top-0 sm:right-0 text-right mr-2">
+                  <a href="{{ route('traverse-chats') }}" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Traverse Chats</a>
                 </div>
-            </div>
-        </nav>
+              </li>
+              <li>
+                <div class="flex items-center">
+                  <a id="navbarDropdown" class="py-2 dropdown-toggle ml-2 text-gray-300 hover:bg-blue-80 font-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    {{ Auth::user()->first_name }}
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ route('customer.profile') }}">Profile</a>
+                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                      @csrf
+                    </form>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      
+
+      
     </div>   
-    <div class="bg-cover bg-center min-h-screen" style="background-image: url('{{ asset('logo/bgimage5.jpg') }}');">
-      <div class="bg-cover bg-gray-400 bg-opacity-50 backdrop-blur-lg w-full min-h-screen bg-center">
-        <div class="bg-gray-700 p-3 sticky top-6 z-10">
+    <div class="bg-cover bg-center h-screen" style="background-image: url('{{ asset('logo/bgimage5.jpg') }}');">
+      <div class="bg-cover bg-black bg-opacity-50 backdrop-blur-lg w-full h-full bg-center">
+        <div class="p-3 sticky top-6 z-10" style="background-color: #0C0C0C;">
           <div class="flex justify-between items-center">
             <h1 class="text-3xl font-bold pl-7 ml-4 mt-6 mb-3 mr-5 text-white">Available Cars</h1>
             <div class="flex items-end">
-            <form method="GET" action="{{ route('customer.available_cars') }}">
-              <label for="location" class="ml-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search by Location</label>
-              <div class="relative ml-2 mt-2">
-                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <svg aria-hidden="true" class="w-3 h-3 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                  </svg>
+              <form method="GET" action="{{ route('customer.available_cars') }}">
+                <label for="location" class="ml-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search by Location</label>
+                <div class="relative ml-2 mt-2 flex">
+                  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg aria-hidden="true" class="w-3 h-3 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                  </div>
+                  <input type="text" name="location" value="{{ $location }}" class="h-4 block w-64 p-4 pl-10 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search by Location">
+                  <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 text-xs text-center px-2 py-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Search</button>
                 </div>
-                <input type="text" name="location" value="{{ $location }}" class="h-4 block w-64 p-4 pl-10 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search by Location">
-                <button type="submit" class="text-white absolute top-2.5 right-2.5 bottom-2.5 bg-blue-600 hover:bg-blue-700 text-xs text-center px-2 py-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Search</button>
-              </div>
-            </form>
-    
-            <form action="{{ route('customer.available_cars') }}" method="GET" class="ml-4">
-              <div class="form-group">
-                <div class="mt-2 mb-1">
-                  <select class="w-32 h-10 text-xs order border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500" name="sort_by_rental_fee" id="sort_by_rental_fee">
-                    <option value="">Rental Fee</option>
-                    <option value="asc">Lowest to highest</option>
-                    <option value="desc">Highest to lowest</option>
-                  </select>
-    
-                  <button class="h-7 ml-2 text-white bg-blue-600 hover:bg-blue-700 text-xs text-center px-2 py-1.5 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700" type="submit" onclick="updateSortBox()">Sort</button>
+              </form>
+            
+              <form action="{{ route('customer.available_cars') }}" method="GET" class="ml-4">
+                <div class="form-group flex items-end">
+                  <div class="mt-2">
+                    <select class="w-32 h-12 text-xs order border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500" name="sort_by_rental_fee" id="sort_by_rental_fee">
+                      <option value="">Rental Fee</option>
+                      <option value="asc">Lowest to highest</option>
+                      <option value="desc">Highest to lowest</option>
+                    </select>
+                    <button class="h-12 text-white bg-blue-600 hover:bg-blue-700 text-xs text-center px-2 py-1.5 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700" type="submit" onclick="updateSortBox()">Sort</button>
+                  </div>
                 </div>
-              </div>
-            </form>
-          </div>
+              </form>
+            </div>
+            
           </div>
         </div>
       
@@ -144,7 +132,7 @@
   
     <div class="ml-4 pl-5 row justify-content-start mt-2 flex-row">
         @foreach ($cars as $car)
-        <div class="bg-white hover-scale hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 left-1 mt-2 mr-3 ml-4 mb-4 pt-2 px-2 w-64 h-32 border border-gray-200 rounded-lg shadow-md dark:border-gray-700">
+        <div class="bg-white hover-scale hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 left-1 mt-2 mr-3 ml-4 mb-4 pt-2 px-2 w-64 h-32 border border-gray-200 rounded-md shadow-md dark:border-gray-700">
 
             <img src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:250px;height:150px;"/>
             <div class="p-3">
@@ -171,7 +159,8 @@
                 @endif
             @endfor
                   </div> 
-                  <p class="mt-1 font-extrabold text-xl text-gray-700 dark:text-gray-400"><i class="fa-solid fa-peso-sign mr-1" style="color: #152238;"></i>{{number_format ($car->rental_fee) }}</p>
+                  <hr class="mt-1">
+                  <p class="mt-1 font-extrabold text-xl text-black dark:text-gray-400"><i class="fa-solid fa-peso-sign mr-1 text-black"></i>{{number_format ($car->rental_fee) }}</p>
             </a>
             </div>
         </div>

@@ -61,14 +61,14 @@
                 </li>
                       <li>
                         <div class="flex items-center">
-                          @if ($user->avatar)
+                          {{-- @if ($user->avatar)
                           @php
                               $latestAvatar = $user->avatar()->latest()->first();
                           @endphp
                           <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . $latestAvatar->avatar) }}" alt="Profile Picture">
                       @else
                           <img class="w-8 h-8 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
-                      @endif
+                      @endif --}}
                           <a id="navbarDropdown" class="nav-link dropdown-toggle ml-2 text-blue-600 font-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ Auth::user()->first_name }}
                           </a>

@@ -86,6 +86,57 @@ class BookingController extends Controller
     
         $car->status = 'booked';
         $car->save();
+
+        // Store the necessary data in session to be retrieved after redirect
+        $request->session()->flash('booking', $booking);
+        $request->session()->flash('user', $user);
+        $request->session()->flash('car', $car);
+        $request->session()->flash('car_owner_first_name', $car_owner_first_name);
+        $request->session()->flash('car_owner_last_name', $car_owner_last_name);
+        $request->session()->flash('total_rental_fee', $total_rental_fee);
+        $request->session()->flash('car_owner_email', $car_owner_email);
+        $request->session()->flash('car_owner_phone_number', $car_owner_phone_number);
+
+        // Redirect to a different route or URL
+        return redirect()->route('booking.confirmation');
+}
+
+//Function to prevent double entry of booking
+public function confirmation(Request $request)
+{
+    // Retrieve the data stored in session
+    $booking = $request->session()->get('booking');
+    $user = $request->session()->get('user');
+    $car = $request->session()->get('car');
+    $car_owner_first_name = $request->session()->get('car_owner_first_name');
+    $car_owner_last_name = $request->session()->get('car_owner_last_name');
+    $total_rental_fee = $request->session()->get('total_rental_fee');
+    $car_owner_email = $request->session()->get('car_owner_email');
+    $car_owner_phone_number = $request->session()->get('car_owner_phone_number');
+
+    // Clear the session data
+    $request->session()->forget([
+        'booking',
+        'user',
+        'car',
+        'car_owner_first_name',
+        'car_owner_last_name',
+        'total_rental_fee',
+        'car_owner_email',
+        'car_owner_phone_number',
+    ]);
+    // Debug statements
+    // dd($user); // Check the value of $user object
+ // Check if the user object is null
+ if ($user === null) {
+    // Redirect to an error page or handle the error in an appropriate way
+    return redirect()->back()->with('error', 'User not found.');
+}
+    // Check if the objects are not null before accessing their properties
+    $car_owner_first_name = $car_owner_first_name ?? 'Unknown';
+    $car_owner_last_name = $car_owner_last_name ?? 'Unknown';
+    $car_owner_email = $car_owner_email ?? 'Unknown';
+    $car_owner_phone_number = $car_owner_phone_number ?? 'Unknown';
     return view('bookings.confirm', compact('booking', 'user', 'car', 'car_owner_first_name', 'car_owner_last_name', 'total_rental_fee', 'car_owner_email', 'car_owner_phone_number'));
 }
 

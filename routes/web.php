@@ -85,13 +85,13 @@ Route::get('/customer/cars', [CustomerController::class, 'availableCars'])->name
 //Booking Screen
 Route::get('/cars/{id}', [CarController::class, 'show'])->name('cars.show');
 
+//Prevent double entry of booking
+Route::get('booking/confirmation', [BookingController::class, 'confirmation'])->name('booking.confirmation');
+
 //Route to Book Now
 Route::post('/bookings/confirm/{car_id}', [BookingController::class, 'confirm'])->name('bookings.confirm');
 
-// Route::get('/bookings/confirm', [BookingController::class, 'confirm'])->name('bookings.confirm');
-
 Route::get('bookings/{booking}/receipt', [BookingController::class, 'download'])->name('bookings.receipt');
-// Route::get('/bookings/confirm/{id}', [BookingController::class, 'confirmBooking'])->name('bookings.confirm');
 
 //Cancel Booking
 Route::delete('/bookings/{id}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');

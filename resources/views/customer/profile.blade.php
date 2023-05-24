@@ -119,14 +119,13 @@
       @endif
       <div class="flex justify-center border-4 border-blue-400 relative">
         <div class="border-4 border-blue-500 rounded-full relative">
-          @if ($user->avatar)
-                                <img class="w-8 h-8 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">    
-                            @else
-                              @php
-                                $latestAvatar = $user->avatar()->latest()->first();
-                              @endphp
-                                <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . $latestAvatar->avatar) }}" alt="Profile Picture">
-                            @endif
+      <!-- Avatar -->
+      @if ($user->avatar)
+          <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . $user->avatar) }}" alt="Profile Picture">
+      @else
+          <img class="w-8 h-8 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
+      @endif
+
       
           <button type="button" data-modal-target="small-modal" data-modal-toggle="small-modal" class="absolute bottom-0 right-0 bg-blue-500 rounded-full hover:bg-blue-700" style="width: 30px; height: 30px;">
             <i class="fa-solid fa-pen" style="color: #ffffff;"></i>

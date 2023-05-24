@@ -64,14 +64,14 @@
                     </li>
                     <li>
                         <div class="flex items-center">
-                          @if ($user->avatar)
+                          {{-- @if ($user->avatar)
                           @php
                               $latestAvatar = $user->avatar()->latest()->first();
                           @endphp
                           <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . $latestAvatar->avatar) }}" alt="Profile Picture">
                       @else
                           <img class="w-8 h-8 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
-                      @endif
+                      @endif --}}
                           <a id="navbarDropdown" class="nav-link dropdown-toggle ml-2 text-blue-600 font-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ Auth::user()->first_name }}
                           </a>
@@ -144,10 +144,8 @@
 
                         <i class="fa-solid fa-users mb-1 ml-3" style="color: #152238;"></i>
                         <p class="mb-1 ml-2 font-normal text-gray-700 dark:text-gray-400">{{ $car->seats }} seater</p>
-
-
-                        
-                        <p class="mb-1 font-bold text-gray-700 dark:text-gray-400 ml-3">{{ $car->ratings }} out of 5 <i class="fa-solid fa-star fa-lg cursor-pointer text-yellow-300"></i></p>
+                        <i class="fa-solid fa-car  ml-3" style="color: #152238;"></i>
+                        <p class=" ml-2 font-normal text-gray-700 dark:text-gray-400">{{ $car->plate_number }}</p>
                     </div>
 
                     <div class="flex items-center">
@@ -214,9 +212,11 @@
                 <div class="h-5 bg-yellow-400 rounded" style="width: {{ $percentage }}%"></div>
             </div>
             <span class="text-sm font-medium text-blue-600 dark:text-blue-500">{{ intval($percentage) }}%</span>
+            
         </div>
+        
     @endforeach
-    
+    <hr class="mt-2 mb-2">
                 <!-- Display ratings -->
                 @if (count($ratings) > 0)
                 <h2 class="font-extrabold text-lg mt-3">Reviews</h2>
@@ -230,6 +230,7 @@
                         </div>
                     </div>
                     <div class="flex items-center">
+                        
                         @for ($i = 1; $i <= 5; $i++)
                             @if ($i <= $rating->rating)
                                 <svg aria-hidden="true" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -250,7 +251,7 @@
                     @endforeach
                 </ul>
                 @else
-                <p>No ratings available.</p>
+                <p class="mt-3 text-lg font-semibold">No ratings available.</p>
                 @endif
  
             </div>
@@ -343,7 +344,7 @@
     </div>
 
     {{-- Popup Modal --}}
-    <div id="popupModal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-50 hidden z-50">
+    {{-- <div id="popupModal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-50 hidden z-50">
         <div class="max-w-lg mx-auto bg-white rounded-lg shadow-lg dark:bg-gray-700">
           <div class="flex items-start justify-between p-3 border-b dark:border-gray-600">
             <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
@@ -361,7 +362,7 @@
           </div>
         </div>
       </div>
-      
+       --}}
       
       
 
