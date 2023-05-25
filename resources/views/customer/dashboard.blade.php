@@ -142,7 +142,7 @@
             <img src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:250px;height:150px;"/>
             <div class="p-3">
                 <a class="hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" href="{{ route('cars.show', $car->id) }}">
-                    <h5 class="mx-auto mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>
+                    <h5 class="mx-auto mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>
                 <div class="flex items-center">
                 <p class="mb-1 font-normal text-gray-700 dark:text-gray-400"><i class="fa-sharp fa-solid fa-calendar mr-1" style="color: #152238;"></i>{{ $car->year }}</p>              
                 <p class="mb-1 font-normal text-gray-700 dark:text-gray-400"><i class="fa-solid fa-users mr-1 ml-2" style="color: #152238;"></i>{{ $car->seats }}</p>

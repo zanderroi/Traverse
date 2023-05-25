@@ -101,7 +101,7 @@
 @else
 <div class="pt-5">
 @foreach ($bookings as $booking)
-<div class="mx-auto mt-4 w-1/2 h-64 flex flex-row " style="background-color: #121212;">
+<div class="mx-auto mt-4 w-1/2 h-64 flex flex-row shadow-md " style="background-color: #121212;">
     <div>
         <img src="{{ asset('storage/'.$booking->car->display_picture) }}" alt="Car Image" style="width:380px; height:256px;"/>
     </div>

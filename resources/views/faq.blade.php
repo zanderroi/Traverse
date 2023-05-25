@@ -50,7 +50,8 @@
             </style>
 
     </head>
-    <body>
+    <body class="pt-5 bg-cover bg-center" style="background-image: url('{{ asset('logo/bgimage8.jpg') }}');">
+        <div class="bg-black bg-opacity-50 backdrop-blur-lg w-full pt-5">
         <div id="app">
             <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
                 <div class="container">
@@ -68,10 +69,10 @@
                         <!-- Right Side Of Navbar -->
                         <ul class="navbar-nav ml-auto">
                            
-                                <a href="{{ route('faq') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300 hover:text-blue-600"> FAQ </a>
+                                <a href="{{ url('faq/') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300 hover:text-blue-600"> FAQ </a>
                           
                           
-                                <a href="{{ route('ourteam') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300 hover:text-blue-600"> Our Team</a>
+                                <a href="{{ url('ourteam/') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300 hover:text-blue-600"> Our Team</a>
                            
                                 @if (Route::has('login'))
                                 
@@ -97,73 +98,20 @@
                         </ul>
                     
                 </div>
+            </div>
             </nav>
     
         </div>
-    
 
-        
-            <div class="bg-cover bg-center h-screen" style="background-image: url('{{ asset('logo/bgimage3.jpg') }}');">
-                <div class="bg-cover bg-gray-400 bg-opacity-50 backdrop-blur-lg w-full h-full text-center flex justify-center items-center bg-center">
-                <div class="text-center">
-                  <h1 class="text-8xl sm:text-6xl lg:text-7xl font-bold mb-4 text-gray-900">Traverse</h1>
-                  <h3 id="typing-effect" class="text-4xl sm:text-3xl lg:text-4xl text-gray-900"></h3>
-                  <script>
-                    const text = "Find the right car for you";
-                    let index = 0;
-    
-                    function typingEffect() {
-                    document.getElementById("typing-effect").innerHTML += text.charAt(index);
-                    index++;
-                    setTimeout(typingEffect, 55);
-                    }
-                    typingEffect();
-    
-                    </script>
+        <div class="mx-auto" style="background-color: #121212; max-width: 1350px;">
+            <h2 class="p-5 text-3xl font-bold text-white"> Frequently Asked Questions </h2>
+            <div class="h-screen mx-auto" style="background-color: #151515; max-width: 1200px;">
+            </div>
 
-                  <button id="scroll-to-next" type="button" class="mt-3 border-gray-900 border-2 rounded-full p-2 animate-bounce">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-                    </svg>
-                  </button>
-
-                    
-                </div>
-    
-            
-              </div>
         </div>
-            
 
-    <hr>
 
-    <div class="h-screen bg-cover bg-center" id="next-div" style="background-image: url('{{ asset('logo/bgimage4.jpg') }}');">
-        <div class="bg-cover bg-gray-400 bg-opacity-50 backdrop-blur-lg w-full h-full bg-center">
 
-            <h1 class="pt-20 text-4xl font-semibold text-center">Available Cars!</h1>
-            <div class="ml-6 row justify-content-start mt-3 pt-4 h-96">
-                @foreach ($cars as $car)
-                <div class="hover-scale bg-white hover:bg-blue-500 dark:bg-gray-800 dark:hover:bg-gray-700 left-1 mt-2 mr-3 ml-6 mb-4 pt-2 px-2 w-64 h-32 border border-gray-200 rounded-lg shadow-md dark:border-gray-700" style="background-image: url('{{ asset('storage/'.$car->display_picture) }}'); background-size: cover; background-position: center;">
-                    <div class="p-1 text-center bg-gray-100">
-                        <a class="hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" href="{{ Auth::check() ? (Auth::user()->user_type === 'customer' ? '/customer/dashboard' : '/car_owner/dashboard') : '/login' }}">
-                            <h5 class="text-xl font-bold text-gray-900 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>               
-                        </a>
-                    </div>
-                </div>
-                
-            @endforeach
-        </div>
-        
-        </div>
     </div>
-    <script>
-        const scrollToNext = document.getElementById("scroll-to-next");
-        const nextDiv = document.getElementById("next-div");
-    
-        scrollToNext.addEventListener("click", () => {
-            nextDiv.scrollIntoView({ behavior: "smooth" });
-        });
-    </script>
-    @include('components.footer')
     </body>
 </html>

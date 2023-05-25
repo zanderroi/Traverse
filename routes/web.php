@@ -37,6 +37,13 @@ Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
+Route::get('/faq', function () {
+    return view('faq');
+})->name('faq');
+
+Route::get('/ourteam', function () {
+    return view('ourteam');
+})->name('ourteam');
 // Route::get('/traverse-chats', function () {
 //     return view('traverse-chats');
 // })->name('traverse-chats');
@@ -136,4 +143,7 @@ Route::put('/profile', [CarOwnerController::class, 'updateProfile'])->name('caro
 
 //Car Owner Change Password
 Route::post('/change-password', [CarOwnerController::class, 'changePassword'])->name('carowner.change-password');
+
+//Car Owner Update Car Details
+Route::put('/car-owner/update-car-details/{car_id}', [CarOwnerController::class, 'updateCarDetails'])->name('car_owner.update_car_details');
 

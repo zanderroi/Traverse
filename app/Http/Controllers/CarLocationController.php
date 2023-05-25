@@ -106,8 +106,7 @@ $defaultLatitude = 51.5074; // Example: London latitude
 $defaultLongitude = -0.1278; // Example: London longitude
     
         $car = Car::find($carId);
-        $customer = null;
-        $booking = null;
+
     
         return view('car_owner.location', [
             'car' => $car,

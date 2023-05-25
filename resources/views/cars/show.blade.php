@@ -33,7 +33,7 @@
 <body class="pt-5 bg-cover bg-center h-screen" style="background-color: #0C0C0C;">
     <div class="bg-cover bg-black bg-opacity-50 backdrop-blur-lg w-full h-full bg-center">
       <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
+        <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top" style="background-color: #0C0C0C;">
           <div class="container">
             <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
               <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
@@ -85,7 +85,7 @@
         
       </div> 
         
-        <div class="w-3/4 bg-white">    
+        <div class="w-3/4 " style="background-color: #1F1F1F;">    
         <div id="controls-carousel" class="mx-auto relative w-1/2 bg-gray-500 mt-2" data-carousel="static">
             <!-- Carousel wrapper -->
             <div class="relative h-56 overflow-hidden md:h-96">
@@ -123,16 +123,16 @@
         <div class ="mx-auto w-1/2">
                     <h5 class="mb-2  mt-2 text-2xl font-bold tracking-tight  text-blue-600 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>
                     <div class="flex mx-auto">
-                        <i class="fa-solid fa-user mb-1" style="color: #152238;"></i>
-                        <p class="mb-1 ml-2 font-normal text-gray-700 dark:text-gray-400">{{ $car->owner->first_name }} {{ $car->owner->last_name }}</p>
+                        <i class="fa-solid fa-user mb-1 text-gray-300"></i>
+                        <p class="mb-1 ml-2 font-normal text-gray-300 dark:text-gray-400">{{ $car->owner->first_name }} {{ $car->owner->last_name }}</p>
                   
-                        <i class="fa-solid fa-location-dot mb-3 ml-2" style="color: #152238;"></i>
-                        <p class="mb-1 ml-2 font-normal text-gray-700 dark:text-gray-400">{{ $car->location }}</p>
+                        <i class="fa-solid fa-location-dot mb-3 ml-2 text-gray-300"></i>
+                        <p class="mb-1 ml-2 font-normal text-gray-300 dark:text-gray-400">{{ $car->location }}</p>
 
-                        <i class="fa-solid fa-users mb-1 ml-3" style="color: #152238;"></i>
-                        <p class="mb-1 ml-2 font-normal text-gray-700 dark:text-gray-400">{{ $car->seats }} seater</p>
-                        <i class="fa-solid fa-car  ml-3" style="color: #152238;"></i>
-                        <p class=" ml-2 font-normal text-gray-700 dark:text-gray-400">{{ $car->plate_number }}</p>
+                        <i class="fa-solid fa-users mb-1 ml-3 text-gray-300"></i>
+                        <p class="mb-1 ml-2 font-normal text-gray-300 dark:text-gray-400">{{ $car->seats }} seater</p>
+                        <i class="fa-solid fa-car  ml-3 text-gray-300"></i>
+                        <p class=" ml-2 font-normal text-gray-300 dark:text-gray-400">{{ $car->plate_number }}</p>
                     </div>
 
                     <div class="flex items-center">
@@ -147,25 +147,25 @@
                         </div>
                         <div class="flex ml-auto">
                             @if ($bookingStatus === 'Pending')
-                            <p class="pt-2 text-red-700 font-semibold">You still have a pending booking!</p>
+                            <div class="block text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-red-800 dark:hover:bg-red-900 dark:focus:ring-red-900">
+                            <p class="text-whit">You still have a pending booking!</p>
+                            </div>
                         @else
                             <button id="book-car-button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" type="button" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 {{ __('Book Car') }}
                             </button>
                         @endif
                         
-
-
-                        <button type="button" class="ml-1 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-green-600 dark:hover:bg-blue-700 dark:focus:ring-green-800" onclick="location.href='http://127.0.0.1:8000/traverse-chats/{{ $car->owner->id }}'">
-                            Message Owner
-                          </button>
+                        <button type="button" class="ml-1 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-green-600 dark:hover:bg-blue-700 dark:focus:ring-green-800" onclick="window.open('{{ url('traverse-chats/' . $car->owner->id) }}', '_blank')">
+                          Message Owner
+                      </button>
                         </div>
                       </div>
                       
                     
-                    <h3 class="text-lg mt-2"> Description</h3>
-                    <hr class=mt-1>
-                    <p class="mt-2 text-gray-500 dark:text-gray-400">{{ $car->car_description}}</p>
+                    <h3 class="text-lg font-bold mt-2 text-gray-300"> Description</h3>
+                    <hr class="mt-1 text-gray-300">
+                    <p class="mt-2 text-gray-300">{{ $car->car_description}}</p>
                     
                 </div>  
                 
@@ -189,7 +189,7 @@
                                                 
 
         <!-- Average Rating -->
-        <p class="text-center text-lg font-semibold text-gray-900 dark:text-white">{{ $car->ratings }} out of 5</p>
+        <p class="text-center text-lg font-semibold text-gray-300">{{ $car->ratings }} out of 5</p>
 
 
         @foreach ($percentageArray as $index => $percentage)
@@ -206,14 +206,14 @@
     <hr class="mt-2 mb-2">
                 <!-- Display ratings -->
                 @if (count($ratings) > 0)
-                <h2 class="font-extrabold text-lg mt-3">Reviews</h2>
-                <hr class="mt1">
+                <h2 class="font-extrabold text-lg mt-3 text-gray-300">Reviews</h2>
+                <hr class="mt-1 text-gray-300">
                 <ul>
                     @foreach ($ratings as $rating)
                     <div class="flex items-center mb-4 space-x-4 mt-2">
                         <img class="w-10 h-10 rounded-full" src="{{ asset('avatar/default-avatar.png')}}" alt="">
                         <div class="font-medium dark:text-white">
-                            <p class="font-bold">{{ $rating->customer->first_name }} {{ $rating->customer->last_name }} <time datetime="2014-08-16 19:00" class="block text-sm text-gray-500 dark:text-gray-400">{{ $rating->created_at->format('F, j Y') }}</time></p>
+                            <p class="font-bold text-gray-300">{{ $rating->customer->first_name }} {{ $rating->customer->last_name }} <time datetime="2014-08-16 19:00" class="block text-sm text-gray-500 dark:text-gray-400">{{ $rating->created_at->format('F, j Y') }}</time></p>
                         </div>
                     </div>
                     <div class="flex items-center">
@@ -233,7 +233,7 @@
                         @endfor
                     </div>
                         
-                        <li class="font-semibold">{{ $rating->description }}</li>
+                        <li class="font-semibold text-gray-300">{{ $rating->description }}</li>
                      
                     @endforeach
                 </ul>

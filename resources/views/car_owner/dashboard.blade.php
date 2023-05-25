@@ -29,8 +29,8 @@
         }
     </style>
 </head>
-<body class="pt-5 bg-cover bg-center h-screen" style="background-image: url('{{ asset('logo/bgimage5.jpg') }}'); background-repeat: repeat-y;">
-    <div class="bg-cover bg-black bg-opacity-50 backdrop-blur-lg h-screen bg-center bg-repeat">
+<body class="pt-5 bg-cover bg-center" style="background-image: url('{{ asset('logo/bgimage5.jpg') }}'); background-repeat: repeat-y;">
+    <div class="bg-cover bg-black bg-opacity-50 backdrop-blur-lg bg-center">
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
             <div class="container">
@@ -64,7 +64,11 @@
                     </li>
                               <li>
                                 <div class="flex items-center">
-                            
+                                    @if ($user->profilepicture)
+                                    <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . $user->profilepicture) }}" alt="Profile Picture">
+                                @else
+                                    <img class="w-8 h-8 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
+                                @endif
                                   <a id="navbarDropdown" class="nav-link dropdown-toggle ml-2 text-blue-600 font-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->first_name }}
                                   </a>
@@ -117,13 +121,11 @@
     
                     <div class="flex justify-center mb-2">
                         <a href="{{ route('car_owner.location', ['carId' => $car->id]) }}" class="mr-1 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Track</a>
-                        <button type="button" class="mr-1 block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Edit</button>
-                        <form action="{{ route('car_owner.delete_car', ['car_id' => $car->id]) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button id="unlist-{{ $car->id }}" type="button" data-modal-toggle="popup-modal-{{ $car->id }}" class="block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Unlist</button>
+                        <button id="defaultModalToggle-{{ $car->id }}" data-modal-target="defaultModal-{{ $car->id }}" data-modal-toggle="defaultModalToggle-{{ $car->id }}" type="button" class="mr-1 block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Edit</button>
+                        <button id="unlist-{{ $car->id }}" type="button" data-modal-toggle="popup-modal-{{ $car->id }}" class="block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Unlist</button>
                     </div>
     
+                    {{-- Unlist Car --}}
                     <div id="popup-modal-{{ $car->id }}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                         <div class="relative w-full max-w-md max-h-full">
                             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -132,6 +134,9 @@
                                     <span class="sr-only">Close modal</span>
                                 </button>
                                 <div class="p-6 text-center">
+                                    <form action="{{ route('car_owner.delete_car', ['car_id' => $car->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
                                     <svg aria-hidden="true" class="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                     <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to unlist the car?</h3>
                                     <button data-modal-hide="popup-modal" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -145,9 +150,101 @@
                         </div>
                     </div>
             </div>
+            
+           {{-- Edit Car Details --}}
+<div id="defaultModal-{{ $car->id }}" class="modal" data-modal-id="defaultModal-{{ $car->id }}" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white align-">
+                  <i class="fa-sharp fa-solid fa-user-pen mr-2"></i>Edit Car Details
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-4">
+                <form action="{{ route('car_owner.update_car_details', ['car_id' => $car->id]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+              <h3 class="text-lg font-bold">CAR INFORMATION</h3>
+              
+              <div class="flex flex-row">
+                <div class="w-full mt-1 mr-2">
+                  <label class="text-left block font-medium text-gray-700" for="email">Full name</label>
+              <input class="text-sm form-input mt-1 block w-full  border-red-300 rounded-lg bg-gray-50 focus:ring-red-500 focus:border-red-500" type="text" value="{{ $car->car_brand }} {{ $car->car_model }}" readonly>
+                 
+                </div>
+                <div class="w-full mt-1">
+                  <label class="text-left block font-medium text-gray-700" for="email">Email</label>
+                  <input id="email" name="email" type="email" class="text-sm form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 @error('email') is-invalid @enderror" value="{{ $user->email }}" autofocus>
+                </div>
+              </div>
+              <div class="flex flex-row">
+                <div class="w-full mt-1 mr-2">
+                  <label class="text-left block font-medium text-gray-700" for="email">Birthday</label>
+                  <input id="birthday" name="birthday" class="text-sm form-input mt-1 block w-full border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" type="date" value="{{ $user->birthday }}" placeholder="YYYY-MM-DD">
+  
+                </div>
+                <div class="w-full mt-1">
+                  <label class="text-left block font-medium text-gray-700" for="email">Phone Number</label>
+                  <input id="phone_number" name="phone_number" class="text-sm form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" type="text" value="{{ $user->phone_number }}" autofocus>
+                </div>
+              </div>
+              <div class="flex flex-row">
+                <div class="w-full mt-1 mr-2">
+                  <label class="text-left block font-medium text-gray-700" for="email">Address</label>
+              <input id="address" name="address" class="text-sm form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" type="text" value="{{ $user->address }}" autofocus>       
+              </div>
+              
+            </div>
+            <div class="flex flex-row">
+              <div class="w-full mt-1 mr-2">
+                <label class="text-left block font-medium text-gray-700" for="email">Contact Person</label>
+           
+                <input id="contactperson1" name="contactperson1" class="text-sm form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" type="text" value="{{ $user->contactperson1 }}" autofocus>       
+            </div>
+            <div class="w-full mt-1 mr-2">
+              <label class="text-left block font-medium text-gray-700" for="email">Phone Number</label>
+         
+              <input id="contactperson1number" name="contactperson1number" class="text-sm form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" type="text" value="{{ $user->contactperson1number }}" autofocus>       
+          </div>
+            
+          </div>
+          <div class="flex flex-row">
+            <div class="w-full mt-1 mr-2">
+              <label class="text-left block font-medium text-gray-700" for="email">Contact Person</label>
+         
+              <input id="contactperson2" name="contactperson2" class="text-sm form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" type="text" value="{{ $user->contactperson2 }}" autofocus>       
+          </div>
+          <div class="w-full mt-1 mr-2">
+            <label class="text-left block font-medium text-gray-700" for="email">Phone Number</label>
+       
+            <input id="contactperson2number" name="contactperson2number" class="text-sm form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" type="text" value="{{ $user->contactperson2number }}" autofocus>       
+        </div>
+          
+        </div>
+            <!-- Modal footer -->
+            <div class="flex items-center p-2 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                 <button data-modal-hide="defaultModal" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Confirm</button>
+            </form>
+                 <button data-modal-hide="defaultModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Cancel</button>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
             @endforeach           
         </div>
     </div>
+   
+
+
+    
    
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 

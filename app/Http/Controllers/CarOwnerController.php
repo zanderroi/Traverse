@@ -44,8 +44,8 @@ class CarOwnerController extends Controller
     // Validate the request data
     $request->validate([
         'display_picture' => ['required', 'mimes:jpg,jpeg,png', 'max:2048'],
-        'car_brand' => ['required', 'string', 'max:255'],
-        'car_model' => ['required', 'string', 'max:255'],
+        'car_brand' => ['required', 'string', 'max:30'],
+        'car_model' => ['required', 'string', 'max:30'],
         'year' => ['required', 'integer', 'min:1900', 'max:' . date('Y')],
         'seats' => ['required', 'integer', 'min:1'],
         'plate_number' => ['required', 'string', 'max:255'],
@@ -152,6 +152,40 @@ public function changePassword(Request $request)
     $user->save();
 
     return redirect()->route('car_owner.profile')->with('success', 'Password changed successfully.');
+}
+
+public function updateCarDetails(Request $request, $car_id)
+{
+    // Find the car by ID
+    $car = Car::findOrFail($car_id);
+
+    // Validate the request data
+    $request->validate([
+        'car_brand' => ['required', 'string', 'max:30'],
+        'car_model' => ['required', 'string', 'max:30'],
+        'year' => ['required', 'integer', 'min:1900', 'max:' . date('Y')],
+        'seats' => ['required', 'integer', 'min:1'],
+        'plate_number' => ['required', 'string', 'max:255'],
+        'vehicle_identification_number' => ['required', 'string', 'max:255'],
+        'location' => ['required', 'string', 'max:255'],
+        'car_description' => ['required', 'string', 'max:1000'],
+        'rental_fee' => 'required|numeric|min:0',
+    ]);
+
+    // Update the car details
+    $car->car_brand = $request->input('car_brand');
+    $car->car_model = $request->input('car_model');
+    $car->year = $request->input('year');
+    $car->seats = $request->input('seats');
+    $car->plate_number = $request->input('plate_number');
+    $car->vehicle_identification_number = $request->input('vehicle_identification_number');
+    $car->location = $request->input('location');
+    $car->car_description = $request->input('car_description');
+    $car->rental_fee = $request->input('rental_fee');
+    $car->save();
+
+    // Redirect back to the car owner dashboard with a success message
+    return redirect()->route('car_owner.dashboard')->with('success', 'Car details updated successfully!');
 }
 
 

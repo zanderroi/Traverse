@@ -29,70 +29,60 @@
   </style>
 
 </head>
-<body class="pt-5 bg-slate-500">
-
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top">
+<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('{{ asset('logo/bgimage6.jpg') }}');">
+  <div class="bg-cover bg-black bg-opacity-75 backdrop-blur-lg w-screen">
+      <div id="app">
+          <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top" style="background-color: #0C0C0C;">
             <div class="container">
-                <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
-                    <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Flowbite Logo" />
-                    <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Traverse</span>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div>
-
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                      <li>
-                        <a href="{{ route('customer.garage') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-600" aria-current="page">Garage</a>
-                      </li>
-                      <li>
-                        <a href="{{ route('customer.history') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-600" aria-current="page">History</a>
-                      </li>
-                      <li>
-                        <div class="sm:fixed sm:top-0 sm:right-0 text-right mr-2">
-
-                            <a href="{{ route('traverse-chats') }}" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Traverse Chats </a>
+              <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
+                <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
+                <span class="self-center text-white text-xl font-semibold whitespace-nowrap dark:text-white">Traverse</span>
+              </a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+          
+              <div id="navbarSupportedContent">
+                <!-- Right Side Of Navbar -->
+                <ul class="navbar-nav ml-auto">
+                  <li>
+                    <a href="{{ route('customer.garage') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">Garage</a>
+                  </li>
+                  <li>
+                    <a href="{{ route('customer.history') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">History</a>
+                  </li>
+                  <li>
+                    <div class="sm:fixed sm:top-0 sm:right-0 text-right mr-2">
+                      <a href="{{ route('traverse-chats') }}" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Traverse Chats</a>
                     </div>
-                </li>
-                      <li>
-                        <div class="flex items-center">
-                            @if ($user->profilepicture)
-                            <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . $user->profilepicture) }}" alt="Profile Picture">
-                        @else
-                            <img class="w-8 h-8 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
-                        @endif
-                          <a id="navbarDropdown" class="nav-link dropdown-toggle ml-2 text-blue-600 font-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ Auth::user()->first_name }}
-                          </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                  <a class="dropdown-item" href="{{ route('customer.profile') }}">
-                                    Profile
-                                </a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                              </div>
-                            </li>
-
-                    </ul>
-                </div>
+                  </li>
+                  <li>
+                    <div class="flex items-center">
+                      @if ($user->profilepicture)
+                      <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . $user->profilepicture) }}" alt="Profile Picture">
+                  @else
+                      <img class="w-8 h-8 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
+                  @endif
+                      <a id="navbarDropdown" class="py-2 dropdown-toggle ml-2 text-gray-300 hover:bg-blue-80 font-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        {{ Auth::user()->first_name }}
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ route('customer.profile') }}">Profile</a>
+                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                          @csrf
+                        </form>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </div>
-        </nav>
-    </div>   
-
+          </nav>
+          
+    
+          
+        </div>   
     @if(session('success'))
     <div class="alert alert-success mt-3">
         {{ session('success') }}
@@ -106,9 +96,12 @@
     <div>
 @else
         <div class="mt-6  mx-auto " >
-            <table class="text-sm text-left text-blue-100 dark:text-blue-100 mx-auto shadow-md sm:rounded-lg max-w-full xs:max-w-none sm:max-w-xs md:max-w-sm  lg:max-w-md xl:max-w-lg">
-                <thead class="text-xs text-white uppercase bg-gray-700 dark:text-white">
+            <table class="text-sm text-left dark:text-blue-100 mx-auto shadow-md sm:rounded-lg max-w-full xs:max-w-none sm:max-w-xs md:max-w-sm  lg:max-w-md xl:max-w-lg">
+                <thead class="text-xs text-center text-white uppercase dark:text-white sticky top-6 z-10" style="background-color: #121212;">
                     <tr>
+                      <th scope="col" class="px-6 py-3">
+                         
+                        </th>
                         <th scope="col" class="px-6 py-3">
                             Car Model
                         </th>
@@ -133,7 +126,10 @@
                     @foreach ($bookings->sortByDesc('created_at') as $booking)   
                     <form method="POST" action="{{ route('car.rating.store', ['booking_id' => $booking->id, 'car_owner_id' => $booking->car->owner->id, 'customer_id' => auth()->user()->id]) }}">
                         @csrf
-                    <tr class="bg-gray-500 border-b border-blue-400">
+                    <tr class="border-b border-blue-400 text-gray-400" style="background-color: #363636;">
+                      <th scope="row" class="px-3 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100">
+                        <img class="rounded-full w-10 h-10" src="{{ asset('storage/'.$booking->car->display_picture) }}" alt="Car Image">
+                    </th>
                         <th scope="row" class="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100">
                             {{ $booking->car->car_brand ?? 'Unlisted Car' }}   {{ $booking->car->car_model ?? ' ' }}
                         </th>
@@ -162,7 +158,7 @@
                   
             </table>
         </div>
-        
+      </div>
         {{-- Main Modal --}}
           <div id="popup-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
               <div class="relative w-full max-w-md max-h-full">
