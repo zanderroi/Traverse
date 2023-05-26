@@ -16,23 +16,16 @@ class ProfilePictureController extends Controller
             'profilepicture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
     
-        if ($request->hasFile('profilepicture')) {
-            $file = $request->file('profilepicture');
-            $extension = $file->getClientOriginalExtension();
-            $filename = uniqid().'.'.$extension;
-    
-            $file->storeAs('public/profilepicture', $filename);
-    
             $profilepicture = new ProfilePicture();
-            $profilepicture->profilepicture = 'profilepicture/'.$filename;
+            $profilepicture->profilepicture = $request->file('profilepicture')->store('public/profilepicture');
             $profilepicture->user_id = Auth::user()->id;
             $profilepicture->save();
     
             return redirect()->route('customer.profile')->with('success', 'Profile Picture uploaded successfully!');
-        }
+        
     
-        return redirect()->route('customer.profile')->with('error', 'No image was uploaded.');
     }
+    
     
 
     

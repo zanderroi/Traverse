@@ -75,9 +75,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Booking::class, 'user_id');
     }
-    public function profilepicture()
+    public function profilePicture()
     {
-        return $this->belongsTo(ProfilePicture::class);
+        return $this->hasOne(ProfilePicture::class);
     }
     
 

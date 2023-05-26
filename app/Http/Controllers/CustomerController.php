@@ -106,8 +106,9 @@ class CustomerController extends Controller
     
     public function profile()
     {
-        $user = Auth::user()->load('profilepicture');
-        return view('customer.profile', ['user' => $user]);
+        $user = Auth::user();
+        $latestProfilePicture = $user->profilepicture()->latest()->first();
+        return view('customer.profile', ['user' => $user, 'latestProfilePicture' => $latestProfilePicture]);
     }
 
     public function updateProfile(Request $request)

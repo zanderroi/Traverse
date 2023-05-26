@@ -66,11 +66,12 @@
             </li>
             <li>
               <div class="flex items-center">
-                @if ($user->profilepicture)
-                <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . $user->profilepicture) }}" alt="Profile Picture">
+                @if ($latestProfilePicture)
+                <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' .$latestProfilePicture->profilepicture) }}" alt="Profile Picture">
             @else
                 <img class="w-8 h-8 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
             @endif
+            
                 <a id="navbarDropdown" class="py-2 dropdown-toggle ml-2 text-gray-300 hover:bg-blue-80 font-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                   {{ Auth::user()->first_name }}
                 </a>
@@ -109,11 +110,11 @@
       <div class="flex justify-center border-4 border-blue-400 relative">
         <div class="border-4 border-blue-500 rounded-full relative">
       <!-- Avatar -->
-      @if ($user->profilepicture)
-          <img class="w-20 h-20 rounded-full" src="{{ asset('storage/' . $user->profilepicture) }}" alt="Profile Picture">
-      @else
-          <img class="w-20 h-20 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
-      @endif
+      @if ($latestProfilePicture)
+      <img class="w-20 h-20 rounded-full" src="{{ asset('storage/' . $latestProfilePicture->profilepicture) }}" alt="Profile Picture">
+  @else
+      <img class="w-20 h-20 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
+  @endif
 
       
           <button type="button" data-modal-target="small-modal" data-modal-toggle="small-modal" class="absolute bottom-0 right-0 bg-blue-500 rounded-full hover:bg-blue-700" style="width: 30px; height: 30px;">
@@ -145,7 +146,14 @@
         <!-- Modal body -->
         <div class="p-6 space-y-6">
           <div id="image-preview" class="flex justify-center items-center">
-            <img id="preview-image" class="w-20 h-20 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Profile Picture">
+      
+            @if ($latestProfilePicture)
+            <img id="preview-image" class="w-20 h-20 rounded-full" src="{{ asset('storage/' . $latestProfilePicture->profilepicture) }}" alt="Profile Picture">
+        @else
+            <img id="preview-image" class="w-20 h-20 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
+        @endif
+        
+  
           </div>
           <div class="flex justify-center">
             <form action="{{ route('profilepicture.store') }}" method="POST" enctype="multipart/form-data">

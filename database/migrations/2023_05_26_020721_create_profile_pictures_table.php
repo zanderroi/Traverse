@@ -9,9 +9,9 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
- public function up()
+    public function up(): void
     {
-        Schema::create('profilepictures', function (Blueprint $table) {
+        Schema::create('profile_pictures', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->binary('profilepicture')->nullable();
@@ -21,12 +21,11 @@ return new class extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('profilepictures');
+        Schema::dropIfExists('profile_pictures');
     }
 };
