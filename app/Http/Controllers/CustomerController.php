@@ -23,8 +23,7 @@ class CustomerController extends Controller
         if (auth()->check()) {
             $user = auth()->user();
     
-            // Check if the user has an associated avatar
-            $avatar = $user->profilepicture;
+            $latestProfilePicture = $user->profilepicture()->latest()->first();
     
             $location = $request->input('location', '');
             $sort_by_rental_fee = $request->input('sort_by_rental_fee', 'asc');
@@ -39,7 +38,7 @@ class CustomerController extends Controller
                 ->get();
     
             // Pass the cars and avatar to the view to display
-            return view('customer.dashboard', ['cars' => $cars, 'location' => $location, 'user' => $user]);
+            return view('customer.dashboard', ['cars' => $cars, 'location' => $location, 'user' => $user, 'latestProfilePicture'=>$latestProfilePicture]);
         }
     
         // Redirect to the login page if the user is not authenticated
@@ -52,8 +51,8 @@ class CustomerController extends Controller
     public function availableCars(Request $request)
     {
         $user = Auth::user();
-                    // Check if the user has an associated avatar
-                    $avatar = $user->profilepicture;
+        
+        $latestProfilePicture = $user->profilepicture()->latest()->first();
         $location = $request->input('location', '');
         $sort_by_rental_fee = $request->input('sort_by_rental_fee', 'asc');
     
@@ -67,13 +66,14 @@ class CustomerController extends Controller
             ->get();
         
         // Pass the cars to the view to display
-        return view('customer.dashboard', ['cars' => $cars, 'location' => $location, 'user' => $user]);
+        return view('customer.dashboard', ['cars' => $cars, 'location' => $location, 'user' => $user, 'latestProfilePicture'=> $latestProfilePicture]);
     }
 
     public function garage()
     {
         $user_id = Auth::user()->id;
         $user = Auth::user();
+        $latestProfilePicture = $user->profilepicture()->latest()->first();
     
         // Get bookings for the logged-in customer where the booking status is "Pending" and the car has not been returned yet
         $bookings = Booking::where('user_id', $user_id)
@@ -87,13 +87,14 @@ class CustomerController extends Controller
             ->with('car')
             ->get();
     
-        return view('customer.garage', ['bookings' => $bookings, 'user' => $user]);
+        return view('customer.garage', ['bookings' => $bookings, 'user' => $user, 'latestProfilePicture' => $latestProfilePicture]);
     }
     
     public function history()
     {
         $user_id = Auth::user()->id;
         $user = Auth::user();
+        $latestProfilePicture = $user->profilepicture()->latest()->first();
     
         // Get bookings for the logged-in customer where the booking status is "Returned"
         $bookings = Booking::where('user_id', $user_id)
@@ -101,7 +102,7 @@ class CustomerController extends Controller
             ->with('car.carRatings')
             ->get();
     
-        return view('customer.history', ['bookings' => $bookings, 'user' => $user]);
+        return view('customer.history', ['bookings' => $bookings, 'user' => $user, 'latestProfilePicture' => $latestProfilePicture]);
     }
     
     public function profile()

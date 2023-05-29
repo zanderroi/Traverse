@@ -34,7 +34,7 @@
   </style>
 </head>
 <body class="pt-5 bg-cover bg-center" style="background-image: url('{{ asset('logo/bgimage7.jpg') }}');">
-  <div class="bg-black bg-opacity-75 backdrop-blur-lg w-full">
+  <div class="bg-black bg-opacity-75 backdrop-blur-lg">
     <div id="app">
       <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
         <div class="container">
@@ -62,8 +62,8 @@
               </li>
               <li>
                 <div class="flex items-center">
-                  @if ($user->profilepicture)
-                  <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . $user->profilepicture) }}" alt="Profile Picture">
+                  @if ($latestProfilePicture)
+                  <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' .$latestProfilePicture->profilepicture) }}" alt="Profile Picture">
               @else
                   <img class="w-8 h-8 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
               @endif

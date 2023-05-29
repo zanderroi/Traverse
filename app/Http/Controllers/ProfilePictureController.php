@@ -26,6 +26,21 @@ class ProfilePictureController extends Controller
     
     }
     
+    public function ownerstore(Request $request)
+    {
+        $request->validate([
+            'profilepicture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+    
+            $profilepicture = new ProfilePicture();
+            $profilepicture->profilepicture = $request->file('profilepicture')->store('public/profilepicture');
+            $profilepicture->user_id = Auth::user()->id;
+            $profilepicture->save();
+    
+            return redirect()->route('car_owner.profile')->with('success', 'Profile Picture uploaded successfully!');
+        
+    
+    }
     
 
     

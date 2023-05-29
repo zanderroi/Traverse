@@ -40,67 +40,66 @@
 </head>
 <body class="pt-5">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top">
-            <div class="container">
-                <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
-                    <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Flowbite Logo" />
-                    <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Traverse</span>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+      <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
+        <div class="container">
+            <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
+                <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
+                <span class="self-center text-xl text-white font-semibold whitespace-nowrap dark:text-white">Traverse</span>
+            </a>
+           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <span class="navbar-toggler-icon"></span>
+            </button> 
 
-                <div>
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
 
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                      <li>
-                        <a href="#" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-600" aria-current="page">Earnings!</a>
-                      </li>
-                      <li>
-                        <a href="{{ route('car_owner.car_details') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-600" aria-current="page">List a Car</a>
-                      </li>
-                      <li>
+                <!-- Right Side Of Navbar -->
+                <ul class="navbar-nav ms-auto">
+                    <li>
+                      <a href="#" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">Earnings!</a>
+                    </li>
+                    <li>
+                      <a href="{{ route('car_owner.car_details') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">List a Car</a>
+                    </li>
+                    <li>
                         <div class="sm:fixed sm:top-0 sm:right-0 text-right mr-2">
 
                             <a href="{{ route('traverse-chats') }}" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Traverse Chats </a>
                     </div>
                 </li>
-                            <li>
-                              <div class="flex items-center">
-                              
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle ml-2 text-blue-600 font-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                  {{ Auth::user()->first_name }}
-                                </a>
-                              
-                              
+                          <li>
+                            <div class="flex items-center">
+                                @if ($latestProfilePicture)
+                                <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' .$latestProfilePicture->profilepicture) }}" alt="Profile Picture">
+                            @else
+                                <img class="w-8 h-8 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
+                            @endif
+                              <a id="navbarDropdown" class="nav-link dropdown-toggle ml-2 text-blue-600 font-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ Auth::user()->first_name }}
+                              </a>
+                            
+                            
 
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    
-                                  <a class="dropdown-item" href="{{ route('car_owner.profile') }}">
-                                    Profile
-                                </a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+                              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                  
+                                <a class="dropdown-item" href="{{ route('car_owner.profile') }}">
+                                  Profile
+                              </a>
+                                  <a class="dropdown-item" href="{{ route('logout') }}"
+                                     onclick="event.preventDefault();
+                                                   document.getElementById('logout-form').submit();">
+                                      {{ __('Logout') }}
+                                  </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
+                                  <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                      @csrf
+                                  </form>
                               </div>
-                            </li>
+                            </div>
+                            
+                          </li>
 
-                    </ul>
-                </div>
-            </div>
-        </nav>
+                  </ul>
+        </div>
+    </nav>
     </div>   
 
     <div class="bg-cover bg-center h-screen" style="background-image: url('{{ asset('logo/profilebg.jpg') }}');">
@@ -120,7 +119,11 @@
       @endif
       <div class="flex justify-center border-4 border-blue-400 relative">
         <div class="border-4 border-blue-500 rounded-full relative">
-        
+          @if ($latestProfilePicture)
+          <img class="w-20 h-20 rounded-full" src="{{ asset('storage/' . $latestProfilePicture->profilepicture) }}" alt="Profile Picture">
+      @else
+          <img class="w-20 h-20 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
+      @endif
       
           <button type="button" data-modal-target="small-modal" data-modal-toggle="small-modal" class="absolute bottom-0 right-0 bg-blue-500 rounded-full hover:bg-blue-700" style="width: 30px; height: 30px;">
             <i class="fa-solid fa-pen" style="color: #ffffff;"></i>
@@ -151,12 +154,17 @@
         <!-- Modal body -->
         <div class="p-6 space-y-6">
           <div id="image-preview" class="flex justify-center items-center">
-          
+            @if ($latestProfilePicture)
+            <img id="preview-image" class="w-20 h-20 rounded-full" src="{{ asset('storage/' . $latestProfilePicture->profilepicture) }}" alt="Profile Picture">
+        @else
+            <img id="preview-image" class="w-20 h-20 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
+        @endif
+      
           </div>
           <div class="flex justify-center">
-            <form action="{{ route('carowneravatar.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('carownerpicture.ownerstore') }}" method="POST" enctype="multipart/form-data">
               @csrf
-            <input id="image-input" type="file" class="hidden" name="avatar" accept="image/*" required>
+            <input id="image-input" type="file" class="hidden" name="profilepicture" accept="image/*" required>
             <label for="image-input" class="px-4 py-2 bg-gray-700 text-white rounded-lg cursor-pointer hover:bg-gray-800">
               Choose Image
             </label>
@@ -289,7 +297,7 @@
             <div class="flex flex-row">
               <div class="w-full mt-1 mr-2">
                 <label class="text-left block font-medium text-gray-700" for="email">Birthday</label>
-                <input id="birthday" name="birthday" class="text-sm form-input mt-1 block w-full border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" type="date" value="{{ $user->birthday }}" placeholder="YYYY-MM-DD">
+                <input id="birthday" name="birthday" class="text-sm form-input mt-1 block w-full border-red-300 rounded-lg bg-gray-50 focus:ring-red-500 focus:border-red-500" type="date" value="{{ $user->birthday }}" placeholder="YYYY-MM-DD" readonly>
 
               </div>
               <div class="w-full mt-1">

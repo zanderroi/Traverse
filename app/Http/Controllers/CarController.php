@@ -10,7 +10,7 @@ use App\Models\User;
 use App\Models\CarRating;
 use app\Models\CarLocation;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\ProfilePicture;
 class CarController extends Controller
 {
 
@@ -22,6 +22,7 @@ class CarController extends Controller
 
     // Fetch the booking status for the customer
     $user = auth()->user();
+    $latestProfilePicture = $user->profilepicture()->latest()->first();
     $bookingStatus = $user->booking_status ?? null;
 
     // Fetch the ratings for the car
@@ -48,6 +49,7 @@ class CarController extends Controller
         'averageRating' => $averageRating,
         'ratings' => $ratings, // Add the 'ratings' variable to the view data
         'percentageArray' => $percentageArray,
+        'latestProfilePicture' => $latestProfilePicture,
     ]);
 }
 public function showLocation($car_id)

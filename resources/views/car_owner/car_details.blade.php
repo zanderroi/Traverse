@@ -22,45 +22,64 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
             <div class="container">
-                <a class="navbar-brand" href="{{ route('car_owner.dashboard') }}">
-                    Traverse
+                <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
+                    <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
+                    <span class="self-center text-xl text-white font-semibold whitespace-nowrap dark:text-white">Traverse</span>
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
-                </button>
+                </button> 
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <li class="-mb-px mr-1">
-                            <a class="bg-white inline-block border-l border-t border-r rounded-t py-2 px-4 text-blue-700 font-semibold navbar" href="{{ route('car_owner.dashboard') }}">Dashboard</a>
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <li>
+                          <a href="#" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">Earnings!</a>
+                        </li>
+                        <li>
+                          <a href="{{ route('car_owner.car_details') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">List a Car</a>
+                        </li>
+                        <li>
+                            <div class="sm:fixed sm:top-0 sm:right-0 text-right mr-2">
+
+                                <a href="{{ route('traverse-chats') }}" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Traverse Chats </a>
+                        </div>
+                    </li>
+                              <li>
+                                <div class="flex items-center">
+                                    @if ($latestProfilePicture)
+                                    <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' .$latestProfilePicture->profilepicture) }}" alt="Profile Picture">
+                                @else
+                                    <img class="w-8 h-8 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
+                                @endif
+                                  <a id="navbarDropdown" class="nav-link dropdown-toggle ml-2 text-blue-600 font-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->first_name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
+                                  </a>
+                                
+                                
+  
+                                  <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                      
+                                    <a class="dropdown-item" href="{{ route('car_owner.profile') }}">
+                                      Profile
+                                  </a>
+                                      <a class="dropdown-item" href="{{ route('logout') }}"
+                                         onclick="event.preventDefault();
+                                                       document.getElementById('logout-form').submit();">
+                                          {{ __('Logout') }}
+                                      </a>
+  
+                                      <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                          @csrf
+                                      </form>
+                                  </div>
                                 </div>
-                            </li>
-                       
-                    </ul>
-                </div>
+                                
+                              </li>
+  
+                      </ul>
             </div>
         </nav>
         @section('content')
@@ -265,16 +284,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                
-                                {{-- <div class="row mb-3">
-                                    <label for="car_images" class="col-md-4 col-form-label text-md-end">Car Images:</label>
-                                    <div class="col-md-6">
-                                    <input type="file" id="car_images" name="car_images[]" accept="image/*" multiple class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 form-control-file @error('car_images') is-invalid @enderror" name="car_images" required>
-                                    </div>
-                                </div> --}}
 
-
-                                
                                 <div class="row mb-0">
                                     <div class="offset-md-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                         <button type="submit">

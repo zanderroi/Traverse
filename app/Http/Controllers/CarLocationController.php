@@ -39,33 +39,6 @@ class CarLocationController extends Controller
             'message' => 'Location updated successfully',
         ]);
     }
-//     public function showLocation($carId, Request $request)
-// {
-//     $latitude = $request->query('latitude');
-//     $longitude = $request->query('longitude');
-
-//     // Retrieve the car details
-//     $car = Car::find($carId);
-
-//     // Retrieve the customer details
-//     $customerId = $car->customer_id;
-//     $customer = User::find($customerId);
-
-//     // Retrieve the booking details
-//     $bookingId = $car->booking_id;
-//     $booking = Booking::find($bookingId);
-
-//     return view('car_owner.location', [
-//         'car' => $car,
-//         'customer' => $customer,
-//         'booking' => $booking,
-//         'latitude' => $latitude,
-//         'longitude' => $longitude,
-//         // Pass any other necessary data to the view
-//     ]);
-// }
-
-
 
     public function showLocation($carId)
     {
@@ -106,7 +79,8 @@ $defaultLatitude = 51.5074; // Example: London latitude
 $defaultLongitude = -0.1278; // Example: London longitude
     
         $car = Car::find($carId);
-
+        $customer = null;
+        $booking = null;
     
         return view('car_owner.location', [
             'car' => $car,

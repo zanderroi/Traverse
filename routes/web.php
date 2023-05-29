@@ -136,7 +136,7 @@ Route::post('/profile/change-password', [CustomerController::class, 'changePassw
 Route::get('/car_owner/profile', [CarOwnerController::class, 'profile'])->name('car_owner.profile');
 
 //Car Owner Profile Picture
-Route::post('/car_owner/profile', [ProfilePictureController::class, 'store'])->name('carownerpicture.store');
+Route::post('/car_owner/profile', [ProfilePictureController::class, 'ownerstore'])->name('carownerpicture.ownerstore');
 
 //Car Owner Update Profile
 Route::put('/profile', [CarOwnerController::class, 'updateProfile'])->name('carowner.updateProfile');
@@ -145,5 +145,7 @@ Route::put('/profile', [CarOwnerController::class, 'updateProfile'])->name('caro
 Route::post('/change-password', [CarOwnerController::class, 'changePassword'])->name('carowner.change-password');
 
 //Car Owner Update Car Details
-Route::put('/car-owner/update-car-details/{car_id}', [CarOwnerController::class, 'updateCarDetails'])->name('car_owner.update_car_details');
+Route::put('/car_owner/update-car-details/{car_id}', [CarOwnerController::class, 'updateCarDetails'])->name('car_owner.update_car_details');
 
+//Car Owner Earnings
+Route::get('/car_owner/earnings', [CarOwnerController::class, 'earnings'])->name('car_owner.earnings');

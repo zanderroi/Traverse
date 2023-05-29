@@ -19,12 +19,30 @@
   });
 
   confirmButton.addEventListener('click', () => {
-    if (temporaryImage) {
-      // TODO: Save the temporary image to the database
-      // You can use AJAX or submit a form to send the image data to the server
-      // Once the image is saved, you can update the profile picture on the page
-      // with the saved image and close the modal if needed.
+   // Create a new FormData object
+  const formData = new FormData();
+  
+  // Add the temporary images to the FormData object
+  formData.append('display_picture', imageInput.files[0]);
+  formData.append('add_picture1', imageInput2.files[0]);
+  formData.append('add_picture2', imageInput3.files[0]);
+  formData.append('add_picture3', imageInput4.files[0]);
+
+  // Send the AJAX request to save the images
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', '/save-images'); // Replace '/save-images' with the actual URL to your server-side image upload endpoint
+  xhr.onload = () => {
+    if (xhr.status === 200) {
+      // Images saved successfully, you can update the image elements with the saved images here
+      console.log('Images saved successfully');
+    } else {
+      console.error('Error saving images');
     }
+  };
+  xhr.onerror = () => {
+    console.error('Error saving images');
+  };
+  xhr.send(formData);
   });
 
 

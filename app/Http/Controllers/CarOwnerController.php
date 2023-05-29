@@ -8,7 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Avatar;
+use App\Models\ProfilePicture;
+use App\Models\Booking;
+use Illuminate\Support\Facades\DB;
+
 
 class CarOwnerController extends Controller
 {
@@ -24,13 +27,15 @@ class CarOwnerController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
+        $latestProfilePicture = $user->profilepicture()->latest()->first();
         $cars = Car::where('car_owner_id', auth()->id())->get();
         $users = User::where('id', auth()->id())->get();
         return view('car_owner.dashboard', [
             'addCarLink' => route('car_owner.car_details'),
             'cars' => $cars,
             'users' => $users,
-            'user' => $user
+            'user' => $user,
+            'latestProfilePicture' => $latestProfilePicture
         ]);
     }    
 
@@ -38,9 +43,12 @@ class CarOwnerController extends Controller
 {
     $addCarLink = route('car_owner.car_details');
     if ($request->isMethod('get')) {
-        return view('car_owner.car_details');
+        $user = Auth::user();
+        $latestProfilePicture = $user->profilepicture()->latest()->first();
+        return view('car_owner.car_details', ['latestProfilePicture' => $latestProfilePicture]);
     }
-
+    $user = Auth::user();
+        $latestProfilePicture = $user->profilepicture()->latest()->first();
     // Validate the request data
     $request->validate([
         'display_picture' => ['required', 'mimes:jpg,jpeg,png', 'max:2048'],
@@ -81,24 +89,29 @@ class CarOwnerController extends Controller
 
 
     // Redirect to car details page
-    return redirect()->route('car_owner.dashboard', ['addCarLink' => $addCarLink])->with('success', 'Car details added successfully!');
+    return redirect()->route('car_owner.dashboard', ['addCarLink' => $addCarLink, 'latestProfilePicture' => $latestProfilePicture])->with('success', 'Car added successfully!');
 }
 
 public function deleteCar(Request $request, $car_id)
 {
     $car = Car::find($car_id);
 
+    if ($car->status == 'booked') {
+        return redirect()->back()->with('error', 'You cannot unlist this car because it is booked.');
+    }
 
     // Soft delete the car
     $car->delete();
 
     // Redirect back to the car owner dashboard
-    return redirect()->route('car_owner.dashboard');
+    return redirect()->route('car_owner.dashboard')->with('success', 'Car unlisted successfully.');
 }
+
 public function profile()
 {
     $user = Auth::user();
-    return view('car_owner.profile', ['user' => $user]);
+    $latestProfilePicture = $user->profilepicture()->latest()->first();
+    return view('car_owner.profile', ['user' => $user, 'latestProfilePicture' => $latestProfilePicture]);
 }
 
 public function updateProfile(Request $request)
@@ -160,7 +173,11 @@ public function updateCarDetails(Request $request, $car_id)
     $car = Car::findOrFail($car_id);
 
     // Validate the request data
-    $request->validate([
+    $validated = $request->validate([
+        'display_picture' => ['mimes:jpg,jpeg,png', 'max:2048'],
+        'add_picture1' => ['mimes:jpg,jpeg,png', 'max:2048'],
+        'add_picture2' => ['mimes:jpg,jpeg,png', 'max:2048'],
+        'add_picture3' => ['mimes:jpg,jpeg,png', 'max:2048'],
         'car_brand' => ['required', 'string', 'max:30'],
         'car_model' => ['required', 'string', 'max:30'],
         'year' => ['required', 'integer', 'min:1900', 'max:' . date('Y')],
@@ -173,20 +190,55 @@ public function updateCarDetails(Request $request, $car_id)
     ]);
 
     // Update the car details
-    $car->car_brand = $request->input('car_brand');
-    $car->car_model = $request->input('car_model');
-    $car->year = $request->input('year');
-    $car->seats = $request->input('seats');
-    $car->plate_number = $request->input('plate_number');
-    $car->vehicle_identification_number = $request->input('vehicle_identification_number');
-    $car->location = $request->input('location');
-    $car->car_description = $request->input('car_description');
-    $car->rental_fee = $request->input('rental_fee');
-    $car->save();
+    if ($request->hasFile('display_picture')) {
+        $displaypicture = $request->file('display_picture')->store('public/dp');
+        $validated['display_picture'] = $displaypicture;
+    }
+
+    if ($request->hasFile('add_picture1')) {
+        $add_picture1 = $request->file('add_picture1')->store('public/dp');
+        $validated['add_picture1'] = $add_picture1;
+    }
+    if ($request->hasFile('add_picture2')) {
+        $add_picture2 = $request->file('add_picture2')->store('public/dp');
+        $validated['add_picture2'] = $add_picture2;
+    }
+    if ($request->hasFile('add_picture3')) {
+        $add_picture3 = $request->file('add_picture3')->store('public/dp');
+        $validated['add_picture3'] = $add_picture3;
+    }
+
+   
+    $car->update($validated);
+   
 
     // Redirect back to the car owner dashboard with a success message
     return redirect()->route('car_owner.dashboard')->with('success', 'Car details updated successfully!');
 }
+
+
+public function earnings()
+{
+    $user = Auth::user();
+    $carOwner = auth()->user();
+
+    // Retrieve the returned cars with customer name and total rental fee
+    $returnedCars = Booking::whereHas('car', function ($query) use ($carOwner) {
+        $query->where('car_owner_id', $carOwner->id);
+    })
+    ->whereNotNull('returned_at')
+    ->with(['customer', 'car'])
+    ->select('car_id', 'user_id', DB::raw('SUM(total_rental_fee) as total_rental_fee'))
+    ->groupBy('car_id', 'user_id')
+    ->get();
+
+    $totalRentalFee = $returnedCars->sum('total_rental_fee');
+    $latestProfilePicture = $user->profilePicture()->latest()->first();
+    return view('car_owner.earnings', compact('returnedCars', 'totalRentalFee','latestProfilePicture'));
+}
+
+
+
 
 
 

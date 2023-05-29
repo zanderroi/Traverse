@@ -59,8 +59,8 @@
                 </li>
                 <li>
                   <div class="flex items-center">
-                    @if ($user->profilepicture)
-                    <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . $user->profilepicture) }}" alt="Profile Picture">
+                    @if ($latestProfilePicture)
+                    <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' .$latestProfilePicture->profilepicture) }}" alt="Profile Picture">
                 @else
                     <img class="w-8 h-8 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
                 @endif

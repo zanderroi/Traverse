@@ -58,8 +58,8 @@
                   </li>
                   <li>
                     <div class="flex items-center">
-                      @if ($user->profilepicture)
-                      <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . $user->profilepicture) }}" alt="Profile Picture">
+                      @if ($latestProfilePicture)
+                      <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' .$latestProfilePicture->profilepicture) }}" alt="Profile Picture">
                   @else
                       <img class="w-8 h-8 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
                   @endif
@@ -124,6 +124,7 @@
                 <tbody>
                     
                     @foreach ($bookings->sortByDesc('created_at') as $booking)   
+                    @if ($booking->car && $booking->car->owner)
                     <form method="POST" action="{{ route('car.rating.store', ['booking_id' => $booking->id, 'car_owner_id' => $booking->car->owner->id, 'customer_id' => auth()->user()->id]) }}">
                         @csrf
                     <tr class="border-b border-blue-400 text-gray-400" style="background-color: #363636;">
@@ -152,7 +153,22 @@
                             <a href="#" class="font-medium text-white hover:underline" ddata-modal-target="popup-modal" data-modal-toggle="popup-modal" data-modal-toggle="defaultModal">Rate Car</a><br>
                             @endif
                         </td>
+                        @else
+                        <tr class="border-b border-blue-400 text-gray-400" style="background-color: #363636;">
+                        <th scope="row" class="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100">
+                        <td class="px-10 py-4">
+                        <p class="text-center">This car is no longer available.</p>
+                        </td>
+                        <td class="px-10 py-4"></th>
+                          <td class="px-10 py-4"></th>
+                            <td class="px-10 py-4"></th>
+                              <td class="px-10 py-4"></th>
+                      </th>
+                      </tr
+                    
                     </tr>
+                    @endif
+         
                     @endforeach
                 </tbody>
                   

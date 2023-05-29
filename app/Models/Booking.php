@@ -17,8 +17,7 @@ class Booking extends Model
         'returned_at',
         'total_rental_fee',
         'late_fee',
-        'notes',
-        'booking_status'
+        'notes'
     ];
 
     protected $casts = [
