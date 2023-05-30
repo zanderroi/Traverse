@@ -49,7 +49,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                       <li>
-                        <a href="#" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">Rented Cars</a>
+                        <a href="{{route('car_owner.rentedcars')}}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">Rented Cars</a>
                       </li>
                         <li>
                           <a href="{{ route('car_owner.earnings') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">Earnings!</a>

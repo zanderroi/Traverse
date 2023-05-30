@@ -149,3 +149,7 @@ Route::put('/car_owner/update-car-details/{car_id}', [CarOwnerController::class,
 
 //Car Owner Earnings
 Route::get('/car_owner/earnings', [CarOwnerController::class, 'earnings'])->name('car_owner.earnings');
+
+//Car Owner Rented Cars
+Route::get('/car_owner/rentedcars', [CarOwnerController::class, 'rentedcars'])->name('car_owner.rentedcars');
+

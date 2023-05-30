@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" href="{{ asset('logo/2-modified.png') }}">
 
     <title>Traverse</title>
-
+  
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
@@ -19,6 +19,9 @@
 
     {{-- Flowbite Tailwind --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+
+
+           
     <style>
         body {
             overflow-x: hidden;
@@ -27,11 +30,26 @@
             transform: scale(1.03);
             transition: all 0.2s ease-in-out;
         }
+        /* Your custom CSS styles go here */
+        .offcanvas-collapse {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            overflow-y: auto;
+            visibility: hidden;
+            z-index: 9999;
+            transition: visibility 0s linear 0.3s;
+        }
+        .offcanvas-collapse.open {
+            visibility: visible;
+            transition: visibility 0s linear 0s;
+        }
     </style>
 </head>
-<body class="pt-5 bg-cover bg-center" style="background-image: url('{{ asset('logo/bgimage5.jpg') }}'); background-repeat: repeat-y;">
-    <div class="pt-4 bg-cover bg-black bg-opacity-50 backdrop-blur-lg bg-center">
-    <div id="app">
+<body class="pt-5 bg-cover bg-no-repeat bg-center min-h-screen" style="background-image: url('{{ asset('logo/bgimage6.jpg') }}');">
+    <div class="bg-cover bg-black bg-opacity-75 backdrop-blur-lg w-screen h-screen">
         <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
             <div class="container">
                 <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
@@ -45,11 +63,11 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
+                      <li>
+                        <a href="{{route('car_owner.rentedcars')}}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">Rented Cars</a>
+                      </li>
                         <li>
-                            <a href="{{route('car_owner.rentedcars')}}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">Rented Cars</a>
-                          </li>
-                        <li>
-                          <a href="#" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">Earnings!</a>
+                          <a href="{{ route('car_owner.earnings') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">Earnings!</a>
                         </li>
                         <li>
                           <a href="{{ route('car_owner.car_details') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">List a Car</a>
@@ -95,40 +113,37 @@
                       </ul>
             </div>
         </nav>
-
-    </div>
-    <div class="w-1/2 pt-8 mx-auto rounded-md"  style="background-color: #121212; max-width: 1350px;">
-        <div class="flex flex-row justify-end">
-        <h1 class="text-gray-300 font-extrabold text-xl mr-3">TOTAL EARNINGS: Php {{ number_format($totalRentalFee, 2) }}</h1>
+  
+    
+        <div class="pt-5">
+            @foreach ($bookedCars as $car)
+                <div class="mx-auto w-1/2 h-64 flex flex-row shadow-md" style="background-color: #121212;">
+                    <div>
+                        <img src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:380px; height:256px;"/>
+                    </div>
+                    <div class="mt-5 ml-4">
+                        <h3 class="text-white text-lg font-bold">{{ $car->car_brand }} - {{ $car->car_model }}</h3>
+                        @if ($car->bookings->count() > 0)
+                            @php
+                                $latestBooking = $car->bookings->last();
+                                $customerName = $latestBooking->user->first_name . ' ' . $latestBooking->user->last_name;
+                            @endphp
+                            <p class="text-gray-400 text-md font-semi-bold">Customer Name: {{ $customerName }}</p>
+                            <p class="text-gray-400 text-md font-semi-bold">Total Rental Fee: Php {{ number_format($latestBooking->total_rental_fee, 2) }}</p>
+                            <p class="text-gray-400 text-md font-semi-bold">Pickup Date and Time: {{ date('F d, Y h:i A', strtotime($latestBooking->pickup_date_time)) }}</p>
+                            <p class="text-gray-400 text-md font-semi-bold">Return Date and Time: {{ date('F d, Y h:i A', strtotime($latestBooking->return_date_time)) }}</p>
+                        @else
+                            <p class="text-gray-400 text-md font-semi-bold">No bookings found for this car.</p>
+                        @endif
+                        <a href="{{ url('traverse-chats/' . $latestBooking->user->id) }}" target="_blank" class="font-medium text-blue-700 hover:underline" data-modal-target="popup-modal" data-modal-toggle="popup-modal" data-modal-toggle="defaultModal">Message</a><br>
+                        <a href="#" class="font-medium text-blue-700 hover:underline">Confirm Return</a>
+                    </div>
+                </div>
+            @endforeach
         </div>
-        <hr class="text-gray-500 mt-1 ">
-        @if ($returnedCars->isEmpty())
-            <p>No rented cars found.</p>
-        @else
-        <table class="text-sm text-left dark:text-blue-100 mx-auto  max-w-full xs:max-w-none sm:max-w-xs md:max-w-sm  lg:max-w-md xl:max-w-lg">
-            <thead class="text-md text-center text-white uppercase dark:text-white sticky top-6 z-10" style="background-color: #121212;">
-                    <tr class="border-b border-gray-500">
-                        <th cope="col" class="text-gray-300 text-md font-semibold"></th>
-                        <th cope="col" class="text-gray-300 text-md font-semibold px-6 py-3">Car</th>
-                        <th scope="col" class="px-6 py-3">Customer</th>
-                        <th scope="col" class="px-6 py-3">Earnings</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($returnedCars as $returnedCar)
-                        <tr class="border-b border-gray-500">
-                            <th scope="row" class=" px-3 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100">
-                                <img class="rounded-full w-20 h-20" src="{{ asset('storage/'.$returnedCar->car->display_picture) }}" alt="Car Image">
-                            </th>
-                            <td class="px-6 py-4 text-gray-500">{{ $returnedCar->car->car_brand }} {{ $returnedCar->car->car_model }}</td>
-                            <td class="px-6 py-4 text-gray-500">{{ $returnedCar->customer->first_name }} {{ $returnedCar->customer->last_name }}</td>
-                            <td class="px-6 py-4 text-gray-500">Php {{ number_format($returnedCar->total_rental_fee,2) }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @endif
+        
+        
+        
     </div>
-</div>
 </body>
 </html>

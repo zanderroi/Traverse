@@ -89,39 +89,37 @@
     </div>   
    
       
-        <div class="p-3 sticky top-6 z-10" style="background-color: #0C0C0C;">
-          <div class="flex justify-between items-center">
-            <h1 class="text-3xl font-bold pl-7 ml-4 mt-6 mb-3 mr-5 text-white">Available Cars</h1>
-            <div class="flex items-end">
-              <form method="GET" action="{{ route('customer.available_cars') }}">
-                <label for="location" class="ml-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search by Location</label>
-                <div class="relative ml-2 mt-2 flex">
-                  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <svg aria-hidden="true" class="w-3 h-3 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                  </div>
-                  <input type="text" name="location" value="{{ $location }}" class="h-4 block w-64 p-4 pl-10 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search by Location">
-                  <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 text-xs text-center px-2 py-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Search</button>
-                </div>
-              </form>
-            
-              <form action="{{ route('customer.available_cars') }}" method="GET" class="ml-4">
-                <div class="form-group flex items-end">
-                  <div class="mt-2">
-                    <select class="w-32 h-12 text-xs order border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500" name="sort_by_rental_fee" id="sort_by_rental_fee">
-                      <option value="">Rental Fee</option>
-                      <option value="asc">Lowest to highest</option>
-                      <option value="desc">Highest to lowest</option>
-                    </select>
-                    <button class="h-12 text-white bg-blue-600 hover:bg-blue-700 text-xs text-center px-2 py-1.5 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700" type="submit" onclick="updateSortBox()">Sort</button>
-                  </div>
-                </div>
-              </form>
+    <div class="p-3 sticky top-6 z-10" style="background-color: #0C0C0C;">
+      <div class="flex flex-col sm:flex-row justify-between items-center">
+        <h1 class="text-3xl font-bold pl-7 ml-4 mt-6 mb-3 mr-5 text-white">Available Cars</h1>
+        <div class="flex items-end mt-4 sm:mt-0">
+          <form method="GET" action="{{ route('customer.available_cars') }}" class="flex items-center">
+            <label for="location" class="sr-only">Search by Location</label>
+            <div class="relative flex items-center">
+              <svg aria-hidden="true" class="w-3 h-3 text-gray-500 dark:text-gray-400 absolute left-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+              <input type="text" name="location" value="{{ $location }}" class="mt-2 h-10 px-4 py-2 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search by Location">
             </div>
-            
-          </div>
+            <button type="submit" class="h-10 text-white bg-blue-600 hover:bg-blue-700 text-xs text-center px-2 py-2 ml-2 sm:ml-0 mt-2 sm:mt-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Search</button>
+          </form>
+        
+          <form action="{{ route('customer.available_cars') }}" method="GET" class="ml-4">
+            <div class="form-group flex items-end">
+              <select class="w-24 sm:w-32 h-10 text-xs order border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500" name="sort_by_rental_fee" id="sort_by_rental_fee">
+                <option value="">Rental Fee</option>
+                <option value="asc">Lowest to highest</option>
+                <option value="desc">Highest to lowest</option>
+              </select>
+              <button class="h-10 text-white bg-blue-600 hover:bg-blue-700 text-xs text-center px-2 py-1.5 ml-2 sm:ml-0 mt-2 sm:mt-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700" type="submit" onclick="updateSortBox()">Sort</button>
+            </div>
+          </form>
         </div>
+      </div>
+    </div>
+    
+    
+    
       
       
         @if(session('success'))
@@ -135,20 +133,21 @@
               {{ session('cancelled') }}
           </div>
           @endif
-    <div class="ml-4 pl-5 row justify-content-start mt-2 flex-row">
-        @foreach ($cars as $car)
-        <div class="bg-white hover-scale hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 left-1 mt-2 mr-3 ml-4 mb-4 pt-2 px-2 w-64 h-32 border border-gray-200 rounded-md shadow-md dark:border-gray-700">
-
-            <img src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:250px;height:150px;"/>
-            <div class="p-3">
-                <a class="hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" href="{{ route('cars.show', $car->id) }}">
-                    <h5 class="mx-auto mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>
-                <div class="flex items-center">
-                <p class="mb-1 font-normal text-gray-700 dark:text-gray-400"><i class="fa-sharp fa-solid fa-calendar mr-1" style="color: #152238;"></i>{{ $car->year }}</p>              
-                <p class="mb-1 font-normal text-gray-700 dark:text-gray-400"><i class="fa-solid fa-users mr-1 ml-2" style="color: #152238;"></i>{{ $car->seats }}</p>
-                <p class="mb-1 font-normal text-gray-700 dark:text-gray-400"><i class="fa-solid fa-location-dot mr-1 ml-2" style="color: #152238;"></i>{{ $car->location }}</p>
-               
-                </div>
+          <div class="ml-4 pl-5 row justify-start mt-2">
+            @foreach ($cars as $car)
+              <div class="bg-white hover-scale hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 mt-2 mr-3 mb-4 pt-2 px-2 w-64 h-32 sm:w-64 md:w-1/3 border border-gray-200 rounded-md shadow-md dark:border-gray-700">
+                <img src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" class="w-full h-32 object-cover rounded-md sm:h-48">
+                <div class="p-3">
+                  <a class="hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" href="{{ route('cars.show', $car->id) }}">
+                    <h5 class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>
+                  </a>
+                  <div class="flex items-center">
+                    <p class="mb-1 mr-2 font-normal text-gray-700 dark:text-gray-400"><i class="fa-sharp fa-solid fa-calendar mr-1" style="color: #152238;"></i>{{ $car->year }}</p>              
+                    <p class="mb-1 mr-2 font-normal text-gray-700 dark:text-gray-400"><i class="fa-solid fa-users mr-1" style="color: #152238;"></i>{{ $car->seats }}</p>
+                    <p class="mb-1 font-normal text-gray-700 dark:text-gray-400"><i class="fa-solid fa-location-dot mr-1" style="color: #152238;"></i>{{ $car->location }}</p>
+                  </div>
+             
+          
                 <div class="flex items-center">
                 @for ($i = 1; $i <= 5; $i++)
                 @if ($i <= $car->ratings)

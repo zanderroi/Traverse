@@ -237,6 +237,24 @@ public function earnings()
     return view('car_owner.earnings', compact('returnedCars', 'totalRentalFee','latestProfilePicture'));
 }
 
+public function rentedcars()
+{
+    $user = Auth::user();
+    $carOwner = auth()->user();
+
+    // Retrieve the booked cars with customer name, total rental fee, car owner, and car owner's user information
+    $bookedCars = Car::where('car_owner_id', $carOwner->id)
+    ->where('status', 'booked')
+    ->with(['owner'])
+    ->get();
+
+
+
+    $latestProfilePicture = $user->profilepicture()->latest()->first();
+    return view('car_owner.rentedcars', ['bookedCars' => $bookedCars, 'user' => $user, 'carOwner' => $carOwner, 'latestProfilePicture' => $latestProfilePicture]);
+}
+
+
 
 
 
