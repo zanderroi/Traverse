@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Psychology-based color palette */
+/* You can adjust the colors as per your preference */
+:root {
+  --color-primary: #6c63ff;    /* Primary color */
+  --color-secondary: #ff7868;  /* Secondary color */
+  --color-accent: #00c9a7;     /* Accent color */
+  --color-neutral: #888888;    /* Neutral color */
+}
+
+/* Sidebar styles */
+.sidebar {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.content-titles a {
+  color: white;
+}
+
+.content-titles a:hover {
+  color: var(--color-secondary);
+  font-weight: bold;
+}

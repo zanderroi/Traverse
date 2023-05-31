@@ -18,43 +18,57 @@ class AdminController extends Controller
     }
 
     public function dashboard()
-    {   
-        // $data = Car::all();
-        $data = DB::table('users')->count();
+    {
         $carsCount = DB::table('cars')->whereNull('deleted_at')->count();
-        // $carOwners = DB::table('users')->where('user_type', 'car_owner')->count();
-        // $customers = DB::table('users')->where('user_type', 'customer')->count(); 
-
-        $bookedCarsCount = Booking::count();
+    
+        $bookedCarsCount = DB::table('bookings')->count();
         $availableCarsCount = $carsCount - $bookedCarsCount;
-
+    
         $carOwnersOnTransactions = User::where('user_type', 'car_owner')
                                 ->whereHas('cars', function ($query) {
                                     $query->whereHas('bookings');
                                 })
                                 ->count();
-
+    
         $carOwnersVacant = User::where('user_type', 'car_owner')
                         ->whereDoesntHave('cars', function ($query) {
                             $query->whereHas('bookings');
                         })
                         ->count();
-
+    
         $customersOnTransactions = User::where('user_type', 'customer')
                                 ->whereHas('bookings')
                                 ->count();
-
+    
         $customersVacant = User::where('user_type', 'customer')
                         ->whereDoesntHave('bookings')
                         ->count();
-
+    
         $carOwners = $carOwnersOnTransactions + $carOwnersVacant;
         $customers = $customersOnTransactions + $customersVacant;
-        return view('admin.dashboard', compact('data', 'carsCount', 'carOwners', 'customers', 'bookedCarsCount', 'availableCarsCount', 'carOwnersOnTransactions', 'carOwnersVacant', 'customersOnTransactions', 'customersVacant'));
+    
+        $totalBookings = DB::table('bookings')->count();
+        $bookingsDone = Booking::whereNotNull('returned_at')->count();
+        $bookingsOngoing = Booking::whereNull('returned_at')->count();
+    
+        return view('admin.dashboard', compact(
+            'carsCount',
+            'carOwners',
+            'customers',
+            'bookedCarsCount',
+            'availableCarsCount',
+            'carOwnersOnTransactions',
+            'carOwnersVacant',
+            'customersOnTransactions',
+            'customersVacant',
+            'totalBookings',
+            'bookingsDone',
+            'bookingsOngoing'
+        ));
     }
     public function carshow()
     {
-        $cars = Car::with('owner', 'bookings.customer')->get();
+        $cars = Car::with('owner', 'bookings.customer')->paginate(10);
         $carOwnersWithCars = DB::table('users')
         ->join('cars', 'users.id', '=', 'cars.car_owner_id')
         ->select('users.first_name', 'users.last_name')
@@ -64,7 +78,7 @@ class AdminController extends Controller
     }
     public function ownershow()
     {
-        $users = User::where('user_type', 'car_owner')->get();
+        $users = User::where('user_type', 'car_owner')->paginate(10);
         $carsWithOwners = DB::table('cars')
         ->join('users', 'cars.car_owner_id', '=', 'users.id' )
         ->select('users.first_name', 'users.last_name', 'cars.car_brand', 'cars.car_model', 'cars.year', 'cars.car_owner_id')
@@ -74,7 +88,7 @@ class AdminController extends Controller
     }
     public function customershow()
     {
-        $users = User::where('user_type', 'customer')->withCount('bookings')->get();
+        $users = User::where('user_type', 'customer')->withCount('bookings')->paginate(10);
 
         // Load the related bookings, cars, and their owners
         $users->load('bookings.car.owner');
@@ -254,7 +268,7 @@ class AdminController extends Controller
 
     public function bookshow()
     {
-        $bookings = Booking::all();
+        $bookings = Booking::paginate(10);
         $bookings->load('car.owner');
         $bookingClient = DB::table('users')
         ->join('bookings', 'users.id', '=', 'bookings.user_id')
