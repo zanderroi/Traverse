@@ -80,6 +80,7 @@ Route::get('/graph', [GraphController::class, 'graph']);
 
 
 
+
 Route::get('/customer/dashboard', [CustomerController::class, 'index'])->name('customer.dashboard');
 Route::get('/car_owner/dashboard', [CarOwnerController::class, 'dashboard'])->name('car_owner.dashboard');
 Route::get('/car_owner/car_details', [CarOwnerController::class, 'addCarDetails'])->name('car_owner.car_details');

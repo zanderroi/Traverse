@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Car;
 use App\Models\Booking;
 use App\Models\User;
+use Barryvdh\Snappy\Facades\SnappyPdf;
+use PDF;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\View;
 
 class GraphController extends Controller
 {
@@ -130,6 +133,7 @@ public function graph()
         }
         return $counts;
     }
+
 }
 
 
