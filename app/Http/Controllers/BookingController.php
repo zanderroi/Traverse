@@ -49,7 +49,7 @@ class BookingController extends Controller
         $user_id = Auth::id();
         $user = Auth::user();
         $car_id = $request->input('car_id');
-    
+        $latestProfilePicture = $user->profilepicture()->latest()->first();
         $pickup_date_time = $request->input('pickup_date_time');
         $return_date_time = $request->input('return_date_time');
         $notes = $request->input('notes');
@@ -104,6 +104,8 @@ class BookingController extends Controller
 //Function to prevent double entry of booking
 public function confirmation(Request $request)
 {
+    $user = Auth::user();
+    $latestProfilePicture = $user->profilepicture()->latest()->first();
     // Retrieve the data stored in session
     $booking = $request->session()->get('booking');
     $user = $request->session()->get('user');
@@ -137,7 +139,7 @@ public function confirmation(Request $request)
     $car_owner_last_name = $car_owner_last_name ?? 'Unknown';
     $car_owner_email = $car_owner_email ?? 'Unknown';
     $car_owner_phone_number = $car_owner_phone_number ?? 'Unknown';
-    return view('bookings.confirm', compact('booking', 'user', 'car', 'car_owner_first_name', 'car_owner_last_name', 'total_rental_fee', 'car_owner_email', 'car_owner_phone_number'));
+    return view('bookings.confirm', compact('booking', 'user', 'car', 'car_owner_first_name', 'car_owner_last_name', 'total_rental_fee', 'car_owner_email', 'car_owner_phone_number','latestProfilePicture'));
 }
 
 public function download(Booking $booking)
@@ -211,6 +213,21 @@ public function history()
 
     return view('customer.history', ['bookings' => $bookings]);
 }
+
+public function extend(Request $request, Booking $booking)
+{
+    if ($booking->is_extended) {
+        return redirect()->route('bookings.index')->with('error', 'You have already extended this booking.');
+    }
+
+    $booking->return_date_time = Carbon::parse($booking->return_date_time)->addDay();
+    $booking->total_rental_fee += $booking->car->rental_fee; // Add one day rental fee
+    $booking->is_extended = true;
+    $booking->save();
+
+    return redirect()->route('customer.garage')->with('success', 'Booking extended successfully.');
+}
+
 
 
 

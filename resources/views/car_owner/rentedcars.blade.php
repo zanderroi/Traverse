@@ -49,7 +49,7 @@
     </style>
 </head>
 <body class="pt-5 bg-cover bg-no-repeat bg-center min-h-screen" style="background-image: url('{{ asset('logo/bgimage6.jpg') }}');">
-    <div class="bg-cover bg-black bg-opacity-75 backdrop-blur-lg w-screen h-screen">
+    <div class="bg-cover bg-black bg-opacity-75 backdrop-blur-lg w-screen">
         <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
             <div class="container">
                 <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
@@ -63,9 +63,14 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                      <li>
-                        <a href="{{route('car_owner.rentedcars')}}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">Rented Cars</a>
-                      </li>
+                        <li>
+                            <a href="{{ route('car_owner.rentedcars') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">
+                              @if (isset($bookedCarsCount) && $bookedCarsCount > 0)
+                            <span class="bg-red-500 text-white rounded-full px-1.5">{{ $bookedCarsCount }}</span>
+                        @endif
+                                Rented Cars
+                            </a>
+                        </li>
                         <li>
                           <a href="{{ route('car_owner.earnings') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">Earnings!</a>
                         </li>
@@ -135,7 +140,7 @@
                         @else
                             <p class="text-gray-400 text-md font-semi-bold">No bookings found for this car.</p>
                         @endif
-                        <a href="{{ url('traverse-chats/' . $latestBooking->user->id) }}" target="_blank" class="font-medium text-blue-700 hover:underline" data-modal-target="popup-modal" data-modal-toggle="popup-modal" data-modal-toggle="defaultModal">Message</a><br>
+                        <a href="{{ url('traverse-chats/' . $latestBooking->user->id) }}" target="_blank" class="font-medium text-blue-700 hover:underline" data-modal-target="popup-modal" data-modal-toggle="popup-modal" data-modal-toggle="defaultModal">Message {{ $customerName }}</a><br>
                         <a href="#" class="font-medium text-blue-700 hover:underline">Confirm Return</a>
                     </div>
                 </div>

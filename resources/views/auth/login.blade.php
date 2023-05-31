@@ -92,8 +92,8 @@
         </div>
         <div class="mx-auto w-full md:w-1/2 text-center justify-center items-center h-screen" style="background-color: #121212;">
             <div class="mt-5 pt-4">
-                <h1 class="text-2xl pt-4 text-center font-normal text-gray-300 mb-2">Log in to continue...</h1>
-                <div class="row justify-content-center w-full text-center justify-center items-center">
+                <h1 class="text-2xl pt-4 text-center font-normal text-gray-300 mb-2">Log in to continue</h1>
+                <div class=" row justify-content-center w-full text-center justify-center items-center">
              
         
                 <div class="h-80 w-1/2 flex justify-center items-center" style="background-color: #1c1b1b;">
@@ -101,10 +101,10 @@
                         @csrf
                 
                         <div class="text-left">
-                            <label for="email" class="text-gray-300">{{ __('Email Address') }}</label>
+                          
                 
                             <div>
-                                <input id="email" type="email" class="mb-1 rounded-md form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                <input id="email" type="email" class="text-sm mb-1 rounded-md form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Email Address" required autocomplete="email" autofocus>
                 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -115,10 +115,10 @@
                         </div>
                 
                         <div class="text-left">
-                            <label for="password" class="text-gray-300">{{ __('Password') }}</label>
+                           
                 
                             <div>
-                                <input id="password" type="password" class="rounded-md form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                <input id="password" type="password" class="mt-2 text-sm rounded-md form-control @error('password') is-invalid @enderror" name="password" placeholder="Password" required autocomplete="current-password">
                 
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
@@ -141,17 +141,23 @@
                         </div>
                 
                         <div>
-                            <div class="mx-auto mt-2 flex ">
-                                <button type="submit" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-3 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            
+                                <button type="submit" class="block w-full mt-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-3 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     {{ __('Login') }}
                                 </button>
                 
                                 @if (Route::has('password.request'))
-                                    <a class="btn btn-link text-left" href="{{ route('password.request') }}">
+                                    <a class="btn btn-link text-left pt-2 mb-3" href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif
-                            </div>
+                             <hr class="text-gray-200">
+
+                             <a href="{{ route('register') }}">
+                             <button type="button" class="block w-full mt-3 text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-3 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                {{ __('Create an Account') }}
+                            </button>
+                            </a>
                         </div>
                     </form>
                 </div>
