@@ -1,6 +1,6 @@
 @include('components.header')
 @section('content')
-<div class="flex h-screen">
+<div class="flex">
     <div class="sidebar text-white w-48 pt-8" style="background-color: #0C0C0C;">
         <div class="content-titles mt-1">
           <h2 class="text-xl font-bold mb-4 text-center">Dashboard</h2>
