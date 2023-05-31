@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="flex">
-        <div class="sidebar text-white w-48 pt-8" style="background-color: #0C0C0C;">
+        <div class="sidebar text-white w-48 pt-8 h-screen" style="background-color: #0C0C0C;">
             <div class="content-titles mt-1">
                 <h2 class="text-xl font-bold mb-4 text-center">Dashboard</h2>
                 <ul class="space-y-8 ml-6 pr-2">

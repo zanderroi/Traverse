@@ -1,6 +1,6 @@
 @include('components.header')
 @section('content')
-<div class="flex h-screen">
+<div class="flex">
     <div class="sidebar text-white w-48 pt-8" style="background-color: #0C0C0C;">
         <div class="content-titles mt-1">
           <h2 class="text-xl font-bold mb-4 text-center">Dashboard</h2>
@@ -36,6 +36,7 @@
         </thead>
         <tbody>
             @foreach ($bookings as $index => $booking)
+            @if ($booking->car && $booking->car->owner)
                 <tr>
                     <td class="border-b border-dashed border-gray-500">{{ $booking->id }}</td>
                     <td class="border-b border-dashed border-gray-500">{{ $bookingClient[$index]->first_name. ' ' .$bookingClient[$index]->last_name }}</td>  
@@ -54,7 +55,18 @@
                     <td class="border-b border-dashed border-gray-500">{{ number_format($booking->late_fee, 2, '.', ',') }}</td>  
                     <td class="border-b border-dashed border-gray-500">{{ $booking->notes }}</td>  
                 </tr>
-               
+                <tr>
+                    <th scope="row" class="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100">
+                    <td class="px-10 py-4">
+                    <p class="text-center text-red-600">Booking details no longer available.</p>
+                    </td>
+                    <td class="px-10 py-4"></th>
+                      <td class="px-10 py-4"></th>
+                        <td class="px-10 py-4"></th>
+                          <td class="px-10 py-4"></th>
+                  </th>
+                  </tr
+                  @endif
             @endforeach
         </tbody>
     </table>
