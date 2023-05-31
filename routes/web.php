@@ -111,6 +111,11 @@ Route::get('/customer/garage', [CustomerController::class, 'garage'])->name('cus
 //Return Car
 Route::get('/bookings/{booking_id}', [BookingController::class, 'returnCar'])->name('returncar');
 
+//Extend Booking
+Route::post('/bookings/{booking}/extend', [BookingController::class, 'extend'])->name('bookings.extend');
+
+
+
 //Booking History
 Route::get('/history', [CustomerController::class, 'history'])->name('customer.history');
 

@@ -30,14 +30,21 @@ class CarOwnerController extends Controller
         $latestProfilePicture = $user->profilepicture()->latest()->first();
         $cars = Car::where('car_owner_id', auth()->id())->get();
         $users = User::where('id', auth()->id())->get();
+        
+        $bookedCarsCount = Car::where('car_owner_id', auth()->id())
+                              ->where('status', 'booked')
+                              ->count();
+        
         return view('car_owner.dashboard', [
             'addCarLink' => route('car_owner.car_details'),
             'cars' => $cars,
             'users' => $users,
             'user' => $user,
-            'latestProfilePicture' => $latestProfilePicture
+            'latestProfilePicture' => $latestProfilePicture,
+            'bookedCarsCount' => $bookedCarsCount
         ]);
-    }    
+    }
+    
 
     public function addCarDetails(Request $request)
 {
@@ -45,10 +52,16 @@ class CarOwnerController extends Controller
     if ($request->isMethod('get')) {
         $user = Auth::user();
         $latestProfilePicture = $user->profilepicture()->latest()->first();
-        return view('car_owner.car_details', ['latestProfilePicture' => $latestProfilePicture]);
+        $bookedCarsCount = Car::where('car_owner_id', auth()->id())
+        ->where('status', 'booked')
+        ->count();
+        return view('car_owner.car_details', ['latestProfilePicture' => $latestProfilePicture, 'bookedCarsCount' => $bookedCarsCount]);
     }
     $user = Auth::user();
         $latestProfilePicture = $user->profilepicture()->latest()->first();
+        $bookedCarsCount = Car::where('car_owner_id', auth()->id())
+        ->where('status', 'booked')
+        ->count();
     // Validate the request data
     $request->validate([
         'display_picture' => ['required', 'mimes:jpg,jpeg,png', 'max:2048'],
@@ -89,7 +102,7 @@ class CarOwnerController extends Controller
 
 
     // Redirect to car details page
-    return redirect()->route('car_owner.dashboard', ['addCarLink' => $addCarLink, 'latestProfilePicture' => $latestProfilePicture])->with('success', 'Car added successfully!');
+    return redirect()->route('car_owner.dashboard', ['addCarLink' => $addCarLink, 'latestProfilePicture' => $latestProfilePicture, 'bookedCarsCount' => $bookedCarsCount])->with('success', 'Car added successfully!');
 }
 
 public function deleteCar(Request $request, $car_id)
@@ -111,7 +124,10 @@ public function profile()
 {
     $user = Auth::user();
     $latestProfilePicture = $user->profilepicture()->latest()->first();
-    return view('car_owner.profile', ['user' => $user, 'latestProfilePicture' => $latestProfilePicture]);
+    $bookedCarsCount = Car::where('car_owner_id', auth()->id())
+    ->where('status', 'booked')
+    ->count();
+    return view('car_owner.profile', ['user' => $user, 'latestProfilePicture' => $latestProfilePicture, 'bookedCarsCount' => $bookedCarsCount]);
 }
 
 public function updateProfile(Request $request)
@@ -221,7 +237,9 @@ public function earnings()
 {
     $user = Auth::user();
     $carOwner = auth()->user();
-
+    $bookedCarsCount = Car::where('car_owner_id', auth()->id())
+    ->where('status', 'booked')
+    ->count();
     // Retrieve the returned cars with customer name and total rental fee
     $returnedCars = Booking::whereHas('car', function ($query) use ($carOwner) {
         $query->where('car_owner_id', $carOwner->id);
@@ -234,14 +252,16 @@ public function earnings()
 
     $totalRentalFee = $returnedCars->sum('total_rental_fee');
     $latestProfilePicture = $user->profilePicture()->latest()->first();
-    return view('car_owner.earnings', compact('returnedCars', 'totalRentalFee','latestProfilePicture'));
+    return view('car_owner.earnings', compact('returnedCars', 'totalRentalFee','latestProfilePicture', 'bookedCarsCount'));
 }
 
 public function rentedcars()
 {
     $user = Auth::user();
     $carOwner = auth()->user();
-
+    $bookedCarsCount = Car::where('car_owner_id', auth()->id())
+    ->where('status', 'booked')
+    ->count();
     // Retrieve the booked cars with customer name, total rental fee, car owner, and car owner's user information
     $bookedCars = Car::where('car_owner_id', $carOwner->id)
     ->where('status', 'booked')
@@ -251,13 +271,7 @@ public function rentedcars()
 
 
     $latestProfilePicture = $user->profilepicture()->latest()->first();
-    return view('car_owner.rentedcars', ['bookedCars' => $bookedCars, 'user' => $user, 'carOwner' => $carOwner, 'latestProfilePicture' => $latestProfilePicture]);
+    return view('car_owner.rentedcars', ['bookedCars' => $bookedCars, 'user' => $user, 'carOwner' => $carOwner, 'latestProfilePicture' => $latestProfilePicture, 'bookedCarsCount' => $bookedCarsCount]);
 }
-
-
-
-
-
-
 
 }

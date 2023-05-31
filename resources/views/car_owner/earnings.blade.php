@@ -46,10 +46,15 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <li>
-                            <a href="{{route('car_owner.rentedcars')}}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">Rented Cars</a>
-                          </li>
+                            <a href="{{ route('car_owner.rentedcars') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">
+                              @if (isset($bookedCarsCount) && $bookedCarsCount > 0)
+                            <span class="bg-red-500 text-white rounded-full px-1.5">{{ $bookedCarsCount }}</span>
+                        @endif
+                                Rented Cars
+                            </a>
+                        </li>
                         <li>
-                          <a href="#" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">Earnings!</a>
+                          <a href="{{ route('car_owner.earnings') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">Earnings!</a>
                         </li>
                         <li>
                           <a href="{{ route('car_owner.car_details') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">List a Car</a>
