@@ -31,8 +31,9 @@
             </div>
         </div>
         <div class="w-full px-8 py-4 bg-gray-900">
+            <br>
             <div class="col-md-12 text-center">
-                <h3>Graph</h3>
+                <h3 class="text-3xl font-bold mb-4">Graphical Data</h3>
                 <div class="chart-container">
                     <canvas id="combinedChart"></canvas>
                 </div>
