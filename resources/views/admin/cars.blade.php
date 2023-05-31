@@ -1,19 +1,36 @@
 @include('components.header')
 @section('content')
-    <h1 class="pt-4 pb-2">All Cars</h1>
-    <table class="table">
+<div class="flex h-screen">
+    <div class="sidebar text-white w-48 pt-8" style="background-color: #0C0C0C;">
+        <div class="content-titles mt-1">
+          <h2 class="text-xl font-bold mb-4 text-center">Dashboard</h2>
+          <ul class="space-y-8 ml-6">
+            <li class="flex items-center {{ Request::is('cars/details') ? 'bg-indigo-600' : '' }} w-full" style="padding: 12px 16px; height: 48px;">
+                <i class="fa-solid fa-car mr-2"></i>
+                <a href="/cars/details" class="{{ Request::is('cars/details') ? 'text-white' : 'text-gray-300' }}">Cars</a>
+            </li>
+            <li class="flex items-center ml-4"> <i class="fa-solid fa-user-group mr-2"></i><a href="/owners/details"> Car Owners</a></li>
+            <li class="flex items-center ml-4"> <i class="fa-solid fa-briefcase mr-2"></i><a href="/customers/details">Customers</a></li>
+            <li class="flex items-center ml-4"> <i class="fa-solid fa-book mr-2"></i><a href="/reservation/details">Bookings</a></li>
+            <li class="flex items-center ml-4"> <i class="fa-solid fa-chart-line mr-2"></i><a href="/graph">Graph</a></li>
+            {{-- <li class="flex items-center ml-4"> <i class="fa-solid fa-peso-sign mr-2"></i><a href="/graph/details">Sales</a></li> --}}
+          </ul>
+        </div>
+    </div>
+    <div class="w-full" style="background-color: #E5E7EB;">
+    <table class="table mt-4 pt-4">
         <thead>
             <tr>
-                <th scope="col" class="py-3 px-6">ID</th>
-                <th scope="col" class="py-3 px-6">Brand</th>
-                <th scope="col" class="py-3 px-6">Model</th>
-                <th scope="col" class="py-3 px-6">Year</th>
-                <th scope="col" class="py-3 px-6">Price</th>
-                <th scope="col" class="py-3 px-6">Owner</th>
-                <th scope="col" class="py-3 px-6">Rented Count</th>
-                <th scope="col" class="py-3 px-6">Status</th>
-                <th scope="col" class="py-3 px-6"></th>
-                <th scope="col" class="py-3 px-6"></th>
+                <th scope="col" class="py-3 px-6 border-b border-dashed border-gray-500">ID</th>
+                <th scope="col" class="py-3 px-6 border-b border-dashed border-gray-500">Brand</th>
+                <th scope="col" class="py-3 px-6 border-b border-dashed border-gray-500">Model</th>
+                <th scope="col" class="py-3 px-6 border-b border-dashed border-gray-500">Year</th>
+                <th scope="col" class="py-3 px-6 border-b border-dashed border-gray-500">Price</th>
+                <th scope="col" class="py-3 px-6 border-b border-dashed border-gray-500">Owner</th>
+                <th scope="col" class="py-3 px-6 border-b border-dashed border-gray-500">Rented Count</th>
+                <th scope="col" class="py-3 px-6 border-b border-dashed border-gray-500">Status</th>
+                <th scope="col" class="py-3 px-6 border-b border-dashed border-gray-500"></th>
+                <th scope="col" class="py-3 px-6 border-b border-dashed border-gray-500"></th>
 
 
             </tr>
@@ -21,13 +38,13 @@
         <tbody>
             @foreach ($cars as $index => $car)
                 <tr>
-                    <td>{{ $car->id }}</td>
-                    <td>{{ $car->car_brand }}</td>
-                    <td>{{ $car->car_model }}</td>
-                    <td>{{ $car->year }}</td>
-                    <td>{{ $car->rental_fee }}</td>
-                    <td>{{ $carOwnersWithCars[$index]->first_name. ' ' .$carOwnersWithCars[$index]->last_name }}</td>
-                    <td>
+                    <td class="py-2 px-6 border-b border-dashed border-gray-500">{{ $car->id }}</td>
+                    <td class="py-2 px-6 border-b border-dashed border-gray-500">{{ $car->car_brand }}</td>
+                    <td class="py-2 px-6 border-b border-dashed border-gray-500">{{ $car->car_model }}</td>
+                    <td class="py-2 px-6 border-b border-dashed border-gray-500">{{ $car->year }}</td>
+                    <td class="py-2 px-6 border-b border-dashed border-gray-500">{{ $car->rental_fee }}</td>
+                    <td class="py-2 px-6 border-b border-dashed border-gray-500">{{ $carOwnersWithCars[$index]->first_name. ' ' .$carOwnersWithCars[$index]->last_name }}</td>
+                    <td class="py-2 px-6 border-b border-dashed border-gray-500"> 
                         <button type="button" class="btn btn-link text-primary text-center" data-bs-toggle="modal" data-bs-target="#bookingModal{{ $car->id }}">
                             {{ $car->bookings->count() }}
                         </button>
@@ -59,19 +76,24 @@
                             </div>
                         </div></td>
 
-                    <td> {{ $car->status }} </td>
-                    <td class="py-2 px-6">
+                    <td class="py-2 px-6 border-b border-dashed border-gray-500"> {{ $car->status }} </td>
+                    <td class="py-2 px-6 border-b border-dashed border-gray-500">
                         <a href="/car/{{$car->id}}" class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-1 rounded">
                             Edit
                         </a></td>
-                    <td><form action="/car/{{$car->id}}" method="POST">
+                    <td class="border-b border-dashed border-gray-500"><form action="/car/{{$car->id}}" method="POST">
                         @method('delete')
                         @csrf
-                        <button type="submit" class="bg-red-700 hover:bg-red-800 text-white py-1 px-4 rounded shadow-lg hover:shadow-xl transition duration-duration-200" type="submit">Delete</button>
+                        <button type="submit" class="bg-gray-900 hover:bg-red-800 text-white py-1 px-4 rounded shadow-lg hover:shadow-xl transition duration-duration-200" type="submit">Delete</button>
                         </form></td>
                 </tr>
                
             @endforeach
         </tbody>
     </table>
+    <div class="pagination mx-64 max-w-lg pt-6 p-4 ">
+        {{ $cars->links('pagination::bootstrap-5') }}
+    </div>
+</div>
+</div>
 @include('components.footer')

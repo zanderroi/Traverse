@@ -4,7 +4,7 @@
   
     <!--Copyright section-->
     <div
-      class="p-4 text-center bg-blue-800">
+      class="p-3 text-center bg-gray-600">
       © 2023 Copyright:
       <a class="text-white" href="#"
         >Traverse</a

@@ -1,10 +1,26 @@
 @extends('components.header')
-
 @section('content')
-    <div class="row">
-        <div class="col-md-6">
+<div class="flex">
+    <div class="sidebar text-white w-48 pt-8" style="background-color: #0C0C0C;">
+        <div class="content-titles mt-1">
+          <h2 class="text-xl font-bold mb-4 text-center">Dashboard</h2>
+          <ul class="space-y-8 ml-6 pr-2">
+            <li class="flex items-center ml-4 pr-2"><i class="fa-solid fa-car mr-2"></i><a href="/cars/details">Cars</a></li>
+            <li class="flex items-center ml-4 pr-2"><i class="fa-solid fa-user-group mr-2"></i><a href="/owners/details">Car Owners</a></li>
+            <li class="flex items-center ml-4 pr-2"><i class="fa-solid fa-briefcase mr-2"></i><a href="/customers/details">Customers</a></li>
+            <li class="flex items-center ml-4 pr-2"><i class="fa-solid fa-book mr-2"></i><a href="/reservation/details">Bookings</a></li>
+            <li class="flex items-center pr-2 {{ Request::is('graph') ? 'bg-indigo-600' : '' }} w-full" style="padding: 12px 16px; height: 48px;"> 
+                <i class="fa-solid fa-chart-line mr-2"></i>
+                <a href="/graph" class="{{ Request::is('graph') ? 'text-white' : 'text-gray-300' }}">Graph</a>
+            </li>
+            {{-- <li class="flex items-center ml-4"> <i class="fa-solid fa-peso-sign mr-2"></i><a href="#">Sales</a></li> --}}
+          </ul>
+        </div>
+    </div>
+    <div class="w-full px-8 py-4 bg-gray-900">
+        <div class="col-md-12">
             <h3>Listed Cars Graph</h3>
-            <div>
+            <div class="chart-container">
                 <label for="carFilter">Filter:</label>
                 <select id="carFilter">
                     <option value="hour">Hour</option>
@@ -12,12 +28,12 @@
                     <option value="week">Week</option>
                     <option value="month">Month</option>
                 </select>
+                <canvas id="carsChart"></canvas>
             </div>
-            <canvas id="carsChart"></canvas>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-12">
             <h3>Bookings Graph</h3>
-            <div>
+            <div class="chart-container">
                 <label for="bookingFilter">Filter:</label>
                 <select id="bookingFilter">
                     <option value="hour">Hour</option>
@@ -25,39 +41,57 @@
                     <option value="week">Week</option>
                     <option value="month">Month</option>
                 </select>
+                <canvas id="bookingsChart"></canvas>
             </div>
-            <canvas id="bookingsChart"></canvas>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-12">
             <h3>Customers Graph</h3>
-            <div>
+            <div class="chart-container">
                 <label for="customerFilter">Filter:</label>
                 <select id="customerFilter">
                     <option value="hour">Hour</option>
                     <option value="day">Day</option>
                     <option value="week">Week</option>
-                    <option value="month">Month</option>
-                </select>
-            </div>
+            <option value="month">Month</option>
+            </select>
             <canvas id="customersChart"></canvas>
-        </div>
-        <div class="col-md-6">
-            <h3>Car Owners Graph</h3>
-            <div>
-                <label for="carOwnerFilter">Filter:</label>
-                <select id="carOwnerFilter">
-                    <option value="hour">Hour</option>
-                    <option value="day">Day</option>
-                    <option value="week">Week</option>
-                    <option value="month">Month</option>
-                </select>
             </div>
+            </div>
+            <div class="col-md-12">
+            <h3>Car Owners Graph</h3>
+            <div class="chart-container">
+            <label for="carOwnerFilter">Filter:</label>
+            <select id="carOwnerFilter">
+            <option value="hour">Hour</option>
+            <option value="day">Day</option>
+            <option value="week">Week</option>
+            <option value="month">Month</option>
+            </select>
             <canvas id="carOwnersChart"></canvas>
+            </div>
+            </div>
+            </div>
         </div>
-    </div>
+            </div>
+            @include('components.footer')
+@endsection
+<style>
+    .chart-container {
+        background-color: #1a202c;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
 
+    h3 {
+        color: #c5ff07;
+    }
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    canvas {
+        background-color: #2d3748;
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var labels = @json($labels);
@@ -133,69 +167,40 @@
 
                 chart.update();
             });
-            
 
             return chart;
         }
         var flashingInterval;
         var isFlashing = false;
-        var flashingColors = ['rgba(75, 192, 192, 0.2)', 'rgba(255, 0, 0, 0.2)', 'rgba(0, 255, 0, 0.2)', 'rgba(0, 0, 255, 0.2)'];
-
         function startFlashing() {
             if (!isFlashing) {
-                isFlashing = true;
-                var index = 0;
                 flashingInterval = setInterval(function () {
-                    carChart.data.datasets[0].backgroundColor = flashingColors[index];
-                    bookingChart.data.datasets[0].backgroundColor = flashingColors[index];
-                    customerChart.data.datasets[0].backgroundColor = flashingColors[index];
-                    carOwnerChart.data.datasets[0].backgroundColor = flashingColors[index];
+                    var color = carChart.options.backgroundColor;
+                    carChart.options.backgroundColor = color === 'rgba(75, 192, 192, 0.2)' ? 'rgba(255, 0, 0, 0.2)' : 'rgba(75, 192, 192, 0.2)';
                     carChart.update();
-                    bookingChart.update();
-                    customerChart.update();
-                    carOwnerChart.update();
-                    index = (index + 1) % flashingColors.length;
-                }, 500);
+                }, 1000);
+                isFlashing = true;
             }
         }
-
         function stopFlashing() {
             if (isFlashing) {
-                isFlashing = false;
                 clearInterval(flashingInterval);
-                carChart.data.datasets[0].backgroundColor = 'rgba(75, 192, 192, 0.2)';
-                bookingChart.data.datasets[0].backgroundColor = 'rgba(75, 192, 192, 0.2)';
-                customerChart.data.datasets[0].backgroundColor = 'rgba(75, 192, 192, 0.2)';
-                carOwnerChart.data.datasets[0].backgroundColor = 'rgba(75, 192, 192, 0.2)';
+                isFlashing = false;
+                carChart.options.backgroundColor = 'rgba(75, 192, 192, 0.2)';
                 carChart.update();
-                bookingChart.update();
-                customerChart.update();
-                carOwnerChart.update();
             }
         }
+        startFlashing();
 
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'f') {
+        var sidebarToggle = document.getElementById('sidebarToggle');
+        sidebarToggle.addEventListener('click', function () {
+            var sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('hidden');
+            if (sidebar.classList.contains('hidden')) {
+                stopFlashing();
+            } else {
                 startFlashing();
             }
         });
-
-        document.addEventListener('keyup', function (event) {
-            if (event.key === 'f') {
-                stopFlashing();
-            }
-        });
-
-        
     });
-    
 </script>
-<style>
-   
-    body {
-    background-color: #111;
-    color: white;
-    }
-    </style>
-
-@endsection
