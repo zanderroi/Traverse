@@ -30,7 +30,7 @@
 
 </head>
 <body class="bg-cover bg-no-repeat bg-center" style="background-image: url('{{ asset('logo/bgimage6.jpg') }}');">
-  <div class="bg-cover bg-black bg-opacity-75 backdrop-blur-lg w-screen">
+  <div class="bg-cover bg-black bg-opacity-75 backdrop-blur-lg h-screen">
       <div id="app">
           <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top" style="background-color: #0C0C0C;">
             <div class="container">
@@ -95,9 +95,9 @@
     <h1 class="pt-20 ml-6 text-2xl">Your booking history will display here!</h1> 
     <div>
 @else
-        <div class="mt-6  mx-auto " >
-            <table class="text-sm text-left dark:text-blue-100 mx-auto shadow-md sm:rounded-lg max-w-full xs:max-w-none sm:max-w-xs md:max-w-sm  lg:max-w-md xl:max-w-lg">
-                <thead class="text-xs text-center text-white uppercase dark:text-white sticky top-6 z-10" style="background-color: #121212;">
+        <div class="mt-3 mx-auto overflow-x-auto">
+          <table class="text-sm text-left dark:text-blue-100 mx-auto  shadow-md sm:rounded-lg max-w-full xs:max-w-none sm:max-w-xs md:max-w-sm lg:max-w-md xl:max-w-lg">
+                <thead class="text-xs text-center text-white uppercase dark:text-white " style="background-color: #121212;">
                     <tr>
                       <th scope="col" class="px-6 py-3">
                          
@@ -128,29 +128,31 @@
                     <form method="POST" action="{{ route('car.rating.store', ['booking_id' => $booking->id, 'car_owner_id' => $booking->car->owner->id, 'customer_id' => auth()->user()->id]) }}">
                         @csrf
                     <tr class="border-b border-blue-400 text-gray-400" style="background-color: #363636;">
-                      <th scope="row" class="px-3 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100">
+                      <th scope="row" class="px-3 py-3 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100">
                         <img class="rounded-full w-10 h-10" src="{{ asset('storage/'.$booking->car->display_picture) }}" alt="Car Image">
                     </th>
                         <th scope="row" class="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100">
                             {{ $booking->car->car_brand ?? 'Unlisted Car' }}   {{ $booking->car->car_model ?? ' ' }}
                         </th>
 
-                        <td class="px-1 py-4">
+                        <td class="px-1 py-2">
                             Php {{ $booking->total_rental_fee }}
                         </td>
    
-                        <td class="pl-1 py-4">
+                        <td class="pl-1 py-2">
                             {{ date('F d, Y h:i A', strtotime($booking->pickup_date_time)) }}
 
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-2">
                             {{ date('F d, Y h:i A', strtotime($booking->returned_at)) }}
                         </td>
-                        <td class="px-2 py-4">
+                        <td class="px-2 py-2">
                             @if ($booking->car->carRatings->where('customer_id', auth()->user()->id)->count() > 0)
-                            <p>You have already rated this car.</p>
+                            <p class="text-red-700">You have already rated this car.</p>
                             @else
-                            <a href="#" class="font-medium text-white hover:underline" ddata-modal-target="popup-modal" data-modal-toggle="popup-modal" data-modal-toggle="defaultModal">Rate Car</a><br>
+                           <div class="pt-3">
+                            <button  ddata-modal-target="popup-modal" data-modal-toggle="popup-modal" data-modal-toggle="defaultModal" type="button" class="block mx-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                              Rate Car</button><br></div>
                             @endif
                         </td>
                         @else
@@ -164,7 +166,7 @@
                             <td class="px-10 py-4"></th>
                               <td class="px-10 py-4"></th>
                       </th>
-                      </tr
+                      
                     
                     </tr>
                     @endif
@@ -173,8 +175,12 @@
                 </tbody>
                   
             </table>
+           
+            </div>
+            <div class="mt-4 flex justify-center">
+              {{ $bookings->links('vendor.pagination.bootstrap-5') }}
         </div>
-      </div>
+      
         {{-- Main Modal --}}
           <div id="popup-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
               <div class="relative w-full max-w-md max-h-full">

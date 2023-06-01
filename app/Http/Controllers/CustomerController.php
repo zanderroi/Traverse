@@ -96,14 +96,16 @@ class CustomerController extends Controller
         $user = Auth::user();
         $latestProfilePicture = $user->profilepicture()->latest()->first();
     
-        // Get bookings for the logged-in customer where the booking status is "Returned"
+        // Get bookings for the logged-in customer where the booking status is "Returned" and paginate the results
         $bookings = Booking::where('user_id', $user_id)
             ->whereNotNull('returned_at')
             ->with('car.carRatings')
-            ->get();
+            ->orderByDesc('created_at')
+            ->paginate(5);
     
-        return view('customer.history', ['bookings' => $bookings, 'user' => $user, 'latestProfilePicture' => $latestProfilePicture]);
+        return view('customer.history', compact('bookings', 'user', 'latestProfilePicture'));
     }
+    
     
     public function profile()
     {
