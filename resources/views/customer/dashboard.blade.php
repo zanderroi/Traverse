@@ -136,7 +136,7 @@
           <div class="ml-4 pl-5 row justify-start mt-2">
             @foreach ($cars as $car)
               <div class="bg-white hover-scale hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 mt-2 mr-3 mb-4 pt-2 px-2 w-64 h-32 sm:w-64 md:w-1/3 border border-gray-200 rounded-md shadow-md dark:border-gray-700">
-                <img src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" class="w-full h-32 object-cover rounded-md sm:h-48">
+                <img src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:250px;height:150px;" />
                 <div class="p-3">
                   <a class="hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" href="{{ route('cars.show', $car->id) }}">
                     <h5 class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>
