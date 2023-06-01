@@ -8,6 +8,12 @@ export default defineConfig({
             input: [
                 'resources/sass/app.scss',
                 'resources/js/app.js',
+                'resources/js/carimage.js',
+                'resources/js/navbar.js',
+                'resources/js/bookingcalendar.js',
+                'resources/js/showpassword.js',
+                'resouses/js/popupmodal.js',
+                'resources/js/avatar.js',
             ],
             refresh: true,
         }),
