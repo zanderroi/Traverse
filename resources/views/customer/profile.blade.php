@@ -96,7 +96,7 @@
 
         <div class="bg-cover bg-black bg-opacity-50 backdrop-blur-lg w-full h-full text-center flex justify-center items-center bg-center">
 
-        <div class="mx-auto max-w-5xl bg-white rounded-lg shadow px-6 py-8 mt-4">
+          <div class="mx-auto max-w-5xl bg-white rounded-lg shadow px-6 py-8 mt-4 sm:w-full md:w-1/2 lg:w-64 xl:w-64">
           @if(session('success'))
           <div class="alert alert-success mt-3">
               {{ session('success') }}

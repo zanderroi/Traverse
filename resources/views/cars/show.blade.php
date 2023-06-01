@@ -211,7 +211,11 @@
                 <ul>
                     @foreach ($ratings as $rating)
                     <div class="flex items-center mb-4 space-x-4 mt-2">
-                        <img class="w-10 h-10 rounded-full" src="{{ asset('avatar/default-avatar.png')}}" alt="">
+                      @if ($latestProfilePicture)
+                      <img class="w-10 h-10 rounded-full" src="{{ asset('storage/' .$latestProfilePicture->profilepicture) }}" alt="Profile Picture">
+                  @else
+                      <img class="w-10 h-10 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
+                  @endif
                         <div class="font-medium dark:text-white">
                             <p class="font-bold text-gray-300">{{ $rating->customer->first_name }} {{ $rating->customer->last_name }} <time datetime="2014-08-16 19:00" class="block text-sm text-gray-500 dark:text-gray-400">{{ $rating->created_at->format('F, j Y') }}</time></p>
                         </div>
@@ -234,6 +238,7 @@
                     </div>
                         
                         <li class="font-semibold text-gray-300">{{ $rating->description }}</li>
+                        <hr class="mb-1 mt-2 text-gray-600">
                      
                     @endforeach
                 </ul>

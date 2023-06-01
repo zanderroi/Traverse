@@ -97,14 +97,19 @@
         Booking confirmed successfully!
     </div>
 @endif
+<div class="p-2 sticky top-6 z-10" style="background-color: #0C0C0C;">
+  <div class="flex justify-between items-center">
+      <h1 class="text-3xl font-bold pl-7 ml-4 mt-6 pt-4 mb-3 mr-5 text-white">Booked Car</h1>
+  </div>
+</div>
 
-    @if ($bookings->isEmpty())
-    <div class="pt-4 w-1/2 mx-auto bg-blue-900">
-    <h2 class="p-4 text-4xl text-white font-bold text-center">Your car bookings will display here!</h2> 
-    </div>
+<div class="pt-5">
+  @if ($bookings->isEmpty())
+  <div class="mx-auto mt-5 p-4 flex justify-center items-center w-1/2 ml-3 bg-gray-200">
+    <h1 class="text-2xl font-semibold">Your car bookings will display here!</h1> 
+    <div>
 
 @else
-<div class="pt-5">
 @foreach ($bookings as $booking)
 <div class="mx-auto mt-4 w-1/2 h-64 flex flex-row shadow-md " style="background-color: #121212;">
     <div>
@@ -122,7 +127,7 @@
       @csrf
 
     @if ($booking->is_extended)
-    <button type="submit" class="font-medium text-blue-700 hover:underline" disabled>Already Extended</button>
+    <button type="submit" class="font-medium text-red-700" disabled>Already Extended</button>
 @else
 <a href="#" ddata-modal-target="popup-modal2" data-modal-toggle="popup-modal2" class="font-medium text-blue-700 hover:underline">Extend</a>
 @endif
@@ -160,7 +165,7 @@
           <div id="popup-modal2" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
             <div class="relative w-full max-w-md max-h-full">
                 <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                    <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="popup-modal">
+                    <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="popup-modal2">
                         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                         <span class="sr-only">Close modal</span>
                     </button>

@@ -120,19 +120,22 @@
           
             <div class="ml-4 pl-5 flex flex-wrap justify-start mt-2">
                 @foreach ($cars as $car)
-                <div class="bg-white hover-scale hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 mt-2 mr-3 ml-4 mb-4 pt-2 px-2 w-64 h-96 border border-gray-200 rounded-md shadow-md dark:border-gray-700">
+                <div class="bg-white hover-scale hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 mt-2 mr-3 ml-4 mb-4 pt-2 px-2 w-64 border border-gray-200 rounded-md shadow-md dark:border-gray-700">
                     <img src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:250px;height:150px;" />
                     <div class="p-3">
                         <a class="hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" href="#">
                             <h5 class="mx-auto mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>
-                            <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Location: {{ $car->location }}</p>
-                            <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Rental fee: Php{{ $car->rental_fee }}</p>
-                            <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Status: {{ $car->status }}</p>
+                            <div class="flex items-center">
+                              <p class="mb-1 font-normal text-gray-700 dark:text-gray-400"><i class="fa-solid fa-location-dot mr-1" style="color: #152238;"></i>{{ $car->location }}</p>
+                              <p class="mb-1 mr-2 font-normal text-gray-700 dark:text-gray-400"><i class="fa-sharp fa-solid fa-calendar mr-1" style="color: #152238;"></i>{{ $car->year }}</p>              
+                              <p class="mb-1 mr-2 font-normal text-gray-700 dark:text-gray-400"><i class="fa-solid fa-users mr-1" style="color: #152238;"></i>{{ $car->seats }}</p>
+
+                            </div>
                         </a>
                         
                     </div>
     
-                    <div class="flex justify-center">
+                    <div class="flex justify-center mb-2">
                         <a href="{{ route('car_owner.location', ['carId' => $car->id]) }}" class="mr-1 block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-sm text-sm px-3 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Track</a>
                         <button data-modal-target="defaultModal{{$car->id}}" data-modal-toggle="defaultModal{{$car->id}}" type="button" class="block mr-1 text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-sm text-sm px-3 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Edit Car</button>
                         <button data-modal-target="popup-modal{{$car->id}}" data-modal-toggle="popup-modal{{$car->id}}" type="button" class="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:gray-red-300 font-medium rounded-sm text-sm px-3 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800" @if($car->status == 'booked') disabled @endif>
