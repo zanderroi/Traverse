@@ -97,14 +97,19 @@
         Booking confirmed successfully!
     </div>
 @endif
+<div class="p-2 sticky top-6 z-10" style="background-color: #0C0C0C;">
+  <div class="flex justify-between items-center">
+      <h1 class="text-3xl font-bold pl-7 ml-4 mt-6 pt-4 mb-3 mr-5 text-white">Booked Car</h1>
+  </div>
+</div>
 
-    @if ($bookings->isEmpty())
-    <div class="pt-4 w-1/2 mx-auto bg-blue-900">
-    <h2 class="p-4 text-4xl text-white font-bold text-center">Your car bookings will display here!</h2> 
-    </div>
+<div class="pt-5">
+  @if ($bookings->isEmpty())
+  <div class="mx-auto mt-5 p-4 flex justify-center items-center w-1/2 ml-3 bg-gray-200">
+    <h1 class="text-2xl font-semibold">Your car bookings will display here!</h1> 
+    <div>
 
 @else
-<div class="pt-5">
 @foreach ($bookings as $booking)
 <div class="mx-auto mt-4 w-1/2 h-64 flex flex-row shadow-md " style="background-color: #121212;">
     <div>

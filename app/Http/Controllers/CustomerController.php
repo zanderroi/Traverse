@@ -102,6 +102,7 @@ class CustomerController extends Controller
             ->with('car.carRatings')
             ->orderByDesc('created_at')
             ->paginate(5);
+
     
         return view('customer.history', compact('bookings', 'user', 'latestProfilePicture'));
     }
