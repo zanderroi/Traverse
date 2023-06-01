@@ -12,7 +12,7 @@ export default defineConfig({
                 'resources/js/navbar.js',
                 'resources/js/bookingcalendar.js',
                 'resources/js/showpassword.js',
-                'resouses/js/popupmodal.js',
+                'resources/js/popupmodal.js',
                 'resources/js/avatar.js',
             ],
             refresh: true,
