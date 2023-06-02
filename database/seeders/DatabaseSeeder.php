@@ -38,22 +38,22 @@ class DatabaseSeeder extends Seeder
             'contactperson2number' => '',
         ]);
 
-        $carOwners = User::factory()
-            ->count(10)
-            ->state(new Sequence(
-                ['user_type' => 'car_owner'],
-                ['user_type' => 'customer'],
-            ))
-            ->create([
-                'password' => Hash::make('password'),
-            ]);
+//         $carOwners = User::factory()
+//             ->count(10)
+//             ->state(new Sequence(
+//                 ['user_type' => 'car_owner'],
+//                 ['user_type' => 'customer'],
+//             ))
+//             ->create([
+//                 'password' => Hash::make('password'),
+//             ]);
 
-        $carOwners->each(function ($owner) {
-            if ($owner->user_type === 'car_owner') {
-            $cars = Car::factory()->count(2)->make();
-            $owner->cars()->saveMany($cars);
-            }
-        });
+//         $carOwners->each(function ($owner) {
+//             if ($owner->user_type === 'car_owner') {
+//             $cars = Car::factory()->count(2)->make();
+//             $owner->cars()->saveMany($cars);
+//             }
+//         });
 
     
     }
