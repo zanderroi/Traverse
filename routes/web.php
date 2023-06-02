@@ -72,10 +72,6 @@ Route::delete('/customer/{user}', [AdminController::class, 'customerDestroy']);
 
 Route::get('/reservation/details', [AdminController::class, 'bookshow']);
 
-Route::get('/graph/bookings', [GraphController::class, 'showGraph']);
-Route::get('/graph/cars', [GraphController::class, 'carGraph']);
-Route::get('/graph/customers', [GraphController::class, 'customerGraph']);
-Route::get('/graph/owners', [GraphController::class, 'ownerGraph']);
 Route::get('/graph', [GraphController::class, 'graph']);
 
 
