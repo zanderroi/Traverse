@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Rules\UnderEighteen;
 use App\Models\Booking;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 class AdminController extends Controller
 {
     public function __construct()
@@ -91,7 +93,14 @@ class AdminController extends Controller
         $users = User::where('user_type', 'customer')->withCount('bookings')->paginate(10);
 
         // Load the related bookings, cars, and their owners
-        $users->load('bookings.car.owner');
+        $users->load([
+            'bookings.car.owner' => function ($query) {
+                $query->withTrashed();
+            },
+            'bookings.car' => function ($query) {
+                $query->withTrashed();
+            }
+        ]);
 
         return view('admin.customers',compact('users'));
     }
@@ -269,13 +278,21 @@ class AdminController extends Controller
     public function bookshow()
     {
         $bookings = Booking::paginate(10);
-        $bookings->load('car.owner');
+        
+        $bookings->load([
+            'car.owner' => function ($query) {
+                $query->withTrashed();
+            },
+            'car' => function ($query) {
+                $query->withTrashed();
+            }
+        ]);
+        
         $bookingClient = DB::table('users')
         ->join('bookings', 'users.id', '=', 'bookings.user_id')
         ->select('users.first_name', 'users.last_name')
         ->get();
         
-
         return view('admin.bookings', compact('bookings', 'bookingClient'));
     }
 
