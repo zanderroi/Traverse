@@ -93,7 +93,7 @@
                      <ul class="navbar-nav ms-auto">
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->first_name }}
+                                    {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
                                 </a>
                               
                    
