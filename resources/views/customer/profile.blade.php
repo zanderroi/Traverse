@@ -209,7 +209,7 @@
                   </div>
                   <div class="w-full mt-2">
                     <label class="text-right block font-medium text-gray-700" for="phone">Phone Number</label>
-                    <input id="phone" class="text-sm form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" type="text" value="{{ $user->phone_number }}" readonly>
+                    <input id="phone_number" class="text-sm form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" type="text" value="{{ $user->phone_number }}" readonly>
                   </div>
                 </div>
                 <div class="flex flex-row">
@@ -278,7 +278,7 @@
               @method('PUT')
             <div class="flex flex-row">
               <div class="w-full mt-1 mr-2">
-                <label class="text-left block font-medium text-gray-700" for="email">Full name</label>
+                <label class="text-left block font-medium text-gray-700" for="name">Full name</label>
             <input class="text-sm form-input mt-1 block w-full  border-red-300 rounded-lg bg-gray-50 focus:ring-red-500 focus:border-red-500" type="text" value="{{ $user->first_name }} {{ $user->last_name }}" readonly>
                
               </div>
@@ -289,30 +289,30 @@
             </div>
             <div class="flex flex-row">
               <div class="w-full mt-1 mr-2">
-                <label class="text-left block font-medium text-gray-700" for="email">Birthday</label>
+                <label class="text-left block font-medium text-gray-700" for="birthday">Birthday</label>
                 <input id="birthday" name="birthday" class="text-sm form-input mt-1 block w-full border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" type="date" value="{{ $user->birthday }}" placeholder="YYYY-MM-DD">
 
               </div>
               <div class="w-full mt-1">
-                <label class="text-left block font-medium text-gray-700" for="email">Phone Number</label>
+                <label class="text-left block font-medium text-gray-700" for="phone_number">Phone Number</label>
                 <input id="phone_number" name="phone_number" class="text-sm form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" type="text" value="{{ $user->phone_number }}" autofocus>
               </div>
             </div>
             <div class="flex flex-row">
               <div class="w-full mt-1 mr-2">
-                <label class="text-left block font-medium text-gray-700" for="email">Address</label>
+                <label class="text-left block font-medium text-gray-700" for="address">Address</label>
             <input id="address" name="address" class="text-sm form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" type="text" value="{{ $user->address }}" autofocus>       
             </div>
             
           </div>
           <div class="flex flex-row">
             <div class="w-full mt-1 mr-2">
-              <label class="text-left block font-medium text-gray-700" for="email">Contact Person</label>
+              <label class="text-left block font-medium text-gray-700" for="contactperson1">Contact Person</label>
          
               <input id="contactperson1" name="contactperson1" class="text-sm form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" type="text" value="{{ $user->contactperson1 }}" autofocus>       
           </div>
           <div class="w-full mt-1 mr-2">
-            <label class="text-left block font-medium text-gray-700" for="email">Phone Number</label>
+            <label class="text-left block font-medium text-gray-700" for="contactperson1number">Phone Number</label>
        
             <input id="contactperson1number" name="contactperson1number" class="text-sm form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" type="text" value="{{ $user->contactperson1number }}" autofocus>       
         </div>
@@ -320,12 +320,12 @@
         </div>
         <div class="flex flex-row">
           <div class="w-full mt-1 mr-2">
-            <label class="text-left block font-medium text-gray-700" for="email">Contact Person</label>
+            <label class="text-left block font-medium text-gray-700" for="contactperson2">Contact Person</label>
        
             <input id="contactperson2" name="contactperson2" class="text-sm form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" type="text" value="{{ $user->contactperson2 }}" autofocus>       
         </div>
         <div class="w-full mt-1 mr-2">
-          <label class="text-left block font-medium text-gray-700" for="email">Phone Number</label>
+          <label class="text-left block font-medium text-gray-700" for="contactperson2number">Phone Number</label>
      
           <input id="contactperson2number" name="contactperson2number" class="text-sm form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" type="text" value="{{ $user->contactperson2number }}" autofocus>       
       </div>
