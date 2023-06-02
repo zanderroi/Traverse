@@ -50,12 +50,12 @@
             </style>
 
     </head>
-    <body class="pt-5 bg-cover bg-center" style="background-image: url('{{ asset('logo/bgimage8.jpg') }}');">
-        <div class="bg-black bg-opacity-50 backdrop-blur-lg w-full pt-5">
+    <body style="background-color: #0C0C0C; ">
+       
         <div id="app">
             <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
                 <div class="container">
-                    <a class="navbar-brand flex items-center" href="#">
+                    <a class="navbar-brand flex items-center" href="{{ route('welcome') }}">
                         <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
                         <span class="self-center text-xl font-semibold whitespace-nowrap text-white">Traverse</span>
                     </a>
@@ -102,16 +102,13 @@
             </nav>
     
         </div>
+<div class="mt-2 pt-4">
+            <h2 class="pt-4 mt-4 ml-4 text-3xl font-semi-bold text-white"> FREQUENTLY ASKED QUESTIONS </h2>
 
-        <div class="mx-auto" style="background-color: #121212; max-width: 1350px;">
-            <h2 class="p-5 text-3xl font-bold text-white"> Frequently Asked Questions </h2>
-            <div class="h-screen mx-auto" style="background-color: #151515; max-width: 1200px;">
-            </div>
+            
+
 
         </div>
 
-
-
-    </div>
     </body>
 </html>
