@@ -54,7 +54,7 @@
         <div class="bg-black bg-opacity-75 backdrop-blur-lg">
             <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
                 <div class="container">
-                    <a class="navbar-brand flex items-center" href="#">
+                    <a class="navbar-brand flex items-center" href="{{ route('welcome') }}">
                         <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
                         <span class="self-center text-xl font-semibold whitespace-nowrap text-white">Traverse</span>
                     </a>

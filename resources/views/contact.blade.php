@@ -20,60 +20,56 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
 
 </head>
-<body>
-  <div id="app">
-    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top">
-        <div class="container">
-            <a class="navbar-brand flex items-center" href="#">
-                <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
-                <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Traverse</span>
-            </a>
-           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                <span class="navbar-toggler-icon"></span>
-            </button> 
+<body class="pt-5 bg-cover bg-center" style="background-image: url('{{ asset('logo/bgimage7.jpg') }}');">
+  <div class="bg-black bg-opacity-75 backdrop-blur-lg">
+    <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
+      <div class="container">
+          <a class="navbar-brand flex items-center" href="{{ route('welcome') }}">
+              <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
+              <span class="self-center text-xl font-semibold whitespace-nowrap text-white">Traverse</span>
+          </a>
+         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+              <span class="navbar-toggler-icon"></span>
+          </button> 
 
-            
-                <!-- Left Side Of Navbar -->
-               <ul class="navbar-nav me-auto">
+          
+          <div id="navbarSupportedContent">
 
-                </ul> 
+              <!-- Right Side Of Navbar -->
+              <ul class="navbar-nav ml-auto">
+                 
+                      <a href="{{ route('faq') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300 hover:text-blue-600"> FAQ </a>
+                
+                
+                      <a href="{{ route('ourteam') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300 hover:text-blue-600"> Our Team</a>
+                 
+                      @if (Route::has('login'))
+                      
+                              @auth
+                                  <a href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300 hover:text-blue-600">Home</a>
+                              @else
+                                  <a href="{{ route('login') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300 hover:text-blue-600">Log in</a>
+          
+                                  @if (Route::has('register'))
+                                      <a href="{{ route('register') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300 hover:text-blue-600">Register</a>
+                                  @endif
+                              @endauth
+                          
+                      @endif
 
-                <!-- Right Side Of Navbar -->
-                <ul class="navbar-nav ms-auto">
-                    <div class="sm:fixed sm:top-0 sm:right-0 text-right mr-6 mt-1.5">
-                        <a href="#" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"> FAQ </a>
-                    </div>
-                    <div class="sm:fixed sm:top-0 sm:right-0 text-right mr-6 mt-1.5">
-                        <a href="#" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"> Our Team</a>
-                    </div>
-                   
-                        @if (Route::has('login'))
-                            <div class="sm:fixed sm:top-0 sm:right-0 text-right mt-1.5">
-                                @auth
-                                    <a href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Home</a>
-                                @else
-                                    <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
-            
-                                    @if (Route::has('register'))
-                                        <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
-                                    @endif
-                                @endauth
-                            </div>
-                        @endif
+                      <div class="sm:fixed sm:top-0 sm:right-0 text-right ml-6">
 
-                        <div class="sm:fixed sm:top-0 sm:right-0 text-right ml-6">
-
-                                <a href="{{ route('contact') }}" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Contact Us! </a>
-
-               
+                              <a href="{{ route('contact') }}" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Contact Us! </a>
+                      </div>
+             
 
 
-                </ul>
-            
-        </div>
-    </nav>
+              </ul>
+          
+      </div>
+  </nav>
 
-</div>
+
 <!-- component -->
 <div class="mx-auto flex justify-center items-center w-1/2 bg-white">
 	<!-- COMPONENT CODE -->
@@ -156,5 +152,6 @@
     </a>
   </div>
 </div> --}}
+</div>
 </body>
 </html>

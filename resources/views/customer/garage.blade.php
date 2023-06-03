@@ -36,7 +36,7 @@
 <body class="pt-5 bg-cover bg-no-repeat bg-center min-h-screen" style="background-image: url('{{ asset('logo/bgimage6.jpg') }}');">
     <div class="bg-cover bg-black bg-opacity-75 backdrop-blur-lg w-screen h-screen">
         <div id="app">
-            <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top" style="background-color: #0C0C0C;">
+            <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
               <div class="container">
                 <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
                   <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
@@ -87,22 +87,24 @@
       
             
           </div>   
-    @if(session('success'))
-    <div class="alert alert-success pt-4">
-        {{ session('success') }}
-    </div>
-@endif
-@if(request()->query('success') == 1)
-    <div class="alert alert-success pt-4">
-        Booking confirmed successfully!
-    </div>
-@endif
+
 <div class="p-2 sticky top-6 z-10" style="background-color: #0C0C0C;">
   <div class="flex justify-between items-center">
       <h1 class="text-3xl font-bold pl-7 ml-4 mt-6 pt-4 mb-3 mr-5 text-white">Booked Car</h1>
   </div>
 </div>
-
+@if(session('success'))
+<div class="alert alert-success pt-4">
+    {{ session('success') }}
+</div>
+@endif
+@if(request()->query('success') == 1)
+<div class="pt-2">
+<div class="alert alert-success">
+    Booking confirmed successfully!
+</div>
+</div>
+@endif
 <div class="pt-5">
   @if ($bookings->isEmpty())
   <div class="mx-auto mt-5 p-4 flex justify-center items-center w-1/2 ml-3 bg-gray-200">
@@ -111,11 +113,12 @@
 
 @else
 @foreach ($bookings as $booking)
-<div class="mx-auto mt-4 w-1/2 h-64 flex flex-row shadow-md " style="background-color: #121212;">
-    <div>
-        <img src="{{ asset('storage/'.$booking->car->display_picture) }}" alt="Car Image" style="width:380px; height:256px;"/>
+<div class="mx-auto mt-4 w-1/2 flex flex-row shadow-md " style="background-color: #121212;">
+    <div class="w-1/2 bg-cover" style="background-image: url('{{  asset('storage/'.$booking->car->display_picture) }}');">
+   
+        {{-- <img class="bg-cover bg-center" src="{{ asset('storage/'.$booking->car->display_picture) }}" alt="Car Image"/> --}}
     </div>
-<div class="mt-5 ml-4">
+<div class="p-4 pl-4">
     <h3 class="text-white text-lg font-bold">{{$booking->car->car_brand}} - {{$booking->car->car_model}}</h3>
     <p class="text-gray-400 text-md font-semi-bold">Car Owner: {{ $booking->car->owner->first_name }} {{ $booking->car->owner->last_name }}</p>
     <p class="text-gray-400 text-md font-semi-bold">Total Rental Fee: Php {{number_format ($booking->total_rental_fee, 2) }}</p>
@@ -129,7 +132,8 @@
     @if ($booking->is_extended)
     <button type="submit" class="font-medium text-red-700" disabled>Already Extended</button>
 @else
-<a href="#" ddata-modal-target="popup-modal2" data-modal-toggle="popup-modal2" class="font-medium text-blue-700 hover:underline">Extend</a>
+<a href="#" ddata-modal-target="popup-modal2" data-modal-toggle="popup-modal2" class="font-medium text-blue-700 hover:underline">Extend</a><br>
+<a href="{{ url('traverse-chats/' . $booking->car->owner->id) }}" target="_blank" class="font-medium text-blue-700 hover:underline">Message {{$booking->car->owner->first_name}}</a><br>
 @endif
   </div>
 

@@ -31,7 +31,8 @@ use App\Models\Car;
 Route::get('/', function () {
     $cars = Car::where('status', 'available')->get();
     return view('welcome', compact('cars'));
-});
+})->name('welcome');
+
 
 Route::get('/contact', function () {
     return view('contact');
