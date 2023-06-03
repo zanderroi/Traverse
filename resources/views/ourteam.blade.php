@@ -21,26 +21,7 @@
         <script src="https://kit.fontawesome.com/57a798c9bb.js" crossorigin="anonymous"></script>
 
         <style>
-            
-
-        #scroll-to-next {
-        animation: fadeInDown 2s ease-in-out infinite;
-        }
-
-        @keyframes fadeInDown {
-        0% {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-        50% {
-            opacity: 1;
-            transform: translateY(10px);
-        }
-        100% {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        }
+  
         /* Scale effect on hover */
         .hover-scale:hover {
             transform: scale(1.05);
@@ -50,10 +31,9 @@
             </style>
 
     </head>
-    <body class="pt-5 bg-cover bg-center" style="background-image: url('{{ asset('logo/bgimage8.jpg') }}');">
-        <div class="bg-black bg-opacity-50 backdrop-blur-lg w-full pt-5">
-        <div id="app">
-            <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
+    <body class="pt-5 bg-cover bg-center" style="background-color: #d7d7d7;;">
+      
+            <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top" style="background-color: #0C0C0C;">
                 <div class="container">
                     <a class="navbar-brand flex items-center" href="{{ route('welcome') }}">
                         <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
@@ -92,17 +72,91 @@
 
                                         <a href="{{ route('contact') }}" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Contact Us! </a>
                                 </div>
-                       
-
-    
-                        </ul>
-                    
+                        </ul>        
                 </div>
             </div>
             </nav>
-    
-        </div>
+            
+            {{-- Main Content --}}
 
-    </div>
+            <div class="pt-5 pb-5 mx auto h-32" style="background-color: #0C0C0C;">
+                <h2 class="ml-4 text-4xl font-semi-bold text-white text-center">Meet Our Team</h2>
+            </div>
+
+            <div class="pt-4 flex flex-wrap justify-center">
+                <div class="mb-2 hover-scale w-64 mr-6 bg-gray-600 rounded-lg shadow-md flex flex-col items-center" style="height: 500px; background-color: #ffffff;">
+                    <img class="mt-5 rounded-full border-2 border-blue-600" src="{{ asset('team/zander.jpg')}}" alt="Zander Roi Tabelona" style="width: 150px; height:150px;">
+                    <h3 class="pt-2 text-lg font-bold text-blue-600"> Zander Roi Tabelona</h3>
+                    <h4 class="text-md font-semibold text-gray-600"> Full-Stack Developer</h4>
+                    <div class="h-64">
+                    <p class="text-center p-3 text-sm font-normal text-gray-500">I am a skilled and passionate full-stack developer with expertise in both front-end and back-end web development. With a strong foundation in HTML, CSS, PHP and JavaScript, I create engaging and intuitive user interfaces that deliver exceptional user experiences.</p>
+                    </div>
+                    <div class="pb-4 flex flex-row justify-center space-x-3">
+                        <a href="http://www.facebook.com/zndrroi" target=”_blank” >
+                            <i class="fa-brands fa-facebook fa-xl"></i></a>
+                            
+                        <a href="http://www.instagram.com/zndrroi" target=”_blank”>
+                            <i class="fa-brands fa-instagram fa-xl"></i></a>
+                            <a href="https://www.linkedin.com/in/zndrroi/" target=”_blank”>
+                                <i class="fa-brands fa-linkedin fa-xl"></i></a>
+                        </div>
+                </div>
+                <div class="mb-2 hover-scale w-64 h-96 mr-6 bg-gray-600 rounded-lg shadow-md flex flex-col items-center" style="height: 500px; background-color: #ffffff;">
+                    <img class="mt-5 rounded-full border-2 border-blue-600" src="{{ asset('team/ian.jpg')}}" alt="Ian Mark Casoy" style="width: 150px; height:150px;">
+                    <h3 class="pt-2 text-lg font-bold text-blue-600"> Ian Mark Casoy</h3>
+                    <h4 class="text-md font-semibold text-gray-600"> Front-End Developer</h4>
+                    <div class="h-64">
+                    <p class="text-center p-3 text-sm font-normal text-gray-500">I'm a highly skilled front-end developer with a passion for creating engaging and user-friendly web experiences. With expertise in front-end technologies and a keen eye for design.
+                    </p>
+                </div>
+                    <div class="pb-4 flex flex-row justify-center space-x-3">
+                        <a href="https://www.facebook.com/dabidapdapp" target=”_blank” >
+                            <i class="fa-brands fa-facebook fa-xl"></i></a>
+                            
+                        <a href="https://www.instagram.com/dabidapdapp" target=”_blank”>
+                            <i class="fa-brands fa-instagram fa-xl"></i></a>
+                            <a href="https://www.linkedin.com/in/ian-mark-casoy-537544256" target=”_blank”>
+                                <i class="fa-brands fa-linkedin fa-xl"></i></a>
+                        </div>
+                </div>
+                <div class="mb-2 hover-scale w-64 h-96 mr-6 bg-gray-600 rounded-lg shadow-md flex flex-col items-center" style="height: 500px; background-color: #ffffff;">
+                    <img class="mt-5 rounded-full border-2 border-blue-600" src="{{ asset('avatar/default-avatar.png')}}" alt="Czyrill Joy Joble" style="width: 150px; height:150px;">
+                    <h3 class="pt-2 text-lg font-bold text-blue-600"> Czyrill Joy Joble</h3>
+                    <h4 class="text-md font-semibold text-gray-600"> UI/UX Designer</h4>
+                    <div class="h-64">
+                    <p class="text-center p-3 text-sm font-normal text-gray-500">I'm a highly skilled front-end developer with a passion for creating engaging and user-friendly web experiences. With expertise in front-end technologies and a keen eye for design.
+                    </p>
+                </div>
+                    <div class="pb-4 flex flex-row justify-center space-x-3">
+                        <a href="#" target=”_blank” >
+                            <i class="fa-brands fa-facebook fa-xl"></i></a>
+                            
+                        <a href="#" target=”_blank”>
+                            <i class="fa-brands fa-instagram fa-xl"></i></a>
+                            <a href="#" target=”_blank”>
+                                <i class="fa-brands fa-linkedin fa-xl"></i></a>
+                        </div>
+                </div>
+                <div class="mb-2 hover-scale w-64 h-96 mr-6 bg-gray-600 rounded-lg shadow-md flex flex-col items-center" style="height: 500px; background-color: #ffffff;">
+                    <img class="mt-5 rounded-full border-2 border-blue-600" src="{{ asset('avatar/default-avatar.png')}}" alt="Jhonnel Baron" style="width: 150px; height:150px;">
+                    <h3 class="pt-2 text-lg font-bold text-blue-600"> Jhonnel Baron</h3>
+                    <h4 class="text-md font-semibold text-gray-600"> Full-Stack Developer</h4>
+                    <div class="h-64">
+                    <p class="text-center p-3 text-sm font-normal text-gray-500">I'm a highly skilled front-end developer with a passion for creating engaging and user-friendly web experiences. With expertise in front-end technologies and a keen eye for design.
+                    </p>
+                </div>
+                    <div class="pb-4 flex flex-row justify-center space-x-3">
+                        <a href="#" target=”_blank” >
+                            <i class="fa-brands fa-facebook fa-xl"></i></a>
+                            
+                        <a href="#" target=”_blank”>
+                            <i class="fa-brands fa-instagram fa-xl"></i></a>
+                            <a href="#" target=”_blank”>
+                                <i class="fa-brands fa-linkedin fa-xl"></i></a>
+                        </div>
+                </div>
+            </div>
+
+  
     </body>
 </html>
