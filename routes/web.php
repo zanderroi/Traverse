@@ -28,6 +28,7 @@ use App\Models\Car;
 | be assigned to the "web" middleware group. Make something great!
 |
 // */
+//welcome
 Route::get('/', function () {
     $cars = Car::where('status', 'available')->get();
     return view('welcome', compact('cars'));
