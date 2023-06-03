@@ -46,16 +46,10 @@ Route::get('/faq', function () {
 Route::get('/ourteam', function () {
     return view('ourteam');
 })->name('ourteam');
-// Route::get('/traverse-chats', function () {
-//     return view('traverse-chats');
-// })->name('traverse-chats');
-
-
 
 Auth::routes();
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-
+//ADMIN ROUTES
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 Route::get('/cars/details', [AdminController::class, 'carshow'])->name('car.details');
 Route::get('/car/{id}', [AdminController::class, 'show']);
@@ -73,87 +67,65 @@ Route::put('/customer/{user}', [AdminController::class, 'customerUpdate']);
 Route::delete('/customer/{user}', [AdminController::class, 'customerDestroy']);
 
 Route::get('/reservation/details', [AdminController::class, 'bookshow']);
-
 Route::get('/graph', [GraphController::class, 'graph']);
 
 
 
-
-Route::get('/customer/dashboard', [CustomerController::class, 'index'])->name('customer.dashboard');
+//CAR OWNER ROUTES
 Route::get('/car_owner/dashboard', [CarOwnerController::class, 'dashboard'])->name('car_owner.dashboard');
 Route::get('/car_owner/car_details', [CarOwnerController::class, 'addCarDetails'])->name('car_owner.car_details');
 Route::get('/car_owner/add-car-details', [CarOwnerController::class, 'addCarDetails'])->name('car_owner.addCarDetails');
 Route::post('/car-owner/car-details', [CarOwnerController::class, 'addCarDetails'])->name('car_owner.add_car_details');
 Route::delete('/car_owner/car/{car_id}', [CarOwnerController::class, 'deleteCar'])->name('car_owner.delete_car');
-
-// Route to display all available cars
-Route::get('/customer/cars', [CustomerController::class, 'availableCars'])->name('customer.available_cars');
-
-//Booking Screen
-Route::get('/cars/{id}', [CarController::class, 'show'])->name('cars.show');
-
-
-//Prevent double entry of booking
-Route::get('booking/confirmation', [BookingController::class, 'confirmation'])->name('booking.confirmation');
-
-//Route to Book Now
-Route::post('/bookings/confirm/{car_id}', [BookingController::class, 'confirm'])->name('bookings.confirm');
-
-Route::get('bookings/{booking}/receipt', [BookingController::class, 'download'])->name('bookings.receipt');
-
-//Cancel Booking
-Route::delete('/bookings/{id}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
-
-//Customer Garage
-Route::get('/customer/garage', [CustomerController::class, 'garage'])->name('customer.garage');
-
-//Return Car
-Route::get('/bookings/{booking_id}', [BookingController::class, 'returnCar'])->name('returncar');
-
-//Extend Booking
-Route::post('/bookings/{booking}/extend', [BookingController::class, 'extend'])->name('bookings.extend');
-
-
-
-//Booking History
-Route::get('/history', [CustomerController::class, 'history'])->name('customer.history');
-
 //Car Rating
 Route::post('car/rating/{booking_id}/{car_owner_id}/{customer_id}', [CarRatingController::class, 'store'])->name('car.rating.store');
-
 //Track Location
 Route::get('/car_owner/location/{carId}', [CarLocationController::class,'showLocation'])->name('car_owner.location');
-
-//Customer Profile
-Route::get('/customer/profile', [CustomerController::class, 'profile'])->name('customer.profile');
-
-//Customer Profile Picture
-Route::post('/customer/profile', [ProfilePictureController::class, 'store'])->name('profilepicture.store');
-
-// Customer Update Profile
-Route::put('/profile/update', [CustomerController::class, 'updateProfile'])->name('customer.updateProfile');
-
-// Customer Change Password
-Route::post('/profile/change-password', [CustomerController::class, 'changePassword'])->name('change-password');
-
 //Car Owner Profile
 Route::get('/car_owner/profile', [CarOwnerController::class, 'profile'])->name('car_owner.profile');
-
 //Car Owner Profile Picture
 Route::post('/car_owner/profile', [ProfilePictureController::class, 'ownerstore'])->name('carownerpicture.ownerstore');
-
 //Car Owner Update Profile
 Route::put('/profile', [CarOwnerController::class, 'updateProfile'])->name('carowner.updateProfile');
-
 //Car Owner Change Password
 Route::post('/change-password', [CarOwnerController::class, 'changePassword'])->name('carowner.change-password');
-
 //Car Owner Update Car Details
 Route::put('/car_owner/update-car-details/{car_id}', [CarOwnerController::class, 'updateCarDetails'])->name('car_owner.update_car_details');
-
 //Car Owner Earnings
 Route::get('/car_owner/earnings', [CarOwnerController::class, 'earnings'])->name('car_owner.earnings');
-
 //Car Owner Rented Cars
 Route::get('/car_owner/rentedcars', [CarOwnerController::class, 'rentedcars'])->name('car_owner.rentedcars');
+
+
+
+
+//CUSTOMER ROUTES
+Route::get('/customer/dashboard', [CustomerController::class, 'index'])->name('customer.dashboard');
+// Route to display all available cars
+Route::get('/customer/cars', [CustomerController::class, 'availableCars'])->name('customer.available_cars');
+//Booking Screen
+Route::get('/cars/{id}', [CarController::class, 'show'])->name('cars.show');
+//Prevent double entry of booking
+Route::get('booking/confirmation', [BookingController::class, 'confirmation'])->name('booking.confirmation');
+//Route to Book Now
+Route::post('/bookings/confirm/{car_id}', [BookingController::class, 'confirm'])->name('bookings.confirm');
+Route::get('bookings/{booking}/receipt', [BookingController::class, 'download'])->name('bookings.receipt');
+//Cancel Booking
+Route::delete('/bookings/{id}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
+//Customer Garage
+Route::get('/customer/garage', [CustomerController::class, 'garage'])->name('customer.garage');
+//Return Car
+Route::get('/bookings/{booking_id}', [BookingController::class, 'returnCar'])->name('returncar');
+//Extend Booking
+Route::post('/bookings/{booking}/extend', [BookingController::class, 'extend'])->name('bookings.extend');
+//Booking History
+Route::get('/history', [CustomerController::class, 'history'])->name('customer.history');
+//Customer Profile
+Route::get('/customer/profile', [CustomerController::class, 'profile'])->name('customer.profile');
+//Customer Profile Picture
+Route::post('/customer/profile', [ProfilePictureController::class, 'store'])->name('profilepicture.store');
+// Customer Update Profile
+Route::put('/profile/update', [CustomerController::class, 'updateProfile'])->name('customer.updateProfile');
+// Customer Change Password
+Route::post('/profile/change-password', [CustomerController::class, 'changePassword'])->name('change-password');
 
