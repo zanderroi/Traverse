@@ -1,8 +1,21 @@
-@extends('layouts.app')
-
+@extends('components.header')
 @section('content')
-
-<div class="container">
+<div class="flex">
+    <div class="sidebar text-white w-48 pt-8" style="background-color: #0C0C0C;">
+        <div class="content-titles mt-1">
+          <h2 class="text-xl font-bold mb-4 text-center"><a href="/admin/dashboard">Dashboard</a></h2>
+          <ul class="space-y-8 ml-6">
+            <li class="flex items-center ml-4"> <i class="fa-solid fa-car mr-2"></i><a href="/cars/details">Cars</a></li>
+            <li class="flex items-center ml-4"> <i class="fa-solid fa-user-group mr-2"></i><a href="/owners/details"> Car Owners</a></li>
+            <li class="flex items-center ml-4"> <i class="fa-solid fa-briefcase mr-2"></i><a href="/customers/details">Customers</a></li>
+            <li class="flex items-center ml-4"> <i class="fa-solid fa-book mr-2"></i><a href="/reservation/details">Bookings</a></li>
+            <li class="flex items-center ml-4"> <i class="fa-solid fa-chart-line mr-2"></i><a href="/graph">Graph</a></li>
+            {{-- <li class="flex items-center ml-4"> <i class="fa-solid fa-peso-sign mr-2"></i><a href="/graph/details">Sales</a></li> --}}
+          </ul>
+        </div>
+    </div>
+    <div class="w-full" style="background-color: #E5E7EB;">
+<div class="container mt-8 mb-8">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -286,8 +299,8 @@
                         </div> --}}
                         
                         <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                            <div class="offset-md-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <button type="submit" class="w-72">
                                     {{ __('Update') }}
                                 </button>
                             </div>
@@ -297,6 +310,8 @@
             </div>
         </div>
     </div>
+    </div>
 </div>
-
+</div>
+@include('components.footer')
 @endsection

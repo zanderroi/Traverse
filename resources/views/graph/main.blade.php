@@ -4,7 +4,7 @@
     <div class="flex">
         <div class="sidebar text-white w-48 pt-8 h-screen" style="background-color: #0C0C0C;">
             <div class="content-titles mt-1">
-                <h2 class="text-xl font-bold mb-4 text-center">Dashboard</h2>
+                <h2 class="text-xl font-bold mb-4 text-center"><a href="/admin/dashboard">Dashboard</a></h2>
                 <ul class="space-y-8 ml-6 pr-2">
                     <li class="flex items-center ml-4 pr-2">
                         <i class="fa-solid fa-car mr-2"></i>

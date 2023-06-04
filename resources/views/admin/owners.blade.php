@@ -3,7 +3,7 @@
 <div class="flex">
     <div class="sidebar text-white w-48 pt-8" style="background-color: #0C0C0C;">
         <div class="content-titles mt-1">
-          <h2 class="text-xl font-bold mb-4 text-center">Dashboard</h2>
+          <h2 class="text-xl font-bold mb-4 text-center"><a href="/admin/dashboard">Dashboard</a></h2>
           <ul class="space-y-8 ml-6">
             <li class="flex items-center ml-4"><i class="fa-solid fa-car mr-2"></i><a href="/cars/details">Cars</a></li>
             <li class="flex items-center {{ Request::is('owners/details') ? 'bg-indigo-600' : '' }} w-full" style="padding: 12px 16px; height: 48px;">
