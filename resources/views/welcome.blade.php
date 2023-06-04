@@ -52,21 +52,22 @@
     </head>
     <body>
         <div id="app">
-            <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
+            {{-- <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
                 <div class="container">
                     <a class="navbar-brand flex items-center" href="{{ route('welcome') }}">
                         <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
                         <span class="self-center text-xl font-semibold whitespace-nowrap text-white">Traverse</span>
-                    </a>
-                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    </a> --}}
+                   {{-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                         <span class="navbar-toggler-icon"></span>
-                    </button> 
+                    </button>  --}}
+
     
                     
-                    <div id="navbarSupportedContent">
+                    {{-- <div id="navbarSupportedContent"> --}}
     
                         <!-- Right Side Of Navbar -->
-                        <ul class="navbar-nav ml-auto">
+                        {{-- <ul class="navbar-nav ml-auto">
                            
                                 <a href="{{ route('faq') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300 hover:text-blue-600"> FAQ </a>
                           
@@ -94,10 +95,10 @@
                        
 
     
-                        </ul>
-                    
-                </div>
-            </nav>
+                        </ul> --}}
+                    <x-nav/>
+                {{-- </div> --}}
+            {{-- </nav> --}}
     
         </div>
     
