@@ -29,8 +29,8 @@
         }
     </style>
 </head>
-<body class="pt-5 bg-cover bg-center" style="background-image: url('{{ asset('logo/bgimage5.jpg') }}'); background-repeat: repeat-y;">
-    <div class="pt-4 bg-cover bg-black bg-opacity-50 backdrop-blur-lg bg-center">
+<body class="pt-5 bg-cover bg-center" style="background-image: url('{{ asset('logo/bgimage5.jpg') }}'); min-height: 100vh;">
+    <div class="pt-4 bg-cover bg-black bg-opacity-50 backdrop-blur-lg bg-center min-h-screen" style="min-height: 100vh;">
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
             <div class="container">
@@ -108,7 +108,7 @@
         </div>
         <hr class="text-gray-500 mt-1 ">
         @if ($returnedCars->isEmpty())
-            <p>No rented cars found.</p>
+            <p></p>
         @else
         <table class="text-sm text-left dark:text-blue-100 mx-auto  max-w-full xs:max-w-none sm:max-w-xs md:max-w-sm  lg:max-w-md xl:max-w-lg">
             <thead class="text-md text-center text-white uppercase dark:text-white sticky top-6 z-10" style="background-color: #121212;">

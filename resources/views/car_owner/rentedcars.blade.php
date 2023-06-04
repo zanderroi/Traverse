@@ -48,8 +48,8 @@
         }
     </style>
 </head>
-<body class="pt-5 bg-cover bg-no-repeat bg-center min-h-screen" style="background-image: url('{{ asset('logo/bgimage6.jpg') }}');">
-    <div class="bg-cover bg-black bg-opacity-75 backdrop-blur-lg w-screen">
+<body class="pt-5 bg-cover bg-no-repeat bg-center" style="background-image: url('{{ asset('logo/bgimage6.jpg') }}'); min-height: 100vh;">
+    <div class="bg-cover bg-black bg-opacity-75 backdrop-blur-lg w-screen" style="min-height: 100vh;">
         <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
             <div class="container">
                 <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
@@ -121,6 +121,12 @@
   
     
         <div class="pt-5">
+                @if ($bookedCars->isEmpty())
+                <div class="mx-auto mt-5 p-4 flex justify-center items-center w-1/2 ml-3 bg-gray-200">
+                  <h1 class="text-2xl font-semibold">Your rented cars will display here!</h1> 
+                  <div>
+              
+              @else
             @foreach ($bookedCars as $car)
                 <div class="mx-auto w-1/2 h-64 flex flex-row shadow-md" style="background-color: #121212;">
                     <div>
@@ -141,12 +147,12 @@
                             <p class="text-gray-400 text-md font-semi-bold">No bookings found for this car.</p>
                         @endif
                         <a href="{{ url('traverse-chats/' . $latestBooking->user->id) }}" target="_blank" class="font-medium text-blue-700 hover:underline" data-modal-target="popup-modal" data-modal-toggle="popup-modal" data-modal-toggle="defaultModal">Message {{ $customerName }}</a><br>
-                        <a href="#" class="font-medium text-blue-700 hover:underline">Confirm Return</a>
+                        {{-- <a href="#" class="font-medium text-blue-700 hover:underline">Confirm Return</a> --}}
                     </div>
                 </div>
             @endforeach
         </div>
-        
+        @endif
         
         
     </div>

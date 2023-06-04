@@ -29,8 +29,8 @@
   </style>
 
 </head>
-<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('{{ asset('logo/bgimage6.jpg') }}');">
-  <div class="bg-cover bg-black bg-opacity-75 backdrop-blur-lg h-screen">
+<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('{{ asset('logo/bgimage6.jpg') }}'); min-height: 100vh;">
+  <div class="bg-cover bg-black bg-opacity-75 backdrop-blur-lg" style="min-height: 100vh;">
       <div id="app">
           <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
             <div class="container">
