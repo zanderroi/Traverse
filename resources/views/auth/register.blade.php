@@ -99,7 +99,7 @@
                                     <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                                     @csrf
                                       <label class="block text-grey-darker text-sm font-bold mb-2" for="first_name">First Name</label>
-                                      <input name="first_name" class="@error('first_name') is-invalid @enderror appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="first_name" type="text" placeholder="Your first name" autofocus>
+                                      <input name="first_name" class="@error('first_name') is-invalid @enderror appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="first_name" value="{{ old('first_name') }}" type="text" placeholder="Your first name" autofocus>
                                       @error('first_name')
                                       <span class="invalid-feedback" role="alert">
                                           <strong>{{ $message }}</strong>
@@ -108,7 +108,7 @@
                                     </div>
                                   <div class="w-1/2 ml-1">
                                       <label class="block text-grey-darker text-sm font-bold mb-2" for="last_name">Last Name</label>
-                                      <input name="last_name"class="@error('last_name') is-invalid @enderror appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="last_name" type="text" placeholder="Your last name" autofocus>
+                                      <input name="last_name"class="@error('last_name') is-invalid @enderror appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="last_name" value="{{ old('last_name') }}" type="text" placeholder="Your last name" autofocus>
                                       @error('last_name')
                                       <span class="invalid-feedback" role="alert">
                                           <strong>{{ $message }}</strong>
@@ -118,7 +118,7 @@
                               </div>
                               <div class="mb-2">
                                   <label class="block text-grey-darker text-sm font-bold mb-2" for="email">Email Address</label>
-                                  <input name="email" class="@error('email') is-invalid @enderror appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="email" type="email" placeholder="Your email address" autofocus>
+                                  <input name="email" class="@error('email') is-invalid @enderror appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="email" type="email" value="{{ old('email') }}" placeholder="Your email address" autofocus>
                                   @error('email')
                                   <span class="invalid-feedback" role="alert">
                                       <strong>{{ $message }}</strong>
@@ -144,7 +144,7 @@
                             </div>
                             <div class="mb-2">
                                 <label class="block text-grey-darker text-sm font-bold mb-2" for="address">Address</label>
-                                <input name="address" class="@error('address') is-invalid @enderror appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="address" type="text">
+                                <input name="address" class="@error('address') is-invalid @enderror appearance-none border rounded w-full py-2 px-3 text-grey-darker" value="{{ old('address') }}" id="address" type="text">
                                 @error('address')
                                   <span class="invalid-feedback" role="alert">
                                       <strong>{{ $message }}</strong>
@@ -194,7 +194,7 @@
                         </div>
                         <div class="mb-2">
                             <label class="block text-grey-darker text-sm font-bold mb-2" for="driverslicense">Drivers License</label>
-                            <input name="driverslicense"class="appearance-none border rounded w-full py-2 px-3 text-grey-darker @error('driverslicense') is-invalid @enderror" id="driverslicense" type="text" required>
+                            <input name="driverslicense"class="appearance-none border rounded w-full py-2 px-3 text-grey-darker @error('driverslicense') is-invalid @enderror" value="{{ old('driverslicense') }}" id="driverslicense" type="text" required>
                             @error('driverslicense')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -235,7 +235,7 @@
                         <div class="flex mb-2">
                             <div class="w-1/2 mr-1">
                                 <label class="block text-grey-darker text-sm font-bold mb-2" for="contactperson1">Contact Person 1</label>
-                                <input name="contactperson1" class="@error('contactperson1') is-invalid @enderror appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="contactperson1" type="text" required autocomplete="contactperson1" autofocus>
+                                <input name="contactperson1" class="@error('contactperson1') is-invalid @enderror appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="contactperson1" value="{{ old('contactperson1') }}" type="text" required autocomplete="contactperson1" autofocus>
                                 @error('contactperson1')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -244,7 +244,7 @@
                               </div>
                             <div class="w-1/2 ml-1">
                                 <label class="block text-grey-darker text-sm font-bold mb-2" for="contactperson1number">Contact Person 1 Phone Number</label>
-                                <input name="contactperson1number"class="@error('contactperson1number') is-invalid @enderror appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="contactperson1number" type="text" required autocomplete="contactperson1number" autofocus>
+                                <input name="contactperson1number"class="@error('contactperson1number') is-invalid @enderror appearance-none border rounded w-full py-2 px-3 text-grey-darker" value="{{ old('contactperson1number') }}" id="contactperson1number" type="text" required autocomplete="contactperson1number" autofocus>
                                 @error('contactperson1number')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -255,7 +255,7 @@
                         <div class="flex mb-4">
                             <div class="w-1/2 mr-1">
                                 <label class="block text-grey-darker text-sm font-bold mb-2" for="contactperson2">Contact Person 2</label>
-                                <input name="contactperson2" class="@error('contactperson2') is-invalid @enderror appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="contactperson2" type="text" required autocomplete="contactperson2" autofocus>
+                                <input name="contactperson2" class="@error('contactperson2') is-invalid @enderror appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="contactperson2" value="{{ old('contactperson2') }}" type="text" required autocomplete="contactperson2" autofocus>
                                 @error('contactperson2')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -264,7 +264,7 @@
                               </div>
                             <div class="w-1/2 ml-1">
                                 <label class="block text-grey-darker text-sm font-bold mb-2" for="contactperson2number">Contact Person 2 Phone Number</label>
-                                <input name="contactperson2number" class="@error('contactperson2number') is-invalid @enderror appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="contacperson2number" type="text" required autocomplete="contactperson2number" autofocus>
+                                <input name="contactperson2number" class="@error('contactperson2number') is-invalid @enderror appearance-none border rounded w-full py-2 px-3 text-grey-darker" value="{{ old('contactperson2number') }}" id="contacperson2number" type="text" required autocomplete="contactperson2number" autofocus>
                                 @error('contactperson2number')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
