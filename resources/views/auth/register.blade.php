@@ -164,7 +164,7 @@
                             <div class="w-1/2 ml-1">
                                 <label class="block text-grey-darker text-sm font-bold mb-2" for="birthday">Birthday</label>
                                 <input name="birthday" id="birthday" type="date" class="appearance-none border rounded w-full py-2 px-3 text-grey-darker @error('birthday') is-invalid @enderror" name="birthday" value="{{ old('birthday') }}" required autocomplete="birthday" >
-                                @error('address')
+                                @error('birthday')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
