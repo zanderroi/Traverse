@@ -50,76 +50,8 @@
 </head>
 <body class="pt-5 bg-cover bg-no-repeat bg-center" style="background-image: url('{{ asset('logo/bgimage6.jpg') }}'); min-height: 100vh;">
     <div class="bg-cover bg-black bg-opacity-75 backdrop-blur-lg w-screen" style="min-height: 100vh;">
-        <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
-            <div class="container">
-                <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
-                    <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
-                    <span class="self-center text-xl text-white font-semibold whitespace-nowrap dark:text-white">Traverse</span>
-                </a>
-               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button> 
-
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <li>
-                            <a href="{{ route('car_owner.rentedcars') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">
-                              @if (isset($bookedCarsCount) && $bookedCarsCount > 0)
-                            <span class="bg-red-500 text-white rounded-full px-1.5">{{ $bookedCarsCount }}</span>
-                        @endif
-                                Rented Cars
-                            </a>
-                        </li>
-                        <li>
-                          <a href="{{ route('car_owner.earnings') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">Earnings!</a>
-                        </li>
-                        <li>
-                          <a href="{{ route('car_owner.car_details') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">List a Car</a>
-                        </li>
-                        <li>
-                            <div class="sm:fixed sm:top-0 sm:right-0 text-right mr-2">
-
-                                <a href="{{ route('traverse-chats') }}" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Traverse Chats </a>
-                        </div>
-                    </li>
-                              <li>
-                                <div class="flex items-center">
-                                    @if ($latestProfilePicture)
-                                    <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' .$latestProfilePicture->profilepicture) }}" alt="Profile Picture">
-                                @else
-                                    <img class="w-8 h-8 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
-                                @endif
-                                  <a id="navbarDropdown" class="nav-link dropdown-toggle ml-2 text-blue-600 font-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->first_name }}
-                                  </a>
-                                
-                                
-  
-                                  <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                      
-                                    <a class="dropdown-item" href="{{ route('car_owner.profile') }}">
-                                      Profile
-                                  </a>
-                                      <a class="dropdown-item" href="{{ route('logout') }}"
-                                         onclick="event.preventDefault();
-                                                       document.getElementById('logout-form').submit();">
-                                          {{ __('Logout') }}
-                                      </a>
-  
-                                      <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                          @csrf
-                                      </form>
-                                  </div>
-                                </div>
-                                
-                              </li>
-  
-                      </ul>
-            </div>
-        </nav>
-  
-    
+        <x-navcarowner :bookedCarsCount="$bookedCarsCount" :latestProfilePicture="$latestProfilePicture" />
+ 
         <div class="pt-5">
                 @if ($bookedCars->isEmpty())
                 <div class="mx-auto mt-5 p-4 flex justify-center items-center w-1/2 ml-3 bg-gray-200">
