@@ -33,50 +33,7 @@
     </head>
     <body class="pt-5 bg-cover bg-center" style="background-color: #d7d7d7;;">
       
-            <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top" style="background-color: #0C0C0C;">
-                <div class="container">
-                    <a class="navbar-brand flex items-center" href="{{ route('welcome') }}">
-                        <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
-                        <span class="self-center text-xl font-semibold whitespace-nowrap text-white">Traverse</span>
-                    </a>
-                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                        <span class="navbar-toggler-icon"></span>
-                    </button> 
-    
-                    
-                    <div id="navbarSupportedContent">
-    
-                        <!-- Right Side Of Navbar -->
-                        <ul class="navbar-nav ml-auto">
-                           
-                                <a href="{{ url('faq/') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300 hover:text-blue-600"> FAQ </a>
-                          
-                          
-                                <a href="#" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300 hover:text-blue-600"> Our Team</a>
-                           
-                                @if (Route::has('login'))
-                                
-                                        @auth
-                                            <a href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300 hover:text-blue-600">Home</a>
-                                        @else
-                                            <a href="{{ route('login') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300 hover:text-blue-600">Log in</a>
-                    
-                                            @if (Route::has('register'))
-                                                <a href="{{ route('register') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300 hover:text-blue-600">Register</a>
-                                            @endif
-                                        @endauth
-                                    
-                                @endif
-
-                                <div class="sm:fixed sm:top-0 sm:right-0 text-right ml-6">
-
-                                        <a href="{{ route('contact') }}" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Contact Us! </a>
-                                </div>
-                        </ul>        
-                </div>
-            </div>
-            </nav>
-            
+        <x-nav/>
             {{-- Main Content --}}
 
             <div class="pt-5 pb-5 mx auto h-32" style="background-color: #0C0C0C;">
