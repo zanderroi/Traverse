@@ -66,5 +66,6 @@
         @endif
     </div>
 </div>
+@include('components.traversechats')
 </body>
 </html>
