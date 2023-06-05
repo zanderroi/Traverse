@@ -40,24 +40,6 @@ class DatabaseSeeder extends Seeder
         ],
     ];
 
-
-//         $carOwners = User::factory()
-//             ->count(10)
-//             ->state(new Sequence(
-//                 ['user_type' => 'car_owner'],
-//                 ['user_type' => 'customer'],
-//             ))
-//             ->create([
-//                 'password' => Hash::make('password'),
-//             ]);
-
-//         $carOwners->each(function ($owner) {
-//             if ($owner->user_type === 'car_owner') {
-//             $cars = Car::factory()->count(2)->make();
-//             $owner->cars()->saveMany($cars);
-//             }
-//         });
-
     foreach ($admins as $admin) {
         User::firstOrCreate(
             ['email' => $admin['email']],
@@ -80,23 +62,6 @@ class DatabaseSeeder extends Seeder
             ])
         );
     }
-       //         $carOwners = User::factory()
-         //       ->count(10)
-           //     ->state(new Sequence(
-           //         ['user_type' => 'car_owner'],
-            //        ['user_type' => 'customer'],
-             //   ))
-              //  ->create([
-          //          'password' => Hash::make('password'),
-        //        ]);
-
-          //  $carOwners->each(function ($owner) {
-            //    if ($owner->user_type === 'car_owner') {
-              //  $cars = Car::factory()->count(2)->make();
-               // $owner->cars()->saveMany($cars);
-           //     }
-           // });
-
 
     }
 }
