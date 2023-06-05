@@ -23,31 +23,48 @@ class AdminController extends Controller
     {
         $carsCount = DB::table('cars')->whereNull('deleted_at')->count();
     
+        // Update bookedCarsCount based on the status of the cars
         $bookedCarsCount = DB::table('bookings')->count();
+        $returnedCarsCount = DB::table('cars')->where('status', 'available')->whereIn('id', function ($query) {
+            $query->select('car_id')->from('bookings')->whereNotNull('returned_at');
+        })->count();
+        $bookedCarsCount -= $returnedCarsCount;
+    
+        // Update availableCarsCount based on the status of the cars
         $availableCarsCount = $carsCount - $bookedCarsCount;
     
         $carOwnersOnTransactions = User::where('user_type', 'car_owner')
-                                ->whereHas('cars', function ($query) {
-                                    $query->whereHas('bookings');
-                                })
-                                ->count();
+            ->whereHas('cars', function ($query) {
+                $query->whereHas('bookings');
+            })
+            ->count();
     
         $carOwnersVacant = User::where('user_type', 'car_owner')
-                        ->whereDoesntHave('cars', function ($query) {
-                            $query->whereHas('bookings');
-                        })
-                        ->count();
+            ->whereDoesntHave('cars', function ($query) {
+                $query->whereHas('bookings');
+            })
+            ->count();
+    
+        $returnedCarOwnersCount = DB::table('cars')->where('status', 'available')->whereIn('id', function ($query) {
+            $query->select('id')->from('bookings')->whereNotNull('returned_at');
+        })->count();
+    
+        $carOwnersOnTransactions -= $returnedCarOwnersCount;
+        $carOwnersVacant += $returnedCarOwnersCount;
     
         $customersOnTransactions = User::where('user_type', 'customer')
                                 ->whereHas('bookings')
                                 ->count();
-    
+
         $customersVacant = User::where('user_type', 'customer')
                         ->whereDoesntHave('bookings')
                         ->count();
     
-        $carOwners = $carOwnersOnTransactions + $carOwnersVacant;
-        $customers = $customersOnTransactions + $customersVacant;
+        $customersOnTransactions -= $returnedCarsCount;
+        $customersVacant += $returnedCarsCount;
+    
+        $carOwners = User::where('user_type', 'car_owner')->count();
+        $customers = User::where('user_type', 'customer')->count();
     
         $totalBookings = DB::table('bookings')->count();
         $bookingsDone = Booking::whereNotNull('returned_at')->count();
@@ -68,6 +85,9 @@ class AdminController extends Controller
             'bookingsOngoing'
         ));
     }
+  
+
+
     public function carshow()
     {
         $cars = Car::with('owner', 'bookings.customer')->paginate(10);
