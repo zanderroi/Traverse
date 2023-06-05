@@ -35,7 +35,7 @@ return [
     
     'pdf' => [
         'enabled' => true,
-        'binary'  => 'C:/Users/Alvin/Documents/LARAVEL PROJ/wkhtmltopdf',
+        'binary'  => env('WKHTML_PDF_BINARY', '/usr/local/bin/wkhtmltopdf'),
         'timeout' => false,
         'options' => [],
         'env'     => [],
