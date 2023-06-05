@@ -88,5 +88,6 @@
         
         
     </div>
+    @include('components.traversechats')
 </body>
 </html>

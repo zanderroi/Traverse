@@ -18,7 +18,12 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
-
+<style>
+    .hover-scale:hover {
+            transform: scale(1.03);
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
 </head>
 <body>
     <x-navcarowner :bookedCarsCount="$bookedCarsCount" :latestProfilePicture="$latestProfilePicture" />
@@ -248,5 +253,6 @@
     </div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+    @include('components.traversechats')
 </body>
 </html>
