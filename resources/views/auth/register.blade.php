@@ -6,8 +6,7 @@
 
         <title>Traverse</title>
         <link rel="icon" type="image/png" href="{{ asset('logo/2-modified.png') }}">
-        <link rel="stylesheet" href="css/styles.css">
-
+   
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
@@ -52,39 +51,7 @@
     </head>
     <body class="pt-5 bg-cover bg-center" style="background-image: url('{{ asset('logo/bgimage7.jpg') }}');">
         <div class="bg-black bg-opacity-75 backdrop-blur-lg">
-            <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
-                <div class="container">
-                    <a class="navbar-brand flex items-center" href="{{ route('welcome') }}">
-                        <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
-                        <span class="self-center text-xl font-semibold whitespace-nowrap text-white">Traverse</span>
-                    </a>
-                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                        <span class="navbar-toggler-icon"></span>
-                    </button> 
-    
-                    
-                    <div id="navbarSupportedContent">
-    
-                        <!-- Right Side Of Navbar -->
-                        <ul class="navbar-nav ml-auto">
-                           
-                                <a href="{{ route('faq') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300 hover:text-blue-600"> FAQ </a>
-                          
-                          
-                                <a href="{{ route('ourteam') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300 hover:text-blue-600"> Our Team</a>
-                            
-
-                                <div class="sm:fixed sm:top-0 sm:right-0 text-right ml-6">
-
-                                        <a href="{{ route('contact') }}" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Contact Us! </a>
-                                </div>
-                       
-
-    
-                        </ul>
-                    
-                </div>
-            </nav>
+            <x-nav/>
             <div class="mx-auto w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3">
             
                 
