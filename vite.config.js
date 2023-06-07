@@ -14,6 +14,7 @@ export default defineConfig({
                 'resources/js/showpassword.js',
                 'resources/js/popupmodal.js',
                 'resources/js/avatar.js',
+                'resources/js/bootstrap.js',
             ],
             refresh: true,
         }),

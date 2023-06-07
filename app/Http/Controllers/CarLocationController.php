@@ -8,6 +8,7 @@ use App\Models\Car;
 use App\Models\Booking;
 use App\Models\User;
 use App\Models\TrackingData;
+use Illuminate\Http\JsonResponse;
 
 class CarLocationController extends Controller
 {
@@ -64,7 +65,7 @@ class CarLocationController extends Controller
                 $booking = Booking::find($bookingId);
     
                 return view('car_owner.location', [
-                    'car' => $car,
+                    'carId' => $carId,
                     'customer' => $customer,
                     'booking' => $booking,
                     'latitude' => $latitude,
@@ -75,23 +76,61 @@ class CarLocationController extends Controller
         }
     
 //Return dummy values for latitude and longitude
-$defaultLatitude = 51.5074; // Example: London latitude
-$defaultLongitude = -0.1278; // Example: London longitude
+// $defaultLatitude = 51.5074; // Example: London latitude
+// $defaultLongitude = -0.1278; // Example: London longitude
     
-        $car = Car::find($carId);
-        $customer = null;
-        $booking = null;
+//         $car = Car::find($carId);
+//         $customer = null;
+//         $booking = null;
     
-        return view('car_owner.location', [
-            'car' => $car,
-            'customer' => $customer,
-            'booking' => $booking,
-            'latitude' => $carLocation ? $latitude : $defaultLatitude,
-            'longitude' => $carLocation ? $longitude : $defaultLongitude,
-            // Pass any other necessary data to the view
-        ]);
+//         return view('car_owner.location', [
+//             'car' => $car,
+//             'customer' => $customer,
+//             'booking' => $booking,
+//             'latitude' => $carLocation ? $latitude : $defaultLatitude,
+//             'longitude' => $carLocation ? $longitude : $defaultLongitude,
+//             // Pass any other necessary data to the view
+//         ]);
     }
     
-    
+    public function showLocationAPI($carId)
+{
+    // Retrieve the car location data from the database based on the car ID
+    $carLocation = TrackingData::where('car_id', $carId)->latest()->first();
+
+    // Check if the car location data exists
+    if ($carLocation) {
+        $latitude = $carLocation->latitude;
+        $longitude = $carLocation->longitude;
+        // Add any other necessary data from the car location
+
+        // Retrieve the car details
+        $car = Car::find($carId);
+
+        if ($car) {
+            // Retrieve the customer details
+            $customerId = $carLocation->customer_id;
+            $customer = User::find($customerId);
+
+            // Retrieve the booking details
+            $bookingId = $carLocation->booking_id;
+            $booking = Booking::find($bookingId);
+
+            // Prepare the data to be returned as JSON
+            $data = [
+                'carId' => $carId,
+                'latitude' => $latitude,
+                'longitude' => $longitude,
+                // Add any other necessary data to the response
+            ];
+
+            // Return the data as JSON response
+            return new JsonResponse($data);
+        }
+    }
+
+    // Return an error response if the car or location data is not found
+    // return new JsonResponse(['error' => 'Car or location data not found'], 404);
+}
     
 }

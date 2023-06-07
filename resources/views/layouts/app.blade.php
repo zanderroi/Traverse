@@ -19,7 +19,8 @@
       {{-- Flowbite Tailwind --}}
       {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" /> --}}
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-      
+      {{-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> --}}
+
     {{-- Font Awesome --}}
     <script src="https://kit.fontawesome.com/57a798c9bb.js" crossorigin="anonymous"></script>
     
@@ -59,7 +60,7 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                    {{ Auth::user()->first_name }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">

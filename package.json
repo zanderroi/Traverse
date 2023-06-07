@@ -19,6 +19,7 @@
         "vue": "^3.3.4"
     },
     "dependencies": {
+        "@googlemaps/js-api-loader": "^1.16.1",
         "aos": "^2.3.4",
         "chart.js": "^4.3.0"
     }

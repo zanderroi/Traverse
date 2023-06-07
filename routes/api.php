@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\TrackingData;
-use App\Http\Controllers\API\CarLocationController;
+use App\Http\Controllers\CarLocationController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -57,3 +57,6 @@ Route::post('/update-location', function (Request $request) {
 
     return response()->json($response);
 });
+
+//Track Location
+Route::get('/car_owner/location/{carId}', [CarLocationController::class,'showLocationAPI'])->name('car_owner.location');
