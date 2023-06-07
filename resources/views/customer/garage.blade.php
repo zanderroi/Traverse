@@ -34,7 +34,7 @@
   </style>
 </head>
 <body class="pt-5 bg-cover bg-no-repeat bg-center" style="background-image: url('{{ asset('logo/bgimage6.jpg') }}'); min-height: 100vh;">
-    <div class="bg-cover bg-black bg-opacity-75 backdrop-blur-lg w-screen h-screen">
+    <div class="bg-cover bg-black bg-opacity-75 backdrop-blur-lg w-screen" style="min-height: 100vh;">
 
       <x-navcustomer :latestProfilePicture="$latestProfilePicture" />
 
@@ -63,31 +63,33 @@
 
 @else
 @foreach ($bookings as $booking)
-<div class="mx-auto mt-4 w-1/2 flex flex-row shadow-md " style="background-color: #121212;">
-    <div class="w-1/2 bg-cover" style="background-image: url('{{  asset('storage/'.$booking->car->display_picture) }}');">
-   
-        {{-- <img class="bg-cover bg-center" src="{{ asset('storage/'.$booking->car->display_picture) }}" alt="Car Image"/> --}}
+<div class="mx-auto mt-4 w-1/2 flex flex-col shadow-md md:flex-row md:space-x-4" style="background-color: #121212;">
+    <div class="w-full md:w-1/2 md:order-1">
+        <img src="{{ asset('storage/'.$booking->car->display_picture) }}" style="width: 100%; height: 100%; object-fit: cover;" alt="Car Image"/>
     </div>
-<div class="p-4 pl-4">
-    <h3 class="text-white text-lg font-bold">{{$booking->car->car_brand}} - {{$booking->car->car_model}}</h3>
-    <p class="text-gray-400 text-md font-semi-bold">Car Owner: {{ $booking->car->owner->first_name }} {{ $booking->car->owner->last_name }}</p>
-    <p class="text-gray-400 text-md font-semi-bold">Total Rental Fee: Php {{number_format ($booking->total_rental_fee, 2) }}</p>
-    <p class="text-gray-400 text-md font-semi-bold">Pickup Date and Time: {{ date('F d, Y h:i A', strtotime($booking->pickup_date_time)) }}</p>
-    <p class="text-gray-400 text-md font-semi-bold">Return Date and Time: {{ date('F d, Y h:i A', strtotime($booking->return_date_time)) }}</p>
-    <a href="{{ route('bookings.receipt', ['booking' => $booking->id]) }}" class="font-medium text-blue-700 hover:underline">Download Receipt</a><br>
-    <a href="#" class="font-medium text-blue-700 hover:underline" ddata-modal-target="popup-modal" data-modal-toggle="popup-modal" data-modal-toggle="defaultModal">Return Car</a><br>
-    <form action="{{ route('bookings.extend', ['booking' => $booking->id]) }}" method="POST">
-      @csrf
-
-    @if ($booking->is_extended)
-    <button type="submit" class="font-medium text-red-700" disabled>Already Extended</button>
-@else
-<a href="#" ddata-modal-target="popup-modal2" data-modal-toggle="popup-modal2" class="font-medium text-blue-700 hover:underline">Extend</a><br>
-<a href="{{ url('traverse-chats/' . $booking->car->owner->id) }}" target="_blank" class="font-medium text-blue-700 hover:underline">Message {{$booking->car->owner->first_name}}</a><br>
-@endif
-  </div>
-
+    <div class="p-4 pl-4">
+        <h3 class="text-white text-lg font-bold">{{$booking->car->car_brand}} - {{$booking->car->car_model}}</h3>
+        <p class="text-gray-400 text-md font-semi-bold">Car Owner: {{ $booking->car->owner->first_name }} {{ $booking->car->owner->last_name }}</p>
+        <p class="text-gray-400 text-md font-semi-bold">Total Rental Fee: Php {{number_format ($booking->total_rental_fee, 2) }}</p>
+        <p class="text-gray-400 text-md font-semi-bold">Pickup Date and Time: {{ date('F d, Y h:i A', strtotime($booking->pickup_date_time)) }}</p>
+        <p class="text-gray-400 text-md font-semi-bold">Return Date and Time: {{ date('F d, Y h:i A', strtotime($booking->return_date_time)) }}</p>
+        <a href="{{ route('bookings.receipt', ['booking' => $booking->id]) }}" class="font-medium text-blue-700 hover:underline">Download Receipt</a><br>
+        <a href="#" class="font-medium text-blue-700 hover:underline" data-modal-target="popup-modal" data-modal-toggle="popup-modal" data-modal-toggle="defaultModal">Return Car</a><br>
+        <form action="{{ route('bookings.extend', ['booking' => $booking->id]) }}" method="POST">
+            @csrf
+            @if ($booking->is_extended)
+                <button type="submit" class="font-medium text-red-700" disabled>Already Extended</button>
+                <a href="{{ url('traverse-chats/' . $booking->car->owner->id) }}" target="_blank" class="font-medium text-blue-700 hover:underline">Message {{$booking->car->owner->first_name}}</a><br>
+            @else
+                <a href="#" data-modal-target="popup-modal2" data-modal-toggle="popup-modal2" class="font-medium text-blue-700 hover:underline">Extend</a><br>
+                <a href="{{ url('traverse-chats/' . $booking->car->owner->id) }}" target="_blank" class="font-medium text-blue-700 hover:underline">Message {{$booking->car->owner->first_name}}</a><br>
+            @endif
+        </form>
+    </div>
 </div>
+
+
+
 @endforeach
 </div>
         
