@@ -27,8 +27,7 @@ Route::post('/update-location', function (Request $request) {
 
     // Retrieve other necessary data (car ID, customer ID, booking ID, etc.) from the JSON data
     $carId = $data['carId'];
-    $customerId = $data['customerId'];
-    $bookingId = $data['bookingId'];
+
 
     // // Retrieve latitude and longitude from the request
     // $latitude = $request->input('latitude');
@@ -45,19 +44,15 @@ Route::post('/update-location', function (Request $request) {
     // Assuming you have a database table called "tracking_data"
     $trackingData = new TrackingData();
     $trackingData->car_id = $carId;
-    $trackingData->customer_id = $customerId;
     $trackingData->latitude = $latitude;
     $trackingData->longitude = $longitude;
-    $trackingData->booking_id = $bookingId;
     $trackingData->save();
 
     // Return the latitude, longitude, car ID, customer ID, and booking ID as a JSON response
     $response = [
         'latitude' => $latitude,
         'longitude' => $longitude,
-        'carId' => $carId,
-        'customerId' => $customerId,
-        'bookingId' => $bookingId
+        'carId' => $carId
     ];
 
     return response()->json($response);
