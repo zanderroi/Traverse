@@ -20,14 +20,24 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/update-location', function (Request $request) {
-    // Retrieve latitude and longitude from the request
-    $latitude = $request->input('latitude');
-    $longitude = $request->input('longitude');
+    $data = $request->json()->all();
+    // Retrieve latitude and longitude from the JSON data
+    $latitude = $data['latitude'];
+    $longitude = $data['longitude'];
 
-    // Retrieve other necessary data (car ID, customer ID, booking ID, etc.) from the request
-    $carId = $request->input('carId');
-    $customerId = $request->input('customerId');
-    $bookingId = $request->input('bookingId');
+    // Retrieve other necessary data (car ID, customer ID, booking ID, etc.) from the JSON data
+    $carId = $data['carId'];
+    $customerId = $data['customerId'];
+    $bookingId = $data['bookingId'];
+
+    // // Retrieve latitude and longitude from the request
+    // $latitude = $request->input('latitude');
+    // $longitude = $request->input('longitude');
+
+    // // Retrieve other necessary data (car ID, customer ID, booking ID, etc.) from the request
+    // $carId = $request->input('carId');
+    // $customerId = $request->input('customerId');
+    // $bookingId = $request->input('bookingId');
 
     // You can perform additional processing or validation here if needed
 
