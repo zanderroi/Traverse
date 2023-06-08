@@ -59,4 +59,4 @@ Route::post('/update-location', function (Request $request) {
 });
 
 //Track Location
-Route::get('/car_owner/location/{carId}', [CarLocationController::class,'showLocationAPI'])->name('car_owner.location');
+Route::get('/car_owner/location/{carId}', [CarLocationController::class,'showLocationAPI']);
