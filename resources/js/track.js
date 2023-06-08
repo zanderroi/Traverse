@@ -1,8 +1,9 @@
+import 'bootstrap';
 import { Loader } from '@googlemaps/js-api-loader';
 import axios from 'axios';
 
 const loader = new Loader({
-    apiKey: 'AIzaSyDR7M7-9pF0eh_R0z17pjnDb4El_dL3ay4', // Replace with your actual API key
+    apiKey: 'AIzaSyCpEj-6GoyK9TIbNYMVijvzNh_DqRsC-84', // Replace with your actual API key
     version: 'weekly',
     libraries: ['places']
 });
@@ -57,3 +58,5 @@ function updateMapCenter(latitude, longitude) {
         title: 'Car Location'
     });
 }
+window.axios = axios;
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
