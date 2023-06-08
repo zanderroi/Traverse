@@ -2,12 +2,15 @@
 
 @section('content')
     <!-- Existing code ... -->
-
-    <h2>Car Location</h2>
-    <p>Car ID: <span id="carId">{{ $carId }} </span></p>
+    <div class="p-4 sticky top-0 z-10" style="background-color: #0C0C0C;">
+        <div class="flex justify-between items-center">
+            <h1 class="text-3xl font-bold pl-7 ml-4 mt-6 pt-4 mb-3 mr-5 text-white">Car Location</h1>
+        </div>
+      </div>
+    {{-- <p>Car ID: <span id="carId">{{ $carId }} </span></p> --}}
     <p>Latitude: <span id="latitude">{{ $latitude }}</span></p>
     <p>Longitude: <span id="longitude">{{ $longitude }}</span></p>
-    <div id="map" style="height: 400px;"></div>
+    <div id="map" class="mx-auto" style="width:800px; height: 600px;"></div>
 @endsection
 
 @push('scripts')
