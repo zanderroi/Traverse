@@ -15,6 +15,7 @@ export default defineConfig({
                 'resources/js/popupmodal.js',
                 'resources/js/avatar.js',
                 'resources/js/bootstrap.js',
+                'resources/js/map.js',
             ],
             refresh: true,
         }),
