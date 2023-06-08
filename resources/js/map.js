@@ -1,3 +1,4 @@
+
 import { Loader } from '@googlemaps/js-api-loader';
 import axios from 'axios';
 
@@ -57,3 +58,7 @@ function updateMapCenter(latitude, longitude) {
         title: 'Car Location'
     });
 }
+
+window.axios = axios;
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
