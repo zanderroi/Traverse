@@ -66,3 +66,4 @@ function updateMapCenter(latitude, longitude) {
 
 window.axios = axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
