@@ -58,6 +58,12 @@
         </div>
         <div class="mx-auto w-full md:w-1/2 text-center justify-center items-center h-screen" style="background-color: #121212;">
             <div class="mt-5 pt-4">
+                
+        @if(session('success'))
+        <div class="alert alert-success mt-3">
+            {{ session('success') }}
+        </div>
+        @endif
                 <h1 class="text-2xl pt-4 text-center font-normal text-gray-300 mb-2">Log in to continue</h1>
                 <div class=" row justify-content-center w-full text-center justify-center items-center">
              

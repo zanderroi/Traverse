@@ -92,4 +92,29 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+    public function redirectToGoogle()
+{
+    return Socialite::driver('google')->redirect();
+}
+
+public function handleGoogleCallback()
+{
+    $googleUser = Socialite::driver('google')->user();
+    $user = User::where('email', $googleUser->getEmail())->first();
+
+    if (!$user) {
+        // Create a new user if not found
+        $user = User::create([
+            'name' => $googleUser->getName(),
+            'email' => $googleUser->getEmail(),
+            'password' => bcrypt(Str::random(16)),
+        ]);
+    }
+
+    // Log in the user
+    Auth::login($user);
+
+    // Redirect the user to the desired location
+    return redirect()->intended('/home');
+}
 }

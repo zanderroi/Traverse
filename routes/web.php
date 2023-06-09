@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\CarOwnerController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
@@ -55,6 +57,10 @@ Route::post('auth/register', [RegisterController::class, 'register'])->name('aut
 Route::get('auth/registrationconfirm', function () {
     return view('auth.registrationconfirm');
 })->name('auth.registrationconfirm');
+
+Route::get('login/google', [LoginController::class, 'redirectToGoogle']);
+Route::get('login/google/callback', [ForgotPasswordController::class, 'handleGoogleCallback']);
+Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
 
 Auth::routes();
