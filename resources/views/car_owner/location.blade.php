@@ -15,7 +15,7 @@
 
 @push('scripts')
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpEj-6GoyK9TIbNYMVijvzNh_DqRsC-84"></script>
-    {{-- <script src="{{ asset('js/track.js') }}"></script> --}}
+    <script src="{{ asset('js/track.js') }}"></script>
 @endpush
 
 
