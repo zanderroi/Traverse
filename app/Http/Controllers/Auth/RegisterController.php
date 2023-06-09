@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Rules\UnderEighteen;
+use Illuminate\Http\Request;
 
 
 class RegisterController extends Controller
@@ -23,33 +24,21 @@ class RegisterController extends Controller
     | provide this functionality without requiring any additional code.
     |
     */
-
     use RegistersUsers;
 
+    protected function registered(Request $request, $user)
+    {
+        if ($user->user_type === 'car_owner' || $user->user_type === 'customer') {
+            return redirect()->route('auth.registrationconfirm');
+        }
+
+        return redirect($this->redirectPath());
+    }
     /**
      * Where to redirect users after registration.
      *
      * @var string
      */
-    protected function redirectTo()
-    {
-        $userType = Auth::user()->user_type;
-    
-        switch ($userType) {
-            case 'admin':
-                return route('admin.dashboard');
-                break;
-            case 'car_owner':
-                return route('car_owner.dashboard');
-                break;
-            case 'customer':
-                return route('customer.dashboard');
-                break;
-            default:
-                return route('welcome');
-                break;
-        }
-    }
 
     /**
      * Create a new controller instance.
@@ -70,12 +59,12 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         $validator = Validator::make($data, [
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:20'],
+            'last_name' => ['required', 'string', 'max:15'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'address' => ['required', 'string', 'max:255'],
-            'phone_number' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'string', 'max:50'],
+            'phone_number' => ['required', 'numeric', 'digits_between:10,13'],
             'birthday' => ['required', 'date', new UnderEighteen],
             'govtid' => ['required', 'string', 'max:255'],
             'govtid_image' => ['required', 'mimes:jpg,jpeg,png', 'max:2048'],
@@ -84,16 +73,19 @@ class RegisterController extends Controller
             'driverslicense2_image' => ['required', 'image', 'max:2048'],
             'selfie_image' => ['required', 'image', 'max:2048'],
             'contactperson1' => ['required', 'string', 'max:255'],
-            'contactperson1number' => ['required', 'string', 'max:255'],
+            'contactperson1number' => ['required', 'numeric', 'digits_between:10,13'],
             'contactperson2' => ['required', 'string', 'max:255'],
-            'contactperson2number' => ['required', 'string', 'max:255'],
+            'contactperson2number' => ['required', 'numeric', 'digits_between:10,13'],
             'user_type' => ['required', 'in:admin,customer,car_owner'],
 
         ]);
-        $govtidImage = $data['govtid_image']->store('public/images');
-        $driversLicenseImage = $data['driverslicense_image']->store('public/images');
-        $driversLicense2Image = $data['driverslicense2_image']->store('public/images');
-        $selfieImage = $data['selfie_image']->store('public/images');
+        if ($validator->passes()) {
+            $govtidImage = request()->file('govtid_image')->store('public/images');
+            $driversLicenseImage = request()->file('driverslicense_image')->store('public/images');
+            $driversLicense2Image = request()->file('driverslicense2_image')->store('public/images');
+            $selfieImage = request()->file('selfie_image')->store('public/images');
+        }
+    
         return $validator;
     }
 
@@ -129,7 +121,7 @@ class RegisterController extends Controller
             'contactperson2' => $data['contactperson2'],
             'contactperson2number' => $data['contactperson2number'],
             'user_type' => $data['user_type'] == 'car_owner' ? 'car_owner' : ($data['user_type'] == 'admin' ? 'admin' : 'customer'),
-            'account_status' => 'Active',
+            'account_status' => 'Deactivated',
             'booking_status' => 'Available'
 
         ]);

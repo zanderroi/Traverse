@@ -16,6 +16,7 @@ export default defineConfig({
                 'resources/js/avatar.js',
                 'resources/js/bootstrap.js',
                 'resources/js/track.js',
+                'resources/js/wizardform.js',
             ],
             refresh: true,
         }),

@@ -47,6 +47,10 @@ Route::get('/ourteam', function () {
     return view('ourteam');
 })->name('ourteam');
 
+Route::post('auth/registrationconfirm', function () {
+    return view('auth.registrationconfirm');
+})->name('auth.registrationconfirm');
+
 Auth::routes();
 
 //ADMIN ROUTES
