@@ -1,64 +1,40 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
+
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Rules\UnderEighteen;
-use Illuminate\Http\Request;
-
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
     use RegistersUsers;
 
     protected function registered(Request $request, $user)
     {
-        if ($user->user_type === 'car_owner' || $user->user_type === 'customer') {
+        if (in_array($user->user_type, ['car_owner', 'customer'])) {
+            $this->guard()->logout(); // Log out the user
+            $request->session()->invalidate(); // Invalidate the session
             return redirect()->route('auth.registrationconfirm');
         }
-
+    
         return redirect($this->redirectPath());
     }
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
+    
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
     protected function validator(array $data)
     {
-        $validator = Validator::make($data, [
+        return Validator::make($data, [
             'first_name' => ['required', 'string', 'max:20'],
             'last_name' => ['required', 'string', 'max:15'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -77,31 +53,20 @@ class RegisterController extends Controller
             'contactperson2' => ['required', 'string', 'max:255'],
             'contactperson2number' => ['required', 'numeric', 'digits_between:10,13'],
             'user_type' => ['required', 'in:admin,customer,car_owner'],
-
         ]);
-        if ($validator->passes()) {
-            $govtidImage = request()->file('govtid_image')->store('public/images');
-            $driversLicenseImage = request()->file('driverslicense_image')->store('public/images');
-            $driversLicense2Image = request()->file('driverslicense2_image')->store('public/images');
-            $selfieImage = request()->file('selfie_image')->store('public/images');
-        }
-    
-        return $validator;
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
     protected function create(array $data)
     {
-        
-        $govtidImage = $data['govtid_image']->store('public/images');
-        $driversLicenseImage = $data['driverslicense_image']->store('public/images');
-        $driversLicense2Image = $data['driverslicense2_image']->store('public/images');
-        $selfieImage = $data['selfie_image']->store('public/images');
+        $uploadedImages = $this->storeUploadedImages($data, [
+            'govtid_image',
+            'driverslicense_image',
+            'driverslicense2_image',
+            'selfie_image',
+        ]);
+
+        $userType = $this->getUserType($data['user_type']);
+
         return User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
@@ -111,19 +76,41 @@ class RegisterController extends Controller
             'phone_number' => $data['phone_number'],
             'birthday' => $data['birthday'],
             'govtid' => $data['govtid'],
-            'govtid_image' => $govtidImage,
+            'govtid_image' => $uploadedImages['govtid_image'],
             'driverslicense' => $data['driverslicense'],
-            'driverslicense_image' => $driversLicenseImage,
-            'driverslicense2_image' => $driversLicense2Image,
-            'selfie_image'=> $selfieImage,
+            'driverslicense_image' => $uploadedImages['driverslicense_image'],
+            'driverslicense2_image' => $uploadedImages['driverslicense2_image'],
+            'selfie_image' => $uploadedImages['selfie_image'],
             'contactperson1' => $data['contactperson1'],
             'contactperson1number' => $data['contactperson1number'],
             'contactperson2' => $data['contactperson2'],
             'contactperson2number' => $data['contactperson2number'],
-            'user_type' => $data['user_type'] == 'car_owner' ? 'car_owner' : ($data['user_type'] == 'admin' ? 'admin' : 'customer'),
+            'user_type' => $userType,
             'account_status' => 'Deactivated',
-            'booking_status' => 'Available'
-
+            'booking_status' => 'Available',
         ]);
+     
+    }
+
+    protected function storeUploadedImages(array $data, array $imageFields)
+    {
+        $uploadedImages = [];
+
+        foreach ($imageFields as $field) {
+            $uploadedImages[$field] = request()->file($field)->store('public/images');
+        }
+
+        return $uploadedImages;
+    }
+
+    protected function getUserType($userType)
+    {
+        $validUserTypes = ['admin', 'customer', 'car_owner'];
+
+        if (in_array($userType, $validUserTypes)) {
+            return $userType;
+        }
+
+        return 'customer'; // Default user type if invalid type provided
     }
 }
