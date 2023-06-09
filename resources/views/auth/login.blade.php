@@ -62,11 +62,11 @@
                 <div class=" row justify-content-center w-full text-center justify-center items-center">
              
         
-                <div class="h-80 w-1/2 flex justify-center items-center" style="background-color: #1c1b1b;">
+                <div class=" h-80 w-96 flex justify-center items-center" style="background-color: #1c1b1b;">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
                 
-                        <div class="text-left">
+                        <div class="text-left w-72">
                           
                 
                             <div>
