@@ -45,10 +45,6 @@ class User extends Authenticatable
         'booking_status'
     ];
 
-    protected $attributes = [
-        'account_status' => 'Active', // set the default value of status to 'available'
-        'booking_status' => 'Available',
-    ];
     /**
      * The attributes that should be hidden for serialization.
      *

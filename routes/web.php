@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CarOwnerController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
@@ -47,9 +48,14 @@ Route::get('/ourteam', function () {
     return view('ourteam');
 })->name('ourteam');
 
-Route::post('auth/registrationconfirm', function () {
+// Route for registration form submission
+Route::post('auth/register', [RegisterController::class, 'register'])->name('auth.register');
+
+// Route for displaying registration confirmation view
+Route::get('auth/registrationconfirm', function () {
     return view('auth.registrationconfirm');
 })->name('auth.registrationconfirm');
+
 
 Auth::routes();
 
