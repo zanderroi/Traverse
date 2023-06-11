@@ -11,6 +11,10 @@ use App\Models\CarRating;
 
 class CarRatingController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth', 'customer']);
+    }
     //
     public function store(Request $request, $booking_id, $car_owner_id, $customer_id)
     {

@@ -12,6 +12,10 @@ use Illuminate\Http\JsonResponse;
 
 class CarLocationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth', 'car_owner']);
+    }
     public function updateLocation(Request $request)
     {
         // Retrieve latitude and longitude from the request

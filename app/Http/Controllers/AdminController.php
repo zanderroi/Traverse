@@ -16,7 +16,7 @@ class AdminController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth']);
+        $this->middleware(['auth', 'admin']);
     }
 
     public function dashboard()
@@ -315,6 +315,13 @@ class AdminController extends Controller
         
         return view('admin.bookings', compact('bookings', 'bookingClient'));
     }
+
+    public function verify()
+    {
+        $deactivatedUsers = User::where('account_status', 'Deactivated')->paginate(5);
+        return view('admin.verification', compact('deactivatedUsers'));
+    }
+    
 
 }
 

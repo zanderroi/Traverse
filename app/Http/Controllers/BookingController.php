@@ -15,7 +15,10 @@ use PDF;
 
 class BookingController extends Controller
 {
-
+    public function __construct()
+    {
+        $this->middleware(['auth', 'customer']);
+    }
     //Booking process
     public function store(Request $request, Car $car)
     {

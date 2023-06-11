@@ -85,6 +85,9 @@ Route::delete('/customer/{user}', [AdminController::class, 'customerDestroy']);
 Route::get('/reservation/details', [AdminController::class, 'bookshow']);
 Route::get('/graph', [GraphController::class, 'graph']);
 
+Route::get('/admin/verification', [AdminController::class, 'verify'])->name('admin.verification');
+Route::get('users/{userId}/approve', [AdminController::class, 'approveUser'])->name('admin.approveUser');
+Route::get('users/{userId}/decline', [AdminController::class, 'declineUser'])->name('admin.declineUser');
 
 
 //CAR OWNER ROUTES
