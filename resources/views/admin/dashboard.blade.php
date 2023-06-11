@@ -1,6 +1,6 @@
 @include('components.header')
-<div class="flex h-screen">
-    <div class="sidebar text-white  w-48 pt-8 pb-8" style="background-color: #0C0C0C;">
+<div class="flex">
+    <div class="sidebar text-white  w-48 pt-8 pb-8 h-screen" style="background-color: #0C0C0C;">
     <div class="content-titles mt-1">
       <h2 class="text-xl font-bold mb-4 text-center">Dashboard</h2>
       <ul class="space-y-8 ml-6">
@@ -13,7 +13,7 @@
       </ul>
     </div>
 </div>
-<div class="flex flex-row p-8 space-x-6">
+<div class="flex flex-row p-8 space-x-4">
     <div class="col-md-4">
         <div class="card bg-black text-white">
             <div class="card-body">
@@ -117,8 +117,59 @@
         </div>
     </div>
     </div>
+    <div class="flex flex-col">
+        <table class="table mt-4 pt-4">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Total</th>
+                    <th>Last 7 Days</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Bookings</td>
+                    <td>{{ $total1Bookings }}</td>
+                    <td>
+                        @foreach ($bookingsLast7Days as $booking)
+                            <p>{{ $booking->created_at->format('Y-m-d') }}</p>
+                        @endforeach
+                    </td>
+                </tr>
+                <tr>
+                    <td>Cars Listed</td>
+                    <td>{{ $totalCars }}</td>
+                    <td>
+                        @foreach ($carsLast7Days as $car)
+                            <p>{{ $car->created_at->format('Y-m-d') }}</p>
+                        @endforeach
+                    </td>
+                </tr>
+                <tr>
+                    <td>Car Owners Registered</td>
+                    <td>{{ $totalCarOwners }}</td>
+                    <td>
+                        @foreach ($carOwnersLast7Days as $carOwner)
+                            <p>{{ $carOwner->created_at->format('Y-m-d') }}</p>
+                        @endforeach
+                    </td>
+                </tr>
+                <tr>
+                    <td>Customers Registered</td>
+                    <td>{{ $totalCustomers }}</td>
+                    <td>
+                        @foreach ($customersLast7Days as $customer)
+                            <p>{{ $customer->created_at->format('Y-m-d') }}</p>
+                        @endforeach
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+</div>
+
 </div>
 </html>
-
+@include('components.footer')
 
 

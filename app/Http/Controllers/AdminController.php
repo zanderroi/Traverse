@@ -69,6 +69,21 @@ class AdminController extends Controller
         $totalBookings = DB::table('bookings')->count();
         $bookingsDone = Booking::whereNotNull('returned_at')->count();
         $bookingsOngoing = Booking::whereNull('returned_at')->count();
+
+        $currentDate = now()->subDays(6)->format('Y-m-d');
+
+
+// Retrieve the data for the last 7 days
+$bookingsLast7Days = Booking::whereBetween('created_at', [$currentDate, now()->format('Y-m-d')])->get();
+$carsLast7Days = Car::whereBetween('created_at', [$currentDate, now()->format('Y-m-d')])->get();
+$carOwnersLast7Days = User::where('user_type', 'car_owner')->whereBetween('created_at', [$currentDate, now()->format('Y-m-d')])->get();
+$customersLast7Days = User::where('user_type', 'customer')->whereBetween('created_at', [$currentDate, now()->format('Y-m-d')])->get();
+
+// Retrieve the total counts for all time
+$total1Bookings = DB::table('bookings')->count();
+$totalCars = Car::count();
+$totalCarOwners = User::where('user_type', 'car_owner')->count();
+$totalCustomers = User::where('user_type', 'customer')->count();
     
         return view('admin.dashboard', compact(
             'carsCount',
@@ -82,7 +97,16 @@ class AdminController extends Controller
             'customersVacant',
             'totalBookings',
             'bookingsDone',
-            'bookingsOngoing'
+            'bookingsOngoing',
+            
+            'total1Bookings',
+            'bookingsLast7Days',
+            'totalCars',
+            'carsLast7Days',
+            'totalCarOwners',
+            'carOwnersLast7Days',
+            'totalCustomers',
+            'customersLast7Days'
         ));
     }
   
