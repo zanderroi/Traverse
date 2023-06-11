@@ -4,6 +4,7 @@
     <div class="content-titles mt-1">
       <h2 class="text-xl font-bold mb-4 text-center">Dashboard</h2>
       <ul class="space-y-8 ml-6">
+        <li class="flex items-center ml-4"> <i class="fa-solid fa-user-shield mr-2"></i><a href="/owners/details"> Account Verification</a></li>
         <li class="flex items-center ml-4"> <i class="fa-solid fa-car mr-2"></i><a href="/cars/details">Cars</a></li>
         <li class="flex items-center ml-4"> <i class="fa-solid fa-user-group mr-2"></i><a href="/owners/details">Car Owners</a></li>
         <li class="flex items-center ml-4"> <i class="fa-solid fa-briefcase mr-2"></i><a href="/customers/details">Customers</a></li>
