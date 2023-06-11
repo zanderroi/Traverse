@@ -114,9 +114,30 @@ $totalCustomers = User::where('user_type', 'customer')->count();
   
 
 
-    public function carshow()
+    public function carshow(Request $request)
     {
-        $cars = Car::with('owner', 'bookings.customer')->paginate(10);
+            // Get the filter option from the request
+        $filter = $request->input('filter');
+
+        // Query the cars based on the filter option
+        $query = Car::with('owner', 'bookings.customer');
+        
+
+        if ($filter === 'rented') {
+            $query->whereDoesntHave('bookings', function ($subquery) {
+                $subquery->where('return_date_time', '>', now())
+                         ->orWhereNotNull('returned_at');
+            });
+        } elseif ($filter === 'not_returned') {
+            $query->whereHas('bookings', function ($subquery) {
+                $subquery->where('return_date_time', '>', now())
+                         ->whereNull('returned_at');
+            });
+        }
+
+        // Paginate the results if the filter is set to "all"
+        $cars = ($filter === 'all') ? $query->paginate(10) : $query->get();
+        // $cars = Car::with('owner', 'bookings.customer')->paginate(5);
         $carOwnersWithCars = DB::table('users')
         ->join('cars', 'users.id', '=', 'cars.car_owner_id')
         ->select('users.first_name', 'users.last_name')

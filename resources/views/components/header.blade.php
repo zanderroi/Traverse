@@ -18,11 +18,11 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
        {{-- Flowbite Tailwind --}}
        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
-
+       
      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
        {{-- Font Awesome --}}
        <script src="https://kit.fontawesome.com/57a798c9bb.js" crossorigin="anonymous"></script>
-
+       
        <style>
            
 

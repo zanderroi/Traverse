@@ -1,9 +1,11 @@
 @include('components.header')
 @section('content')
+@vite(['resources/js/carfilter.js'])
 <div class="flex">
-    <div class="sidebar text-white w-48 pt-8 h-screen" style="background-color: #0C0C0C;">
+    <div class="sidebar text-white w-48 pt-8" style="background-color: #0C0C0C; min-height: 100vh;">
         <div class="content-titles mt-1">
           <h2 class="text-xl font-bold mb-4 text-center"><a href="/admin/dashboard">Dashboard</a></h2>
+          <li class="flex items-center ml-4"> <i class="fa-solid fa-user-shield mr-2"></i><a href="/admin/verification"> Account Verification</a></li>
           <ul class="space-y-8 ml-6">
             <li class="flex items-center {{ Request::is('cars/details') ? 'bg-indigo-600' : '' }} w-full" style="padding: 12px 16px; height: 48px;">
                 <i class="fa-solid fa-car mr-2"></i>
@@ -17,9 +19,29 @@
           </ul>
         </div>
     </div>
-    <div class="w-full" style="background-color: #E5E7EB;">
+    <div  class="w-full" style="background-color: #E5E7EB;">
+        <div class="flex justify-between items-center py-4 px-6">
+            <!-- Filter Options -->
+            <div>
+                <select id="filterOption" class="bg-white border border-gray-300 rounded px-3 py-2">
+                    <option value="all">All</option>
+                    <option value="rented">Available</option>
+                    <option value="not_returned">Not Returned</option>
+                </select>
+            </div>
+        
+            <!-- Search Button -->
+            <div>
+                <div class="flex">
+                    <input type="text" id="searchInput" placeholder="Search..." class="bg-white border border-gray-300 rounded-l px-3 py-2 outline-none">
+                    <button id="searchButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </div>
     <table class="table mt-4 pt-4">
-        <thead>
+        <thead id="carsHeader">
             <tr>
                 <th scope="col" class="py-3 px-6 border-b border-dashed border-gray-500">ID</th>
                 <th scope="col" class="py-3 px-6 border-b border-dashed border-gray-500">Brand</th>
@@ -35,7 +57,7 @@
 
             </tr>
         </thead>
-        <tbody>
+        <tbody id="carsContainer">
             @foreach ($cars as $index => $car)
                 <tr>
                     <td class="py-2 px-6 border-b border-dashed border-gray-500">{{ $car->id }}</td>
@@ -64,7 +86,8 @@
                                             <p><strong>Customer:  </strong>{{$booking->customer->first_name}} {{$booking->customer->last_name}}<br></p>
                                             
                                             <p><strong>Pick-up Date:  </strong>{{$booking->pickup_date_time}}<br></p>  
-                                            <p><strong>Return Date:  </strong>{{$booking->return_date_time}}<hr><br><br></p> 
+                                            <p><strong>Return Date:  </strong>{{$booking->return_date_time}}<br></p> 
+                                            <p><strong>Returned:  </strong>{{$booking->returned_at}}<hr><br><br></p>
                                             @if (!$loop->last)
                                             <hr>
                                             @endif
@@ -92,7 +115,7 @@
         </tbody>
     </table>
     <div class="pagination mx-64 max-w-lg pt-6 p-4 ">
-        {{ $cars->links('pagination::bootstrap-5') }}
+        {{-- {{ $cars->appends(request()->except('page'))->links('pagination::bootstrap-5') }} --}}
     </div>
 </div>
 </div>

@@ -1,10 +1,11 @@
 @include('components.header')
 @section('content')
 <div class="flex">
-    <div class="sidebar text-white w-48 pt-8 h-screen" style="background-color: #0C0C0C;">
+    <div class="sidebar text-white w-48 pt-8" style="background-color: #0C0C0C; min-height: 100vh;">
         <div class="content-titles mt-1">
           <h2 class="text-xl font-bold mb-4 text-center"><a href="/admin/dashboard">Dashboard</a></h2>
           <ul class="space-y-8 ml-6">
+            <li class="flex items-center ml-4"> <i class="fa-solid fa-user-shield mr-2"></i><a href="/admin/verification"> Account Verification</a></li>
             <li class="flex items-center ml-4"><i class="fa-solid fa-car mr-2"></i><a href="/cars/details">Cars</a></li>
             <li class="flex items-center {{ Request::is('owners/details') ? 'bg-indigo-600' : '' }} w-full" style="padding: 12px 16px; height: 48px;">
                  <i class="fa-solid fa-user-group mr-2"></i>
@@ -96,6 +97,22 @@
                                             <li>  @if ($user->driverslicense_image)
                                                 <div>
                                                     <img src="{{ asset('storage/'.$user->driverslicense_image) }}" class="h-20">
+                                                </div>
+                                            @endif</li>
+                                            <br/><br/>
+                                            <li>Driver's License Back</li>
+                                            <li>{{ $user->driverslicense }}</li>
+                                            <li>  @if ($user->driverslicense2_image)
+                                                <div>
+                                                    <img src="{{ asset('storage/'.$user->driverslicense2_image) }}" class="h-40 w-auto">
+                                                </div>
+                                            @endif</li>
+                                            <br/><br/>
+                                            <li>Selfie</li>
+                                            <li>{{ $user->first_name. ' ' .$user->last_name }}</li>
+                                            <li>  @if ($user->selfie_image)
+                                                <div>
+                                                    <img src="{{ asset('storage/'.$user->selfie_image) }}" class="h-40 w-auto">
                                                 </div>
                                             @endif</li>
                                         </ul>
