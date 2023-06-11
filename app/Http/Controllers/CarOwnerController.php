@@ -17,7 +17,7 @@ class CarOwnerController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth']);
+        $this->middleware(['auth', 'car_owner']);
     }
 
     public function index()

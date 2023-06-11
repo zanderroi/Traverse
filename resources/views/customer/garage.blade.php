@@ -34,59 +34,9 @@
   </style>
 </head>
 <body class="pt-5 bg-cover bg-no-repeat bg-center" style="background-image: url('{{ asset('logo/bgimage6.jpg') }}'); min-height: 100vh;">
-    <div class="bg-cover bg-black bg-opacity-75 backdrop-blur-lg w-screen h-screen">
-        <div id="app">
-            <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
-              <div class="container">
-                <a class="navbar-brand flex items-center" href="{{ Auth::user()->user_type === 'customer' ? '/customer/dashboard' : (Auth::user()->user_type === 'car_owner' ? '/car_owner/dashboard' : '/admin/dashboard') }}">
-                  <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
-                  <span class="self-center text-white text-xl font-semibold whitespace-nowrap dark:text-white">Traverse</span>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                  <span class="navbar-toggler-icon"></span>
-                </button>
-            
-                <div id="navbarSupportedContent">
-                  <!-- Right Side Of Navbar -->
-                  <ul class="navbar-nav ml-auto">
-                    <li>
-                      <a href="{{ route('customer.garage') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">Garage</a>
-                    </li>
-                    <li>
-                      <a href="{{ route('customer.history') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300" aria-current="page">History</a>
-                    </li>
-                    <li>
-                      <div class="sm:fixed sm:top-0 sm:right-0 text-right mr-2">
-                        <a href="{{ route('traverse-chats') }}" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Traverse Chats</a>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="flex items-center">
-                        @if ($latestProfilePicture)
-                        <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' .$latestProfilePicture->profilepicture) }}" alt="Profile Picture">
-                    @else
-                        <img class="w-8 h-8 rounded-full" src="{{ asset('avatar/default-avatar.png') }}" alt="Default Profile Picture">
-                    @endif
-                        <a id="navbarDropdown" class="py-2 dropdown-toggle ml-2 text-gray-300 hover:bg-blue-80 font-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                          {{ Auth::user()->first_name }}
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                          <a class="dropdown-item" href="{{ route('customer.profile') }}">Profile</a>
-                          <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
-                          <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                          </form>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </nav>
-            
-      
-            
-          </div>   
+    <div class="bg-cover bg-black bg-opacity-75 backdrop-blur-lg w-screen" style="min-height: 100vh;">
+
+      <x-navcustomer :latestProfilePicture="$latestProfilePicture" />
 
 <div class="p-2 sticky top-6 z-10" style="background-color: #0C0C0C;">
   <div class="flex justify-between items-center">
@@ -113,31 +63,33 @@
 
 @else
 @foreach ($bookings as $booking)
-<div class="mx-auto mt-4 w-1/2 flex flex-row shadow-md " style="background-color: #121212;">
-    <div class="w-1/2 bg-cover" style="background-image: url('{{  asset('storage/'.$booking->car->display_picture) }}');">
-   
-        {{-- <img class="bg-cover bg-center" src="{{ asset('storage/'.$booking->car->display_picture) }}" alt="Car Image"/> --}}
+<div class="mx-auto mt-4 w-1/2 flex flex-col shadow-md md:flex-row md:space-x-4" style="background-color: #121212;">
+    <div class="w-full md:w-1/2 md:order-1">
+        <img src="{{ asset('storage/'.$booking->car->display_picture) }}" style="width: 100%; height: 100%; object-fit: cover;" alt="Car Image"/>
     </div>
-<div class="p-4 pl-4">
-    <h3 class="text-white text-lg font-bold">{{$booking->car->car_brand}} - {{$booking->car->car_model}}</h3>
-    <p class="text-gray-400 text-md font-semi-bold">Car Owner: {{ $booking->car->owner->first_name }} {{ $booking->car->owner->last_name }}</p>
-    <p class="text-gray-400 text-md font-semi-bold">Total Rental Fee: Php {{number_format ($booking->total_rental_fee, 2) }}</p>
-    <p class="text-gray-400 text-md font-semi-bold">Pickup Date and Time: {{ date('F d, Y h:i A', strtotime($booking->pickup_date_time)) }}</p>
-    <p class="text-gray-400 text-md font-semi-bold">Return Date and Time: {{ date('F d, Y h:i A', strtotime($booking->return_date_time)) }}</p>
-    <a href="{{ route('bookings.receipt', ['booking' => $booking->id]) }}" class="font-medium text-blue-700 hover:underline">Download Receipt</a><br>
-    <a href="#" class="font-medium text-blue-700 hover:underline" ddata-modal-target="popup-modal" data-modal-toggle="popup-modal" data-modal-toggle="defaultModal">Return Car</a><br>
-    <form action="{{ route('bookings.extend', ['booking' => $booking->id]) }}" method="POST">
-      @csrf
-
-    @if ($booking->is_extended)
-    <button type="submit" class="font-medium text-red-700" disabled>Already Extended</button>
-@else
-<a href="#" ddata-modal-target="popup-modal2" data-modal-toggle="popup-modal2" class="font-medium text-blue-700 hover:underline">Extend</a><br>
-<a href="{{ url('traverse-chats/' . $booking->car->owner->id) }}" target="_blank" class="font-medium text-blue-700 hover:underline">Message {{$booking->car->owner->first_name}}</a><br>
-@endif
-  </div>
-
+    <div class="p-4 pl-4">
+        <h3 class="text-white text-lg font-bold">{{$booking->car->car_brand}} - {{$booking->car->car_model}}</h3>
+        <p class="text-gray-400 text-md font-semi-bold">Car Owner: {{ $booking->car->owner->first_name }} {{ $booking->car->owner->last_name }}</p>
+        <p class="text-gray-400 text-md font-semi-bold">Total Rental Fee: Php {{number_format ($booking->total_rental_fee, 2) }}</p>
+        <p class="text-gray-400 text-md font-semi-bold">Pickup Date and Time: {{ date('F d, Y h:i A', strtotime($booking->pickup_date_time)) }}</p>
+        <p class="text-gray-400 text-md font-semi-bold">Return Date and Time: {{ date('F d, Y h:i A', strtotime($booking->return_date_time)) }}</p>
+        <a href="{{ route('bookings.receipt', ['booking' => $booking->id]) }}" class="font-medium text-blue-700 hover:underline">Download Receipt</a><br>
+        <a href="#" class="font-medium text-blue-700 hover:underline" data-modal-target="popup-modal" data-modal-toggle="popup-modal" data-modal-toggle="defaultModal">Return Car</a><br>
+        <form action="{{ route('bookings.extend', ['booking' => $booking->id]) }}" method="POST">
+            @csrf
+            @if ($booking->is_extended)
+                <button type="submit" class="font-medium text-red-700" disabled>Already Extended</button>
+                <a href="{{ url('traverse-chats/' . $booking->car->owner->id) }}" target="_blank" class="font-medium text-blue-700 hover:underline">Message {{$booking->car->owner->first_name}}</a><br>
+            @else
+                <a href="#" data-modal-target="popup-modal2" data-modal-toggle="popup-modal2" class="font-medium text-blue-700 hover:underline">Extend</a><br>
+                <a href="{{ url('traverse-chats/' . $booking->car->owner->id) }}" target="_blank" class="font-medium text-blue-700 hover:underline">Message {{$booking->car->owner->first_name}}</a><br>
+            @endif
+        </form>
+    </div>
 </div>
+
+
+
 @endforeach
 </div>
         
@@ -189,6 +141,9 @@
 
 
           @endif
+         
         </div>
+        @include('components.traversechats')
 </body>
+
 </html>

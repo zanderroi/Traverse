@@ -12,11 +12,13 @@ use App\Rules\UnderEighteen;
 use App\Models\Booking;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Mail;
+
 class AdminController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth']);
+        $this->middleware(['auth', 'admin']);
     }
 
     public function dashboard()
@@ -338,6 +340,63 @@ $totalCustomers = User::where('user_type', 'customer')->count();
         ->get();
         
         return view('admin.bookings', compact('bookings', 'bookingClient'));
+    }
+
+    public function verify()
+    {
+        $deactivatedUsers = User::where('account_status', 'Deactivated')->paginate(5);
+        return view('admin.verification', compact('deactivatedUsers'));
+    }
+    
+    public function approveUser($userId)
+    {
+        $user = User::find($userId);
+        if ($user) {
+            $user->account_status = 'Active';
+            $user->save();
+
+            // Send approval email
+            $this->sendApprovalEmail($user);
+
+            return redirect()->back()->with('success', 'User approved successfully.');
+        }
+
+        return redirect()->back()->with('error', 'User not found.');
+    }
+
+    public function declineUser($userId)
+    {
+        $user = User::find($userId);
+        if ($user) {
+            $user->delete();
+
+            // Send decline email
+            $this->sendDeclineEmail($user);
+
+            return redirect()->back()->with('success', 'User declined successfully.');
+        }
+
+        return redirect()->back()->with('error', 'User not found.');
+    }
+
+    private function sendApprovalEmail(User $user)
+    {
+        // Use the appropriate email template or customize the email content as needed
+        $emailContent = "Your Account has passed the verification process and is now active! Please login to your account at https://traversecarrentals2023.duckdns.org/login";
+
+        Mail::raw($emailContent, function ($message) use ($user) {
+            $message->to($user->email)->subject('Account Approved');
+        });
+    }
+
+    private function sendDeclineEmail(User $user)
+    {
+        // Use the appropriate email template or customize the email content as needed
+        $emailContent = "Sorry, your account didn't meet our requirements. Please register again with valid documents.";
+
+        Mail::raw($emailContent, function ($message) use ($user) {
+            $message->to($user->email)->subject('Account Declined');
+        });
     }
 
 }

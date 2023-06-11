@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ResetPasswordController extends Controller
 {
@@ -26,5 +28,13 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected function sendResetResponse(Request $request, $response)
+    {
+        // Logout the user
+        Auth::logout();
+
+        // Handle the password reset success logic
+        // Redirect to the login page with a success message
+        return redirect('/login')->with('status', trans($response));
+    }
 }

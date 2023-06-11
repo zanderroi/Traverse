@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\View;
 
 class GraphController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth', 'admin']);
+    }
     public function graph()
         {
             // Get the labels for the x-axis (dates)

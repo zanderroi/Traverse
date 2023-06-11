@@ -1,5 +1,5 @@
 <!--Footer container-->
-<footer class="text-center text-white" style="background-color: #0a4275">
+<footer class="text-center text-white" style="background-color: #0a4275; flex-shrink: 0;">
 
   
     <!--Copyright section-->

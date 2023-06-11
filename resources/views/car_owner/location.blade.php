@@ -1,62 +1,22 @@
-<!-- resources/views/car_owner/car_location.blade.php -->
-
 @extends('layouts.app')
 
 @section('content')
-    <h2>Car Details</h2>
-    <p>Car Brand: {{ $car->car_brand }}</p>
-    <p>Car Model: {{ $car->car_model }}</p>
-
-    <h2>Customer Details</h2>
-
-    @if ($customer)
-        <p>Name: {{ $customer->first_name }} {{ $customer->last_name }}</p>
-        <p>Email: {{ $customer->email }}</p>
-    @else
-        <p>Customer details not available</p>
-    @endif
-
-    <h2>Booking Details</h2>
-
-    @if ($booking)
-        <p>Pickup Date and Time: {{ $booking->pickup_date_time }}</p>
-        <p>Return Date and Time: {{ $booking->return_date_time }}</p>
-        <p>Total Rental Fee: {{ $booking->total_rental_fee }}</p>
-    @else
-        <p>Booking details not available</p>
-    @endif
-
-    <h2>Car Location</h2>
-    @if ($latitude && $longitude)
-        <p>Latitude: {{ $latitude }}</p>
-        <p>Longitude: {{ $longitude }}</p>
-        <div id="map"></div>
-
-        <script>
-            // Initialize the map
-            function initMap() {
-                // Set the initial map options
-                var mapOptions = {
-                    center: { lat: {{ $latitude }}, lng: {{ $longitude }} },
-                    zoom: 10
-                };
-        
-                // Create the map object
-                var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-        
-                // Add a marker for the car's location
-                var marker = new google.maps.Marker({
-                    position: { lat: {{ $latitude }}, lng: {{ $longitude }} },
-                    map: map,
-                    title: 'Car Location'
-                });
-            }
-        </script>
-        
-
-        <!-- Include the Google Maps API script -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_7HQoZMwQKy1qqV59p3KiJX1iHAEqR6o&callback=initMap" async defer></script>
-    @else
-        <p>Location data not available</p>
-    @endif
+    <!-- Existing code ... -->
+    <div class="p-4 sticky top-0 z-10" style="background-color: #0C0C0C;">
+        <div class="flex justify-between items-center">
+            <h1 class="text-3xl font-bold pl-7 ml-4 mt-6 pt-4 mb-3 mr-5 text-white">Car Location</h1>
+        </div>
+      </div>
+    <p>Car ID: <span id="carId">{{ $carId }} </span></p>
+    <p>Latitude: <span id="latitude">{{ $latitude }}</span></p>
+    <p>Longitude: <span id="longitude">{{ $longitude }}</span></p>
+    <div id="map" class="mx-auto" style="width:800px; height: 600px;"></div>
 @endsection
+
+@push('scripts')
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpEj-6GoyK9TIbNYMVijvzNh_DqRsC-84"></script>
+    <script src="{{ asset('js/track.js') }}"></script>
+@endpush
+
+
+{{-- AIzaSyD9lZZ2Sj40SpKMwmr6QE-Ep0TM_rZ_TrQ --}}

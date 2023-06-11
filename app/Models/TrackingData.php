@@ -10,11 +10,8 @@ use App\Models\Booking;
 class TrackingData extends Model
 {
     protected $fillable = [
-        'car_id',
-        'customer_id',
         'latitude',
         'longitude',
-        'booking_id',
     ];
 
     public function car()

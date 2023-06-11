@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 class LoginController extends Controller
 {
     /*
@@ -47,6 +48,7 @@ class LoginController extends Controller
         }
     }
     
+
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -54,12 +56,22 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             // Authentication was successful
             $user = Auth::user();
-            if ($user->user_type == 'car_owner') {
-                return redirect()->intended('/car_owner/dashboard');
-            } elseif ($user->user_type == 'customer') {
-                return redirect()->intended('/customer/dashboard');
-            } elseif ($user->user_type == 'admin') {
-                return redirect()->intended('/admin/dashboard');
+            if ($user->account_status === 'Active') {
+                // Account is active, proceed with login
+                switch ($user->user_type) {
+                    case 'car_owner':
+                        return redirect()->intended('/car_owner/dashboard');
+                    case 'customer':
+                        return redirect()->intended('/customer/dashboard');
+                    case 'admin':
+                        return redirect()->intended('/admin/dashboard');
+                }
+            } else {
+                // Account is not active
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Your account is not active. Please contact the administrator.',
+                ]);
             }
         } else {
             // Authentication failed
@@ -68,6 +80,7 @@ class LoginController extends Controller
             ]);
         }
     }
+    
 
 
     /**
@@ -79,4 +92,29 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+    public function redirectToGoogle()
+{
+    return Socialite::driver('google')->redirect();
+}
+
+public function handleGoogleCallback()
+{
+    $googleUser = Socialite::driver('google')->user();
+    $user = User::where('email', $googleUser->getEmail())->first();
+
+    if (!$user) {
+        // Create a new user if not found
+        $user = User::create([
+            'name' => $googleUser->getName(),
+            'email' => $googleUser->getEmail(),
+            'password' => bcrypt(Str::random(16)),
+        ]);
+    }
+
+    // Log in the user
+    Auth::login($user);
+
+    // Redirect the user to the desired location
+    return redirect()->intended('/home');
+}
 }

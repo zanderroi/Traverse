@@ -51,54 +51,28 @@
 
     </head>
     <body>
-            <nav class="navbar navbar-expand-md navbar-light shadow-sm fixed-top border-bottom" style="background-color: #0C0C0C;">
-                <div class="container">
-                    <a class="navbar-brand flex items-center" href="{{ route('welcome') }}">
-                        <img src="{{ asset('logo/2-modified.png') }}" class="h-8 mr-3 " alt="Traverse Logo" />
-                        <span class="self-center text-xl font-semibold whitespace-nowrap text-white">Traverse</span>
-                    </a>
-                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                        <span class="navbar-toggler-icon"></span>
-                    </button> 
-    
-                    
-                    <div id="navbarSupportedContent">
-    
-                        <!-- Right Side Of Navbar -->
-                        <ul class="navbar-nav ml-auto">
-                           
-                                <a href="{{ route('faq') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300 hover:text-blue-600"> FAQ </a>
-                          
-                          
-                                <a href="{{ route('ourteam') }}" class="font-bold mr-3 block py-2 pl-3 pr-4 text-gray-300 hover:text-blue-600"> Our Team</a>
-                               
-
-                                <div class="sm:fixed sm:top-0 sm:right-0 text-right ml-6">
-
-                                        <a href="{{ route('contact') }}" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Contact Us! </a>
-                                </div>
-                       
-
-    
-                        </ul>
-                    
-                </div>
-            </nav>
+        <x-nav/>
 <div class="mt-2 pt-4">
     <div class="pt-4 flex flex-col md:flex-row">
         <div class="w-full md:w-1/2 h-screen bg-cover bg-center pt-2 hidden md:block" style="background-image: url('{{ asset('logo/bgimage6.jpg') }}');">
         </div>
         <div class="mx-auto w-full md:w-1/2 text-center justify-center items-center h-screen" style="background-color: #121212;">
             <div class="mt-5 pt-4">
+                
+        @if(session('success'))
+        <div class="alert alert-success mt-3">
+            {{ session('success') }}
+        </div>
+        @endif
                 <h1 class="text-2xl pt-4 text-center font-normal text-gray-300 mb-2">Log in to continue</h1>
                 <div class=" row justify-content-center w-full text-center justify-center items-center">
              
         
-                <div class="h-80 w-1/2 flex justify-center items-center" style="background-color: #1c1b1b;">
+                <div class=" h-80 w-96 flex justify-center items-center" style="background-color: #1c1b1b;">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
                 
-                        <div class="text-left">
+                        <div class="text-left w-72">
                           
                 
                             <div>

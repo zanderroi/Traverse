@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\CarOwnerController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
@@ -47,6 +50,19 @@ Route::get('/ourteam', function () {
     return view('ourteam');
 })->name('ourteam');
 
+// Route for registration form submission
+Route::post('auth/register', [RegisterController::class, 'register'])->name('auth.register');
+
+// Route for displaying registration confirmation view
+Route::get('auth/registrationconfirm', function () {
+    return view('auth.registrationconfirm');
+})->name('auth.registrationconfirm');
+
+Route::get('login/google', [LoginController::class, 'redirectToGoogle']);
+Route::get('login/google/callback', [ForgotPasswordController::class, 'handleGoogleCallback']);
+Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+
 Auth::routes();
 
 //ADMIN ROUTES
@@ -69,6 +85,9 @@ Route::delete('/customer/{user}', [AdminController::class, 'customerDestroy']);
 Route::get('/reservation/details', [AdminController::class, 'bookshow']);
 Route::get('/graph', [GraphController::class, 'graph']);
 
+Route::get('/admin/verification', [AdminController::class, 'verify'])->name('admin.verification');
+Route::get('users/{userId}/approve', [AdminController::class, 'approveUser'])->name('admin.approveUser');
+Route::get('users/{userId}/decline', [AdminController::class, 'declineUser'])->name('admin.declineUser');
 
 
 //CAR OWNER ROUTES
