@@ -19,6 +19,24 @@
         </div>
     </div>
     <div class="w-full" style="background-color: #E5E7EB;">
+        <div class="flex justify-between mb-4 pt-2"> 
+            <form action="/owners/details" method="GET">
+                <div class="flex items-center ml-4">
+                    <select name="filter" class="bg-white border border-gray-300 rounded px-3 py-2 outline-none">
+                        <option value="">All Owners</option>
+                        <option value="bookings" {{ Request::input('filter') === 'bookings' ? 'selected' : '' }}>With Bookings</option>
+                        <option value="no_bookings" {{ Request::input('filter') === 'no_bookings' ? 'selected' : '' }}>Without Bookings</option>
+                    </select>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-r-md">Filter</button>
+                </div>
+            </form>
+            <form action="/owners/details" method="GET">
+                <div class="flex items-center">
+                    <input type="text" name="search" placeholder="Search" class="bg-white border border-gray-300 rounded-l px-3 py-2 outline-none">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-r-md">Search</button>
+                </div>
+            </form>
+        </div>
     <table class="table">
         <thead>
             <tr>

@@ -1,5 +1,6 @@
 @include('components.header')
 @section('content')
+@vite(['resources/js/bookfilter.js'])
 <div class="flex">
     <div class="sidebar text-white w-48 pt-8" style="background-color: #0C0C0C; min-height: 100vh;">
         <div class="content-titles mt-1">
@@ -19,7 +20,24 @@
         </div>
     </div>
     <div class="w-full" style="background-color: #E5E7EB;">
-    <table class="table">
+        <div class="flex justify-between items-center py-4 px-6">
+            <!-- Filter Options -->
+            <div>
+                <select id="filterOption" class="bg-white border border-gray-300 rounded px-3 py-2">
+                    <option value="all">All</option>
+                    <option value="done">Done</option>
+                    <option value="on_going">On Going</option>
+                </select>
+            </div>
+        
+            <!-- Search Button -->
+            <div>
+                <div class="flex">
+                    <input type="text" id="searchInput" placeholder="Search..." class="bg-white border border-gray-300 rounded-l px-3 py-2 outline-none">
+                </div>
+            </div>
+        </div>
+        <table class="table">
         <thead>
             <tr>
                 <th scope="col" class="py-3 px-6 border-b border-dashed border-gray-500">ID</th>
@@ -43,7 +61,7 @@
                         Owner: {{ $booking->car->owner->first_name. ' ' .$booking->car->owner->last_name  }}<br></td>
                     <td class="border-b border-dashed border-gray-500">{{ $booking->pickup_date_time }}</td>
                     <td class="border-b border-dashed border-gray-500">{{ $booking->return_date_time }}</td>
-                    <td class='text-center border-b border-dashed border-gray-500'>
+                    <td class='text-center border-b border-dashed border-gray-500' data-returned-at="{{ $booking->returned_at }}">
                     @if($booking->returned_at)
                         Returned<br>
                         {{ \Carbon\Carbon::parse($booking->returned_at)->format('Y-m-d') }}
