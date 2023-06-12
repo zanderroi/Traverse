@@ -18,6 +18,7 @@ export default defineConfig({
                 'resources/js/track.js',
                 'resources/js/wizardform.js',
 		'resources/js/carfilter.js',
+		'resources/js/bookfilter.js',
             ],
             refresh: true,
         }),
