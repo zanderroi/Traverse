@@ -17,6 +17,7 @@ export default defineConfig({
                 'resources/js/bootstrap.js',
                 'resources/js/track.js',
                 'resources/js/wizardform.js',
+		'resources/js/carfilter.js',
             ],
             refresh: true,
         }),
