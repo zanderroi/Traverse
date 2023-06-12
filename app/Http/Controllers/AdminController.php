@@ -145,20 +145,109 @@ $totalCustomers = User::where('user_type', 'customer')->count();
         return view('admin.cars', compact('cars', 'carOwnersWithCars'));
   
     }
-    public function ownershow()
+    public function ownershow(Request $request)
     {
-        $users = User::where('user_type', 'car_owner')->paginate(10);
+        $search = $request->input('search');
+        $filter = $request->input('filter'); // Add this line to get the filter value
+        
+        $query = User::where('user_type', 'car_owner');
+        
+        // Apply search query
+        if ($search) {
+            $query->where(function ($subquery) use ($search) {
+                $subquery->where('first_name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('last_name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('email', 'LIKE', '%' . $search . '%')
+                    ->orWhere('address', 'LIKE', '%' . $search . '%')
+                    ->orWhere('phone_number', 'LIKE', '%' . $search . '%')
+                    ->orWhere('contactperson1', 'LIKE', '%' . $search . '%')
+                    ->orWhere('contactperson2', 'LIKE', '%' . $search . '%');
+                })->orWhereHas('cars', function ($carQuery) use ($search) {
+                    $carQuery->where('car_brand', 'LIKE', '%' . $search . '%')
+                    ->orWhere('car_model', 'LIKE', '%' . $search . '%')
+                    ->orWhere('year', 'LIKE', '%' . $search . '%');
+                });
+        }
+        
+        // Apply filter query
+        if ($filter === 'bookings') {
+            $query->whereHas('cars.bookings', function ($subquery) {
+                $subquery->where(function ($subquery) {
+                    $subquery->whereNull('returned_at')
+                        ->orWhere('returned_at', '=', '');
+                });
+            });
+        } elseif ($filter === 'no_bookings') {
+            $query->whereHas('cars', function ($subquery) {
+                $subquery->whereDoesntHave('bookings')
+                    ->orWhereHas('bookings', function ($subquery) {
+                        $subquery->whereNotNull('returned_at')
+                            ->orWhere('returned_at', '!=', '');
+                    });
+            });
+        }
+        
+        $users = $query->paginate(10);
+        
         $carsWithOwners = DB::table('cars')
-        ->join('users', 'cars.car_owner_id', '=', 'users.id' )
-        ->select('users.first_name', 'users.last_name', 'cars.car_brand', 'cars.car_model', 'cars.year', 'cars.car_owner_id')
-        ->get();
+            ->join('users', 'cars.car_owner_id', '=', 'users.id')
+            ->select('users.first_name', 'users.last_name', 'cars.car_brand', 'cars.car_model', 'cars.year', 'cars.car_owner_id')
+            ->get();
+        
         return view('admin.owners', compact('users', 'carsWithOwners'));
-  
     }
-    public function customershow()
+    
+    public function customershow(Request $request)
     {
-        $users = User::where('user_type', 'customer')->withCount('bookings')->paginate(10);
-
+        $search = $request->input('search');
+        $filter = $request->input('filter'); // Add this line to get the filter value
+    
+        $query = User::where('user_type', 'customer')->withCount('bookings');
+    
+        // Apply search query
+        if ($search) {
+            $query->where(function ($subquery) use ($search) {
+                $subquery->where('first_name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('last_name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('email', 'LIKE', '%' . $search . '%')
+                    ->orWhere('address', 'LIKE', '%' . $search . '%')
+                    ->orWhere('phone_number', 'LIKE', '%' . $search . '%')
+                    ->orWhere('contactperson1', 'LIKE', '%' . $search . '%')
+                    ->orWhere('contactperson2', 'LIKE', '%' . $search . '%')
+                    ->orWhereHas('bookings', function ($bookingQuery) use ($search) {
+                        $bookingQuery->where('pickup_date_time', 'LIKE', '%' . $search . '%')
+                            ->orWhere('return_date_time', 'LIKE', '%' . $search . '%')
+                            ->orWhereHas('car', function ($carQuery) use ($search) {
+                                $carQuery->where('car_brand', 'LIKE', '%' . $search . '%')
+                                    ->orWhere('car_model', 'LIKE', '%' . $search . '%')
+                                    ->orWhere('year', 'LIKE', '%' . $search . '%');
+                            })
+                            ->orWhereHas('car.owner', function ($ownerQuery) use ($search) {
+                                $ownerQuery->where('first_name', 'LIKE', '%' . $search . '%')
+                                    ->orWhere('last_name', 'LIKE', '%' . $search . '%');
+                            });
+                    });
+            });
+        }
+    
+        // Apply filter query
+        if ($filter === 'bookings') {
+            $query->whereHas('bookings', function ($subquery) {
+                $subquery->where(function ($subquery) {
+                    $subquery->whereNull('returned_at')
+                        ->orWhere('returned_at', '=', '');
+                });
+            });
+        } elseif ($filter === 'no_bookings') {
+            $query->whereDoesntHave('bookings')
+                ->orWhereHas('bookings', function ($subquery) {
+                    $subquery->whereNotNull('returned_at')
+                        ->orWhere('returned_at', '!=', '');
+                });
+        }
+    
+        $users = $query->paginate(10);
+    
         // Load the related bookings, cars, and their owners
         $users->load([
             'bookings.car.owner' => function ($query) {
@@ -168,9 +257,10 @@ $totalCustomers = User::where('user_type', 'customer')->count();
                 $query->withTrashed();
             }
         ]);
-
-        return view('admin.customers',compact('users'));
+    
+        return view('admin.customers', compact('users'));
     }
+    
     
     public function show($id)
     {
