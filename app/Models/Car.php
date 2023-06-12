@@ -20,6 +20,8 @@ class Car extends Model
         'display_picture',
         'car_brand',
         'car_model',
+        'car_type',
+        'transmission',
         'year',
         'seats',
         'plate_number',
@@ -38,7 +40,7 @@ class Car extends Model
 
     
     protected $attributes = [
-        'status' => 'available', // set the default value of status to 'available'
+        'status' => 'pending', // set the default value of status to 'available'
     ];
 
     public function owner()

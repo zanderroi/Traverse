@@ -88,6 +88,10 @@ Route::get('/graph', [GraphController::class, 'graph']);
 Route::get('/admin/verification', [AdminController::class, 'verify'])->name('admin.verification');
 Route::get('users/{userId}/approve', [AdminController::class, 'approveUser'])->name('admin.approveUser');
 Route::get('users/{userId}/decline', [AdminController::class, 'declineUser'])->name('admin.declineUser');
+Route::get('/admin/carapproval', [AdminController::class, 'carapprove'])->name('admin.carapproval');
+Route::get('/admin/car/approve/{carId}/{ownerId}', [AdminController::class, 'approveCar'])->name('admin.car.approve');
+Route::get('/admin/car/decline/{carId}/{ownerId}', [AdminController::class, 'declineCar'])->name('admin.car.decline');
+
 
 
 //CAR OWNER ROUTES

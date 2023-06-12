@@ -49,31 +49,36 @@
             @endif
           
             <div class="ml-4 pl-5 flex flex-wrap justify-start mt-2">
-                @foreach ($cars as $car)
-                <div class="bg-white hover-scale hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 mt-2 mr-3 ml-4 mb-4 pt-2 px-2 w-64 border border-gray-200 rounded-md shadow-md dark:border-gray-700">
-                    <img src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:250px;height:150px;" />
-                    <div class="p-3">
-                        <a class="hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" href="#">
-                            <h5 class="mx-auto mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>
-                            <div class="flex items-center">
+              @foreach ($cars as $car)
+              <div class="relative bg-white hover-scale hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 mt-2 mr-3 ml-4 mb-4 pt-2 px-2 w-64 border border-gray-200 rounded-md shadow-md dark:border-gray-700">
+                  @if ($car->status == 'pending')
+                  <div class="absolute inset-0 flex items-center justify-center rounded-md border-1 bg-black bg-opacity-50">
+                      <span class=" font-bold text-xl text-red-700">Waiting for Approval</span>
+                  </div>
+                  @endif
+                  <img src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:250px;height:150px;" />
+                  <div class="p-3">
+                      <a class="hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" href="#">
+                          <h5 class="mx-auto mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>
+                          <div class="flex items-center">
                               <p class="mb-1 font-normal text-gray-700 dark:text-gray-400"><i class="fa-solid fa-location-dot mr-1" style="color: #152238;"></i>{{ $car->location }}</p>
-                              <p class="mb-1 mr-2 font-normal text-gray-700 dark:text-gray-400"><i class="fa-sharp fa-solid fa-calendar mr-1" style="color: #152238;"></i>{{ $car->year }}</p>              
+                              <p class="mb-1 mr-2 font-normal text-gray-700 dark:text-gray-400"><i class="fa-sharp fa-solid fa-calendar mr-1" style="color: #152238;"></i>{{ $car->year }}</p>
                               <p class="mb-1 mr-2 font-normal text-gray-700 dark:text-gray-400"><i class="fa-solid fa-users mr-1" style="color: #152238;"></i>{{ $car->seats }}</p>
-
-                            </div>
-                        </a>
-                        
-                    </div>
-    
-                    <div class="flex justify-center mb-2">
-                        <a href="{{ route('car_owner.location', ['carId' => $car->id]) }}" class="mr-1 block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-sm text-sm px-3 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Track</a>
-                        <button data-modal-target="defaultModal{{$car->id}}" data-modal-toggle="defaultModal{{$car->id}}" type="button" class="block mr-1 text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-sm text-sm px-3 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Edit Car</button>
-                        <button data-modal-target="popup-modal{{$car->id}}" data-modal-toggle="popup-modal{{$car->id}}" type="button" class="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:gray-red-300 font-medium rounded-sm text-sm px-3 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800" @if($car->status == 'booked') disabled @endif>
-                            Unlist
-                        </button>
-                        
-                    </div>
-            </div>
+                          </div>
+                      </a>
+                  </div>
+          
+                  <div class="flex justify-center mb-2">
+                      <a href="{{ route('car_owner.location', ['carId' => $car->id]) }}" class="mr-1 block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-sm text-sm px-3 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Track</a>
+                      <button data-modal-target="defaultModal{{$car->id}}" data-modal-toggle="defaultModal{{$car->id}}" type="button" class="block mr-1 text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-sm text-sm px-3 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Edit Car</button>
+                      <button data-modal-target="popup-modal{{$car->id}}" data-modal-toggle="popup-modal{{$car->id}}" type="button" class="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:gray-red-300 font-medium rounded-sm text-sm px-3 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800" @if($car->status == 'booked') disabled @endif>
+                          Unlist
+                      </button>
+                  </div>
+              
+       
+          </div>
+          
             {{-- Unlist Car --}}
       <div id="popup-modal{{$car->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative w-full max-w-md max-h-full">
@@ -139,22 +144,22 @@
                   <img id="display_picture_img" src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:100px;height:50px;" />
                 </div>
                 <div class="mr-1">
-                  <label for="add_picture1" class="text-2xs px-2.5 py-1 bg-gray-700 text-white rounded-sm cursor-pointer hover:bg-gray-800">
-                    Additional Picture
+                  <label for="add_picture1" class="text-2xs px-4 py-1 bg-gray-700 text-white rounded-sm cursor-pointer hover:bg-gray-800">
+                    Interior View
                   </label>
                   <input id="add_picture1" type="file" class="hidden" name="add_picture1"  autocomplete="add_picture1" autofocus>
                   <img id="add_picture1_img" src="{{ asset('storage/'.$car->add_picture1) }}" alt="Car Image" style="width:100px;height:50px;" />
                 </div>
                 <div class="mr-1">
-                  <label for="add_picture2" class="text-2xs px-2.5 py-1 bg-gray-700 text-white rounded-sm cursor-pointer hover:bg-gray-800">
-                    Additional Picture
+                  <label for="add_picture2" class="text-2xs px-4 py-1 bg-gray-700 text-white rounded-sm cursor-pointer hover:bg-gray-800">
+                    Side View
                   </label>
                   <input id="add_picture2" type="file" class="hidden" name="add_picture2" autocomplete="add_picture2" autofocus>
                   <img id="add_picture2_img" src="{{ asset('storage/'.$car->add_picture2) }}" alt="Car Image" style="width:100px;height:50px;" />
                 </div>
                 <div class="mr-1">
-                  <label for="add_picture3" class="text-2xs px-2.5 py-1 bg-gray-700 text-white rounded-sm cursor-pointer hover:bg-gray-800">
-                    Additional Picture
+                  <label for="add_picture3" class="text-2xs px-4 py-1 bg-gray-700 text-white rounded-sm cursor-pointer hover:bg-gray-800">
+                    Back View
                   </label>
                   <input id="add_picture3" type="file" class="hidden" name="add_picture3" autocomplete="add_picture3" autofocus>
                   <img id="add_picture3_img" src="{{ asset('storage/'.$car->add_picture3) }}" alt="Car Image" style="width:100px;height:50px;" />
@@ -229,8 +234,10 @@
       </div>
   </div>
 </div>
+
             @endforeach           
         </div>
+      </div>
     </div>
    
       
