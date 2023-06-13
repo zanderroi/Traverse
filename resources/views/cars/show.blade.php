@@ -35,8 +35,8 @@
 
         <x-navcustomer :latestProfilePicture="$latestProfilePicture" />
 
-        <div class="w-3/4 " style="background-color: #1F1F1F;">    
-        <div id="controls-carousel" class="mx-auto relative w-1/2 bg-gray-500 mt-2" data-carousel="static">
+        <div  style="background-color: #1F1F1F;">    
+        <div id="controls-carousel" class="mx-auto relative w-full md:w-1/2 lg:w-1/2  mt-2"  style="padding-left: 15%; padding-right:15%" data-carousel="static">
             <!-- Carousel wrapper -->
             <div class="relative h-56 overflow-hidden md:h-96">
                  <!-- Item 1 -->
@@ -57,87 +57,95 @@
                 </div>
             </div>
             <!-- Slider controls -->
-            <button type="button" class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
-                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                    <svg aria-hidden="true" class="w-6 h-6 text-blue-600 dark:text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-                    <span class="sr-only">Previous</span>
-                </span>
-            </button>
-            <button type="button" class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
-                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                    <svg aria-hidden="true" class="w-6 h-6 text-blue-600 dark:text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                    <span class="sr-only">Next</span>
-                </span>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-carousel-prev>
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+                </button>
+            <button type="button" class="carousel-control-next" data-carousel-next>
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
             </button>
         </div>
-        <div class ="mx-auto w-1/2">
-                    <h5 class="mb-2  mt-2 text-2xl font-bold tracking-tight  text-blue-600 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>
-                    <div class="flex mx-auto">
+        <div class="mx-auto w-full md:w-1/2 lg:w-1/2" style="padding-left: 15%; padding-right:15%">
+            <h5 class="mb-2 mt-2 text-2xl font-bold tracking-tight text-blue-600 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>
+            <div class="mx-auto w-full md:w-1/2 lg:w-1/2">
+                <div class="flex flex-wrap mx-auto space-x-2">
+                    <div class="flex items-center">
                         <i class="fa-solid fa-user mb-1 text-gray-300"></i>
                         <p class="mb-1 ml-2 font-normal text-gray-300 dark:text-gray-400">{{ $car->owner->first_name }} {{ $car->owner->last_name }}</p>
-                  
-                        <i class="fa-solid fa-location-dot mb-3 ml-2 text-gray-300"></i>
-                        <p class="mb-1 ml-2 font-normal text-gray-300 dark:text-gray-400">{{ $car->location }}</p>
-
-                        <i class="fa-solid fa-users mb-1 ml-3 text-gray-300"></i>
-                        <p class="mb-1 ml-2 font-normal text-gray-300 dark:text-gray-400">{{ $car->seats }} seater</p>
-                        <i class="fa-solid fa-gear ml-3 text-gray-300"></i>
-                        <p class="mb-1 ml-2 font-normal text-gray-300 dark:text-gray-400">{{ $car->transmission }}</p>
-                        <i class="fa-solid fa-car  ml-3 text-gray-300"></i>
-                        <p class=" ml-2 font-normal text-gray-300 dark:text-gray-400">{{ $car->plate_number }}</p>
                     </div>
-
+                    
                     <div class="flex items-center">
-                        <div class="flex-grow">
-                          <div class="flex items-center">
-                            <i class="fa-solid fa-peso-sign fa-2xl mr-2" style="color: #0054e6;"></i>
-                            <p class="font-black text-3xl text-blue-600 dark:text-blue-600">
-                                {{ number_format($car->rental_fee, 2) }}
-                            </p>
-                            
-                          </div>
-                        </div>
-                        <div class="flex ml-auto">
-                            @if ($bookingStatus === 'Pending')
-                            <div class="block text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-red-800 dark:hover:bg-red-900 dark:focus:ring-red-900">
+                        <i class="fa-solid fa-location-dot mb-2  text-gray-300"></i>
+                        <p class="mb-1 ml-2 font-normal text-gray-300 dark:text-gray-400">{{ $car->location }}</p>
+                    </div>
+            
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-users mb-1 text-gray-300"></i>
+                        <p class="mb-1 font-normal ml-1 text-gray-300 dark:text-gray-400">{{ $car->seats }} seater</p>
+                    </div>
+            
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-gear mb-1  text-gray-300"></i>
+                        <p class="mb-1  font-normal ml-1 text-gray-300 dark:text-gray-400">{{ $car->transmission }}</p>
+                    </div>
+            
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-car  text-gray-300"></i>
+                        <p class=" font-normal ml-1 text-gray-300 dark:text-gray-400">{{ $car->plate_number }}</p>
+                    </div>
+                </div>
+            </div>
+            
+        
+            <div class="flex items-center mt-4">
+                <div class="flex-growp-2 rounded-sm mr-2">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-peso-sign fa-2xl text-blue-600 mr-2"></i>
+                        <p class="font-black text-3xl text-blue-600 dark:text-blue-600">
+                            {{ number_format($car->rental_fee, 2) }}
+                        </p>
+                    </div>
+                </div>
+                <div class="flex ml-auto">
+                    @if ($bookingStatus === 'Pending')
+                        <div class="block mr-1 text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-sm text-xs px-1 py-2.5 text-center dark:bg-red-800 dark:hover:bg-red-900 dark:focus:ring-red-900">
                             <p class="text-whit">You still have a pending booking!</p>
-                            </div>
-                        @else
-                            <button id="book-car-button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" type="button" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                {{ __('Book Car') }}
-                            </button>
-                        @endif
-                        
-                        <button type="button" class="ml-1 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-green-600 dark:hover:bg-blue-700 dark:focus:ring-green-800" onclick="window.open('{{ url('traverse-chats/' . $car->owner->id) }}', '_blank')">
-                          Message Owner
-                      </button>
                         </div>
-                      </div>
-                      
+                    @else
+                        <button id="book-car-button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" type="button" class="mr-1 block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-sm text-xs px-3 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            {{ __('Book Car') }}
+                        </button>
+                    @endif
                     
-                    <h3 class="text-lg font-bold mt-2 text-gray-300"> Description</h3>
-                    <hr class="mt-1 text-gray-300">
-                    <p class="mt-2 text-gray-300">{{ $car->car_description}}</p>
-                    
-                </div>  
+                    <button type="button" class="block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-sm text-xs px-3 py-2.5 text-center dark:bg-green-600 dark:hover:bg-blue-700 dark:focus:ring-green-800" onclick="window.open('{{ url('traverse-chats/' . $car->owner->id) }}', '_blank')">
+                        Message Owner
+                    </button>
+                </div>
+            </div>
+        
+            <h3 class="text-lg font-bold mt-2 text-gray-300">Description</h3>
+            <hr class="mt-1 text-gray-300">
+            <p class="mt-2 text-gray-300">{{ $car->car_description}}</p>
+        </div> 
                 
-                <div class="mx-auto w-1/2 content-center">
+                <div class="mx-auto w-full md:w-1/2 lg:w-1/2 content-center" style="padding-left: 15%; padding-right:15%">
                     <hr class=mt-3>
-       <div class="flex justify-center mt-4">
-            @for ($i = 1; $i <= 5; $i++)
-                @if ($i <= $car->ratings)
-                    <svg aria-hidden="true" class="w-10 h-10 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                     <title>Star</title>
-                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                     </svg>
-                 @else
-                    <svg aria-hidden="true" class="w-10 h-10 text-gray-300 dark:text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <title>Star</title>
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                    </svg>
-                @endif
-            @endfor
-        </div>
+                    <div class="flex justify-center mt-4">
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if ($i <= $car->ratings)
+                                    <svg aria-hidden="true" class="w-10 h-10 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <title>Star</title>
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                    </svg>
+                                @else
+                                    <svg aria-hidden="true" class="w-10 h-10 text-gray-300 dark:text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <title>Star</title>
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                    </svg>
+                                @endif
+                            @endfor
+                        </div>
                                                 
 
         <!-- Average Rating -->
@@ -145,12 +153,12 @@
 
 
         @foreach ($percentageArray as $index => $percentage)
-        <div class="flex justify-center mt-2">
-            <span class="text-sm font-medium text-blue-600 dark:text-blue-500">{{ 5 - $index }} star</span>
+        <div class="flex justify-center pt-2">
+            <span class="text-xs font-medium text-white">{{ 5 - $index }} star</span>
             <div class="w-96 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-                <div class="h-5 bg-yellow-400 rounded" style="width: {{ $percentage }}%"></div>
+                <div class="h-5 bg-yellow-400 rounded" style="width: {{ $percentage }}%;"></div>
             </div>
-            <span class="text-sm font-medium text-blue-600 dark:text-blue-500">{{ intval($percentage) }}%</span>
+            <span class="text-xs m font-medium text-white">{{ intval($percentage) }}%</span>
             
         </div>
         
@@ -201,7 +209,7 @@
             </div>
         </div>
     </div>
-</div>
+
          <!-- Main modal -->
          <form action="{{ route('bookings.confirm', ['car_id' => $car->id]) }}" method="post">
 

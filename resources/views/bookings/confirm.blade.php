@@ -103,7 +103,8 @@
             <p>Php {{ $total_rental_fee }}</p>
             
             <div class="mt-5 flex justify-center">
-                <a href="{{ route('customer.garage')}}?success=1" class="btn btn-primary mr-2">Confirm Booking</a>
+              <a href="{{ route('booking.confirmemail', ['car_id' => $car->id]) }}" class="btn btn-primary mr-2">Confirm Booking</a>
+
                 <form action="{{ route('bookings.cancel', $booking->id) }}" method="POST">
                     @csrf
                     @method('DELETE')

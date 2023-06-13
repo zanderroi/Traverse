@@ -101,11 +101,12 @@
           <div class="ml-4 pl-5 row justify-start mt-2">
             @foreach ($cars as $car)
               <div class="bg-white hover-scale hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 mt-2 mr-3 mb-4 pt-2 px-2 w-64 h-32 sm:w-64 md:w-1/3 border border-gray-200 rounded-md shadow-md dark:border-gray-700">
+                <a class="hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" href="{{ route('cars.show', $car->id) }}">
                 <img src="{{ asset('storage/'.$car->display_picture) }}" alt="Car Image" style="width:250px;height:150px;" />
                 <div class="p-3">
-                  <a class="hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" href="{{ route('cars.show', $car->id) }}">
+                 
                     <h5 class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ $car->car_brand }} - {{ $car->car_model }}</h5>
-                  </a>
+                
                   <div class="flex items-center">
                     <p class="mb-1 mr-2 font-normal text-gray-700 dark:text-gray-400"><i class="fa-sharp fa-solid fa-calendar mr-1" style="color: #152238;"></i>{{ $car->year }}</p>              
                     <p class="mb-1 mr-2 font-normal text-gray-700 dark:text-gray-400"><i class="fa-solid fa-users mr-1" style="color: #152238;"></i>{{ $car->seats }}</p>
@@ -130,12 +131,18 @@
                   </div> 
                   <hr class="mt-1">
                   <p class="mt-1 font-extrabold text-xl text-black dark:text-gray-400"><i class="fa-solid fa-peso-sign mr-1 text-black"></i>{{number_format ($car->rental_fee, 2) }}</p>
-            </a>
+                </div>
+                </a>
+              </div>
+              @endforeach
             </div>
+          
+          
+            
         </div>
-    @endforeach
-</div>
-      </div>
+ 
+
+    
 
   
 

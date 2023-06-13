@@ -133,6 +133,9 @@ Route::get('booking/confirmation', [BookingController::class, 'confirmation'])->
 //Route to Book Now
 Route::post('/bookings/confirm/{car_id}', [BookingController::class, 'confirm'])->name('bookings.confirm');
 Route::get('bookings/{booking}/receipt', [BookingController::class, 'download'])->name('bookings.receipt');
+//Email owner for booking
+Route::get('booking/confirmemail/{car_id}', [BookingController::class, 'confirmemail'])->name('booking.confirmemail');
+
 //Cancel Booking
 Route::delete('/bookings/{id}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
 //Customer Garage

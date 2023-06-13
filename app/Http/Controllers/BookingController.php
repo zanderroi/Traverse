@@ -12,6 +12,9 @@ use DateTime;
 use Carbon\Carbon;
 use Dompdf\Adapter\PDFLib;
 use PDF;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\BookingConfirmation;
+
 
 class BookingController extends Controller
 {
@@ -234,6 +237,40 @@ public function extend(Request $request, Booking $booking)
     $booking->save();
 
     return redirect()->route('customer.garage')->with('success', 'Booking extended successfully.');
+}
+
+public function confirmemail($car_id)
+{
+    $car = Car::with('owner')->findOrFail($car_id);
+
+    if (!$car) {
+        // The car with the given $car_id was not found
+        return redirect()->back()->with('error', 'Car not found.');
+    }
+
+    $carBrand = $car->car_brand;
+    $carModel = $car->car_model;
+    $car_owner_email = $car->owner ? $car->owner->email : 'Unknown';
+    $carOwnerName = $car->owner ? $car->owner->first_name : 'Unknown';
+    $customerName = Auth::user();
+
+    // Send the confirmation email
+    $this->sendConfirmationEmail($car_owner_email, $carBrand, $carModel, $customerName, $carOwnerName);
+
+    // Redirect to the customer.garage view with success message
+    return redirect()->route('customer.garage')->with('success', 'Booking confirmed successfully.');
+}
+
+private function sendConfirmationEmail($carOwnerEmail, $carBrand, $carModel, $customerName, $carOwnerName)
+{
+    $data = [
+        'carOwnerName' => $carOwnerName,
+        'carBrand' => $carBrand,
+        'carModel' => $carModel,
+        'customerName' => $customerName,
+    ];
+
+    Mail::to($carOwnerEmail)->send(new BookingConfirmation($carOwnerName, $carBrand, $carModel, $customerName));
 }
 
 
