@@ -459,6 +459,15 @@ $totalCustomers = User::where('user_type', 'customer')->count();
         return view('admin.verification', compact('deactivatedUsers'));
     }
     
+    public function carapprove()
+    {
+        $pendingCars = Car::with('owner')->where('status', 'pending')->paginate(5);
+        $car_owner = User::where('user_type', 'car_owner')->get();
+    
+        return view('admin.carapproval', compact('pendingCars', 'car_owner'));
+    }
+    
+
     public function approveUser($userId)
     {
         $user = User::find($userId);
@@ -509,6 +518,65 @@ $totalCustomers = User::where('user_type', 'customer')->count();
             $message->to($user->email)->subject('Account Declined');
         });
     }
+
+        public function approveCar($carId, $ownerId)
+    {
+        $car = Car::find($carId);
+        if ($car) {
+            $car->status = 'available';
+            $car->save();
+
+            // Get the car owner
+            $carOwner = User::find($ownerId);
+
+            // Send approval email to the car owner
+            $this->sendCarApprovalEmail($carOwner, $car);
+            return redirect()->back()->with('success', 'Car approved successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Car not found.');
+    }
+
+    public function declineCar($carId, $ownerId)
+    {
+        $car = Car::find($carId);
+        if ($car) {
+            $car->delete();
+          // Get the car owner
+          $carOwner = User::find($ownerId);
+
+          // Send approval email to the car owner
+          $this->sendCarDeclineEmail($carOwner, $car);
+            return redirect()->back()->with('success', 'Car declined successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Car not found.');
+    }
+
+    private function sendCarApprovalEmail(User $carOwner, Car $car)
+    {
+        $carBrand = $car->car_brand;
+        $carModel = $car->car_model;
+
+        $emailContent = "Dear {$carOwner->first_name},\n\nWe are pleased to inform you that your car listing for {$carBrand} - {$carModel} has been approved. It can now be rented by renters. Thank you for choosing our platform.\n\nPlease login to your car owner dashboard at https://traversecarrentals2023.duckdns.org/car_owner/dashboard for more details.";
+
+        Mail::raw($emailContent, function ($message) use ($carOwner) {
+            $message->to($carOwner->email)->subject('Car Listing Approved');
+        });
+    }
+
+    private function sendCarDeclineEmail(User $carOwner, Car $car)
+    {
+        $carBrand = $car->car_brand;
+        $carModel = $car->car_model;
+
+        $emailContent = "Dear {$carOwner->first_name},\n\nWe regret to inform you that your car listing for {$carBrand} - {$carModel} has been declined. Upon review, we found that some of the details you provided are not accurate or do not meet our guidelines for rental fees.\n\nPlease make sure to list your car again with valid and accurate details, and ensure that the rental fee falls within the specified price range.\n\nThank you for your understanding.";
+
+        Mail::raw($emailContent, function ($message) use ($carOwner) {
+            $message->to($carOwner->email)->subject('Car Listing Declined');
+        });
+    }
+
 
 }
 

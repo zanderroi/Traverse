@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\ProfilePicture;
 use App\Models\Booking;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\CarData;
 
 class CarOwnerController extends Controller
 {
@@ -51,13 +51,30 @@ class CarOwnerController extends Controller
     $addCarLink = route('car_owner.car_details');
     if ($request->isMethod('get')) {
         $user = Auth::user();
+        $carBrands = CarData::pluck('brand')->unique();
+        $carModels = CarData::pluck('model')->unique();
+        $carTypes = CarData::pluck('type')->unique();
+    
         $latestProfilePicture = $user->profilepicture()->latest()->first();
-        $bookedCarsCount = Car::where('car_owner_id', auth()->id())
-        ->where('status', 'booked')
-        ->count();
-        return view('car_owner.car_details', ['latestProfilePicture' => $latestProfilePicture, 'bookedCarsCount' => $bookedCarsCount]);
+        $bookedCarsCount = Car::where('car_owner_id', auth()->id())->where('status', 'booked')->count();
+    
+        $carModelsData = CarData::select('brand', 'model')->get();
+        $carTypesData = CarData::select('model', 'type')->get();
+    
+        return view('car_owner.car_details', [
+            'latestProfilePicture' => $latestProfilePicture,
+            'bookedCarsCount' => $bookedCarsCount,
+            'carBrands' => $carBrands,
+            'carModels' => $carModels,
+            'carTypes' => $carTypes,
+            'carModelsData' => $carModelsData,
+            'carTypesData' => $carTypesData,
+        ]);
     }
-    $user = Auth::user();
+    
+    
+        $user = Auth::user();
+       
         $latestProfilePicture = $user->profilepicture()->latest()->first();
         $bookedCarsCount = Car::where('car_owner_id', auth()->id())
         ->where('status', 'booked')
@@ -67,6 +84,8 @@ class CarOwnerController extends Controller
         'display_picture' => ['required', 'mimes:jpg,jpeg,png', 'max:2048'],
         'car_brand' => ['required', 'string', 'max:30'],
         'car_model' => ['required', 'string', 'max:30'],
+        'car_type' => ['required', 'string', 'max:30'],
+        'transmission' => ['required', 'string', 'max:10'],
         'year' => ['required', 'integer', 'min:1900', 'max:' . date('Y')],
         'seats' => ['required', 'integer', 'min:1'],
         'plate_number' => ['required', 'string', 'max:255'],
@@ -85,6 +104,8 @@ class CarOwnerController extends Controller
     $car->display_picture = $request->file('display_picture')->store('public/dp');
     $car->car_brand = $request->car_brand;
     $car->car_model = $request->car_model;
+    $car->car_type = $request->car_type;
+    $car->transmission = $request->transmission;
     $car->year = $request->year;
     $car->seats = $request->seats;
     $car->plate_number = $request->plate_number;
@@ -96,7 +117,7 @@ class CarOwnerController extends Controller
     $car->add_picture1 = $request->file('add_picture1')->store('public/dp');
     $car->add_picture2 = $request->file('add_picture2')->store('public/dp');
     $car->add_picture3 = $request->file('add_picture3')->store('public/dp');
-    $car->status = 'available';
+    $car->status = 'pending';
     $car->car_owner_id = Auth::id();
     $car->save();
 
