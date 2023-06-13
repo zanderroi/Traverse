@@ -118,56 +118,71 @@
         </div>
     </div>
     </div>
-    <div class="flex flex-col">
+    <div class="flex flex-col p-8 space-x-4">
         <table class="table mt-4 pt-4">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Total</th>
-                    <th>Last 7 Days</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Bookings</td>
-                    <td>{{ $total1Bookings }}</td>
-                    <td>
-                        @foreach ($bookingsLast7Days as $booking)
-                            <p>{{ $booking->created_at->format('Y-m-d') }}</p>
-                        @endforeach
-                    </td>
-                </tr>
-                <tr>
-                    <td>Cars Listed</td>
-                    <td>{{ $totalCars }}</td>
-                    <td>
-                        @foreach ($carsLast7Days as $car)
-                            <p>{{ $car->created_at->format('Y-m-d') }}</p>
-                        @endforeach
-                    </td>
-                </tr>
-                <tr>
-                    <td>Car Owners Registered</td>
-                    <td>{{ $totalCarOwners }}</td>
-                    <td>
-                        @foreach ($carOwnersLast7Days as $carOwner)
-                            <p>{{ $carOwner->created_at->format('Y-m-d') }}</p>
-                        @endforeach
-                    </td>
-                </tr>
-                <tr>
-                    <td>Customers Registered</td>
-                    <td>{{ $totalCustomers }}</td>
-                    <td>
-                        @foreach ($customersLast7Days as $customer)
-                            <p>{{ $customer->created_at->format('Y-m-d') }}</p>
-                        @endforeach
-                    </td>
-                </tr>
-            </tbody>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Total</th>
+              <th>Last 7 Days</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Bookings</td>
+              <td>{{ $total1Bookings }}</td>
+              <td>
+                @if($bookingsLast7Days->count() > 0)
+                  @foreach ($bookingsLast7Days as $booking)
+                    <div class="container">{{ $booking->created_at->format('Y-m-d') }}</div>
+                  @endforeach
+                @else
+                  No bookings in the last 7 days.
+                @endif
+              </td>
+            </tr>
+            <tr>
+              <td>Cars Listed</td>
+              <td>{{ $totalCars }}</td>
+              <td>
+                @if($carsLast7Days->count() > 0)
+                  @foreach ($carsLast7Days as $car)
+                    <div class="container">{{ $car->created_at->format('Y-m-d') }}</div>
+                  @endforeach
+                @else
+                  No cars listed in the last 7 days.
+                @endif
+              </td>
+            </tr>
+            <tr>
+              <td>Car Owners Registered</td>
+              <td>{{ $totalCarOwners }}</td>
+              <td>
+                @if($carOwnersLast7Days->count() > 0)
+                  @foreach ($carOwnersLast7Days as $carOwner)
+                    <div class="container">{{ $carOwner->created_at->format('Y-m-d') }}</div>
+                  @endforeach
+                @else
+                  No car owners registered in the last 7 days.
+                @endif
+              </td>
+            </tr>
+            <tr>
+              <td>Customers Registered</td>
+              <td>{{ $totalCustomers }}</td>
+              <td>
+                @if($customersLast7Days->count() > 0)
+                  @foreach ($customersLast7Days as $customer)
+                    <div class="container">{{ $customer->created_at->format('Y-m-d') }}</div>
+                  @endforeach
+                @else
+                  No customers registered in the last 7 days.
+                @endif
+              </td>
+            </tr>
+          </tbody>
         </table>
-        </div>
-</div>
+      </div>
 
 </div>
 </html>
