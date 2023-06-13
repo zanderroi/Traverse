@@ -94,6 +94,7 @@
             <p>Year: {{ $car->year }}</p>
             
             <h2 class="font-bold mt-1 mb-1">Booking Details</h2>
+            <p>Number of Passengers {{ $booking->passengers }}</p>
             <p>Pickup Date and Time: {{ $booking->pickup_date_time }}</p>
             <p>Return Date and Time: {{ $booking->return_date_time }}</p>
             <p>Notes: {{ $booking->notes }}</p>

@@ -25,6 +25,7 @@ class BookingController extends Controller
         $validatedData = $request->validate([
             'pickup_date_time' => 'required|date',
             'return_date_time' => 'required|date',
+            'passengers' => 'required|numeric|min:1',
             'note' => 'nullable|string|max:255',
         ]);
     
@@ -33,6 +34,7 @@ class BookingController extends Controller
         $booking->user_id = Auth::id();
         $booking->pickup_date_time = $validatedData['pickup_date_time'];
         $booking->return_date_time = $validatedData['return_date_time'];
+        $booking->passengers = $validatedData['passengers'];
         $booking->note = $validatedData['note'];
         $booking->save();
     
@@ -46,6 +48,7 @@ class BookingController extends Controller
         $request->validate([
             'pickup_date_time' => 'required|date|after_or_equal:today',
             'return_date_time' => 'required|date|after_or_equal:pickup_date_time',
+            'passengers' => 'required|numeric|min:1',
             'notes' => 'nullable|string|max:255',
         ]);
     
@@ -55,6 +58,7 @@ class BookingController extends Controller
         $latestProfilePicture = $user->profilepicture()->latest()->first();
         $pickup_date_time = $request->input('pickup_date_time');
         $return_date_time = $request->input('return_date_time');
+        $passengers = $request->input('passengers');
         $notes = $request->input('notes');
         $car = Car::with('owner')->findOrFail($car_id);
     
@@ -80,6 +84,7 @@ class BookingController extends Controller
             'car_id' => $car_id,
             'pickup_date_time' => $pickup_date_time,
             'return_date_time' => $return_date_time,
+            'passengers' => $passengers,
             'notes' => $notes,
             'total_rental_fee' => $total_rental_fee,
         ]);

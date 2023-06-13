@@ -34,40 +34,54 @@
   </style>
 </head>
 <body class="pt-5 bg-cover bg-center" style="background-image: url('{{ asset('logo/bgimage7.jpg') }}'); min-height: 100vh;">
-  <div class="bg-black bg-opacity-75 backdrop-blur-lg" style="min-height: 100vh;">
+  <div class="bg-black bg-opacity-75 backdrop-blur-lg" style="min-height: 100vh; min-width: 100vh;">
 
       <x-navcustomer :latestProfilePicture="$latestProfilePicture" />
  
    
       
-    <div class="p-3 sticky top-6 z-10" style="background-color: #0C0C0C;">
-      <div class="flex flex-col sm:flex-row justify-between items-center">
-        <h1 class="text-3xl font-bold pl-7 ml-4 mt-6 mb-3 mr-5 text-white">Available Cars</h1>
-        <div class="flex items-end mt-4 sm:mt-0">
-          <form method="GET" action="{{ route('customer.available_cars') }}" class="flex items-center">
-            <label for="location" class="sr-only">Search by Location</label>
-            <div class="relative flex items-center">
-              <svg aria-hidden="true" class="w-3 h-3 text-gray-500 dark:text-gray-400 absolute left-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-              </svg>
-              <input type="text" name="location" value="{{ $location }}" class="mt-2 h-10 px-4 py-2 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search by Location">
-            </div>
-            <button type="submit" class="h-10 text-white bg-blue-600 hover:bg-blue-700 text-xs text-center px-2 py-2 ml-2 sm:ml-0 mt-2 sm:mt-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Search</button>
-          </form>
-        
-          <form action="{{ route('customer.available_cars') }}" method="GET" class="ml-4">
-            <div class="form-group flex items-end">
-              <select class="w-24 sm:w-32 h-10 text-xs order border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500" name="sort_by_rental_fee" id="sort_by_rental_fee">
-                <option value="">Rental Fee</option>
-                <option value="asc">Lowest to highest</option>
-                <option value="desc">Highest to lowest</option>
-              </select>
-              <button class="h-10 text-white bg-blue-600 hover:bg-blue-700 text-xs text-center px-2 py-1.5 ml-2 sm:ml-0 mt-2 sm:mt-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700" type="submit" onclick="updateSortBox()">Sort</button>
-            </div>
-          </form>
+      <div class="p-3 sticky top-6 z-10" style="background-color: #0C0C0C;">
+        <div class="flex flex-col sm:flex-row justify-between items-center">
+          <h1 class="text-3xl font-bold pl-7 ml-4 mt-6 mb-3 mr-5 text-white">Available Cars</h1>
+          <div class="flex items-end mt-4 sm:mt-0 pb-3">
+            <form method="GET" action="{{ route('customer.available_cars') }}" class="flex items-center">
+              <label for="location" class="sr-only">Search by Location</label>
+              <div class="relative flex items-center">
+                <svg aria-hidden="true" class="mt-2 ml-2 w-3 h-3 text-gray-500 dark:text-gray-400 absolute left-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <input type="text" name="location" value="{{ $location }}" class="mt-2 h-10 px-4 py-2 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search by Location">
+              </div>
+              <button type="submit" class="h-10 text-white bg-blue-600 hover:bg-blue-700 text-xs text-center px-2 py-2 sm:ml-0 mt-2 sm:mt-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Search</button>
+            </form>
+            
+            <form action="{{ route('customer.available_cars') }}" method="GET" class="ml-4">
+              <div class="form-group flex items-end">
+                <select class="w-24 sm:w-32 h-10 text-xs order border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500" name="sort_by_rental_fee" id="sort_by_rental_fee">
+                  <option value="">Fee</option>
+                  <option value="asc">Lowest to highest</option>
+                  <option value="desc">Highest to lowest</option>
+                </select>
+                <button class="h-10 text-white bg-blue-600 hover:bg-blue-700 text-xs text-center px-2 py-1.5 sm:ml-0 mt-2 sm:mt-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700" type="submit" onclick="updateSortBox()">Sort</button>
+              </div>
+            </form>
+      
+            <form action="{{ route('customer.available_cars') }}" method="GET">
+              <!-- Your existing code -->
+              
+              <div class="form-group flex items-end">
+                <select id="transmission" name="transmission" class="ml-3 w-24 sm:w-32 h-10 text-xs order border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
+                  <option value="">All</option>
+                  <option value="auto">Auto</option>
+                  <option value="manual">Manual</option>
+                </select> 
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white text-xs py-1.5 px-2 h-10">Apply</button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+      
     
     
     

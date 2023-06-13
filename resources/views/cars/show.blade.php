@@ -81,6 +81,8 @@
 
                         <i class="fa-solid fa-users mb-1 ml-3 text-gray-300"></i>
                         <p class="mb-1 ml-2 font-normal text-gray-300 dark:text-gray-400">{{ $car->seats }} seater</p>
+                        <i class="fa-solid fa-gear ml-3 text-gray-300"></i>
+                        <p class="mb-1 ml-2 font-normal text-gray-300 dark:text-gray-400">{{ $car->transmission }}</p>
                         <i class="fa-solid fa-car  ml-3 text-gray-300"></i>
                         <p class=" ml-2 font-normal text-gray-300 dark:text-gray-400">{{ $car->plate_number }}</p>
                     </div>
@@ -234,8 +236,14 @@
                       <input id="rental_fee" type="text" class="form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" value="{{'Php '}}{{ $car->rental_fee }}" readonly>
                     </div>
                   </div>
-                  <div class="form-group row">
-                    <label for="pickup_date_time" class="col-md-4 col-form-label text-md-right">{{ __('Pickup Date and Time') }}</label>
+                  <div class="row">
+                  <label for="passengers" class="col-md-4 col-form-label text-md-right">Number of Passengers</label>
+                     <div class="col-md-6"> 
+                    <input id="passengers" name="passengers"type="number" class="form-input mt-1 block w-full  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"  required autofocus min="1">
+                    </div>
+                </div>
+                  <div class="row">
+                      <label for="pickup_date_time" class="col-md-4 col-form-label text-md-right">{{ __('Pickup Date and Time') }}</label>
                     <div class="col-md-6">
                         <input id="pickup_date_time" type="datetime-local" class="form-control @error('pickup_date_time') is-invalid @enderror  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" name="pickup_date_time" value="{{ old('pickup_date_time') }}" min="{{ date('Y-m-d\TH:i:s', strtotime('today')) }}" max="{{ date('Y-m-d\TH:i:s', strtotime('+1 week')) }}" required autofocus>
                         @error('pickup_date_time')
@@ -245,8 +253,7 @@
                         @enderror
                     </div>
                 </div>
-                
-                <div class="form-group row">
+                <div class="row">
                     <label for="return_date_time" class="col-md-4 col-form-label text-md-right">{{ __('Return Date and Time') }}</label>
                     <div class="col-md-6">
                         <input id="return_date_time" type="datetime-local" class="form-control @error('return_date_time') is-invalid @enderror border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" name="return_date_time" value="{{ old('return_date_time') }}" required autofocus>
@@ -259,7 +266,7 @@
                 </div>
               
 
-                <div class="form-group row mt-1">
+                <div class="row">
                     <label for="notes" class="col-md-4 col-form-label text-md-right">{{ __('Note to Car Owner') }}</label>
 
                     <div class="col-md-6">

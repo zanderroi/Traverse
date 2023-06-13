@@ -6,11 +6,9 @@
 
         <title>Traverse</title>
         <link rel="icon" type="image/png" href="{{ asset('logo/2-modified.png') }}">
-        <link rel="stylesheet" href="css/styles.css">
-
         <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+        {{-- <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" /> --}}
          <!-- Scripts -->
         @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
@@ -21,7 +19,33 @@
         <script src="https://kit.fontawesome.com/57a798c9bb.js" crossorigin="anonymous"></script>
 
         <style>
-            
+                body {
+          overflow-x: hidden;
+      }
+            @font-face {
+        font-family: 'Bebas Neue';
+        src: url('path/to/BebasNeue.woff2') format('woff2'),
+             url('path/to/BebasNeue.woff') format('woff');
+        /* Add more font formats (e.g., ttf, svg) if needed */
+    }
+
+    /* Apply the font to the desired elements */
+    h1, h3 {
+        font-family: 'Bebas Neue', sans-serif;
+        text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.5);
+        animation: slideFromRight 1s ease-in-out;
+       
+    }
+    @keyframes slideFromRight {
+        0% {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
 
         #scroll-to-next {
         animation: fadeInDown 2s ease-in-out infinite;
@@ -53,12 +77,19 @@
     <body>
    
                     <x-nav/>
- 
+                    <div class="bg-cover bg-center h-screen" style="background-image: url('{{ asset('logo/welcome2.png') }}');">
+                        <div class="ml-4 pl-4 w-full h-screen flex flex-col justify-end items-start">
+                            <h1 class="text-white font-normal text-7xl shadow-sm">UNLOCK YOUR JOURNEYS WITH US!</h1>
+                            <h3 class="text-white font-normal text-5xl ">FIND THE PERFECT CAR FOR WHAT YOU NEED</h3>
+                            <h3 class="text-white font-normal text-5xl pb-6 mb-4">TODAY.</h3>
+                        </div>
+                    </div>
+                    
             <div class="bg-cover bg-center h-screen" style="background-image: url('{{ asset('logo/bgimage3.jpg') }}');">
                 <div class="bg-cover bg-gray-400 bg-opacity-50 backdrop-blur-lg w-full h-full text-center flex justify-center items-center bg-center">
                 <div class="text-center">
                   <h1 class="text-8xl sm:text-6xl lg:text-7xl font-bold mb-4 text-gray-900">Traverse</h1>
-                  <h3 id="typing-effect" class="text-4xl sm:text-3xl lg:text-4xl text-gray-900"></h3>
+                  <p id="typing-effect" class="text-4xl sm:text-3xl lg:text-4xl text-gray-900"></p>
                   <script>
                     const text = "Find the right car for you";
                     let index = 0;
