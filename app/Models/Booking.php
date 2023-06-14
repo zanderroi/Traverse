@@ -40,6 +40,13 @@ class Booking extends Model
     return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function getCommissionAmount()
+    {
+        $commissionPercentage = 0.2; // 20% commission
+        return $this->total_rental_fee * $commissionPercentage;
+    }
+    
+
     public function getLateFeeAttribute()
     {
         $returnDateTime = Carbon::parse($this->return_date_time);
