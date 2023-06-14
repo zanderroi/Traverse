@@ -581,9 +581,11 @@ $totalCustomers = User::where('user_type', 'customer')->count();
 
     public function sales(Request $request)
     {
-        // Get the selected timeframe from the request
+        // Retrieve the filter values from the request
+        $filterType = $request->input('filter_type');
         $timeframe = $request->input('timeframe');
-    
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
         // Calculate the start and end dates for the time range based on the selected timeframe
         $startDate = null;
         $endDate = null;
