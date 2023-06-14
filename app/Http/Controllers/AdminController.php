@@ -629,6 +629,81 @@ class AdminController extends Controller
             'latestProfilePicture' => $latestProfilePicture,
         ]);
     }
+
+    public function weeklyDL(Request $request)
+    {
+    $weekData = json_decode($request->input('weekData'), true);
+
+    // Generate the PDF view
+    $pdf = PDF::loadView('admin.weekly', ['weekData' => $weekData]);
+
+    // Generate the PDF filename
+    $filename = 'weekly_data_' . date('Ymd') . '.pdf';
+
+    // Download the PDF file
+    return $pdf->download($filename);
+    }
+
+    public function monthlyDL(Request $request)
+    {
+        $selectedMonth = $request->input('month');
+        $year = date('Y');
+        $monthlyData = $this->generateMonthlyData($selectedMonth, $year);
+
+        // Generate the PDF using the data and the corresponding view
+        $pdf = PDF::loadView('admin.monthly', [
+            'monthData' => $monthlyData,
+            'selectedMonth' => $selectedMonth,
+            'currentMonth' => Carbon::parse("{$year}-{$selectedMonth}-01")->format('F'),
+            'currentYear' => $year,
+        ]);
+
+        // Download the PDF
+        return $pdf->download('monthly_data.pdf');
+    }
+    
+    private function generateMonthlyData($selectedMonth, $year)
+    {
+        $startOfMonth = Carbon::create($year, $selectedMonth, 1)->startOfMonth();
+        $endOfMonth = $startOfMonth->copy()->endOfMonth();
+
+        // Initialize an empty array to store the daily data
+        $monthlyData = [];
+
+        // Loop through each day of the selected month
+        while ($startOfMonth <= $endOfMonth) {
+            $day = $startOfMonth->format('Y-m-d');
+            $nextDay = $startOfMonth->copy()->addDay();
+
+            // Retrieve the data for each day from your database or any other source
+            // Perform the necessary calculations or queries to get the data for the specific day
+            $carOwnerCount = User::where('user_type', 'car_owner')
+                ->whereBetween('created_at', [$day, $nextDay])
+                ->count();
+
+            $customerCount = User::where('user_type', 'customer')
+                ->whereBetween('created_at', [$day, $nextDay])
+                ->count();
+
+            $bookingCount = Booking::whereBetween('created_at', [$day, $nextDay])
+                ->count();
+
+            $carCount = Car::whereBetween('created_at', [$day, $nextDay])
+                ->count();
+
+            // Add the data to the $monthlyData array
+            $monthlyData[$day] = [
+                'carOwnerCount' => $carOwnerCount,
+                'customerCount' => $customerCount,
+                'bookingCount' => $bookingCount,
+                'carCount' => $carCount,
+            ];
+
+            $startOfMonth->addDay();
+        }
+
+        return $monthlyData;
+    }
     
 
 }
