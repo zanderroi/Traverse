@@ -120,7 +120,7 @@
     <hr>
 
     <div class="h-screen bg-cover bg-center" id="next-div" style="background-image: url('{{ asset('logo/bgimage4.jpg') }}');">
-        <div class="bg-cover bg-gray-400 bg-opacity-50 backdrop-blur-lg w-full h-full bg-center">
+        <div class="bg-cover bg-gray-400 bg-opacity-50 backdrop-blur-lg w-full bg-center" style="min-height: 100vh;">
 
             <h1 class="pt-20 text-4xl font-semibold text-center">Available Cars!</h1>
             <div class="ml-6 row justify-content-start mt-3 pt-4 h-96">

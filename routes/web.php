@@ -92,6 +92,7 @@ Route::get('/admin/carapproval', [AdminController::class, 'carapprove'])->name('
 Route::get('/admin/car/approve/{carId}/{ownerId}', [AdminController::class, 'approveCar'])->name('admin.car.approve');
 Route::get('/admin/car/decline/{carId}/{ownerId}', [AdminController::class, 'declineCar'])->name('admin.car.decline');
 Route::get('/admin/sales', [AdminController::class, 'sales'])->name('admin.sales');
+Route::get('admin/sales-data', [AdminController::class, 'getSalesData'])->name('admin.sales.data');
 
 
 
@@ -119,7 +120,8 @@ Route::put('/car_owner/update-car-details/{car_id}', [CarOwnerController::class,
 Route::get('/car_owner/earnings', [CarOwnerController::class, 'earnings'])->name('car_owner.earnings');
 //Car Owner Rented Cars
 Route::get('/car_owner/rentedcars', [CarOwnerController::class, 'rentedcars'])->name('car_owner.rentedcars');
-
+//Car Owner Earnings Send Receipt
+Route::post('/store-commission', [CarOwnerController::class, 'storeCommission'])->name('store.commission');
 
 
 

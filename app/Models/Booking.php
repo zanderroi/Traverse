@@ -39,7 +39,19 @@ class Booking extends Model
     {
     return $this->belongsTo(User::class, 'user_id');
     }
-
+    public function commissions()
+    {
+        return $this->hasMany(Commission::class);
+    }
+    public function commission()
+    {
+        return $this->hasOne(Commission::class);
+    }
+    
+    public function commissionSent()
+    {
+        return $this->commissions()->exists();
+    }
     public function getCommissionAmount()
     {
         $commissionPercentage = 0.2; // 20% commission
