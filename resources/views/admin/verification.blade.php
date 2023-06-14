@@ -3,7 +3,7 @@
 
 
 <div class="flex">
-    <div class="sidebar text-white pt-8" style="background-color: #0C0C0C; min-height:100vh; width: 400px;">
+    <div class="sidebar text-white w-48 pt-8" style="background-color: #0C0C0C; min-height:100vh;">
         <div class="content-titles mt-1">
           <h2 class="text-xl font-bold mb-4 text-center"><a href="/admin/dashboard">Dashboard</a></h2>
           <ul class="space-y-8 ml-6">
@@ -11,12 +11,13 @@
                 <i class="fa-solid fa-user-shield mr-2"></i>
                 <a href="/admin/verification" class="{{ Request::is('admin/verification') ? 'text-white' : 'text-gray-300' }}"> Account Verification</a>
             </li>
+            <li class="flex items-center ml-4"> <i class="fa-solid fa-car-side mr-2"></i><a href="/admin/carapproval"> Car Verification</a></li>
             <li class="flex items-center ml-4"><i class="fa-solid fa-car mr-2"></i><a href="/cars/details">Cars</a></li>
             <li class="flex items-center ml-4"> <i class="fa-solid fa-user-group mr-2"></i><a href="/owners/details"> Car Owners</a></li>
             <li class="flex items-center ml-4"> <i class="fa-solid fa-briefcase mr-2"></i><a href="/customers/details">Customers</a></li>
             <li class="flex items-center ml-4"> <i class="fa-solid fa-book mr-2"></i><a href="/reservation/details">Bookings</a></li>
             <li class="flex items-center ml-4"> <i class="fa-solid fa-chart-line mr-2"></i><a href="/graph">Graph</a></li>
-            {{-- <li class="flex items-center ml-4"> <i class="fa-solid fa-peso-sign mr-2"></i><a href="/graph/details">Sales</a></li> --}}
+            <li class="flex items-center ml-4"> <i class="fa-solid fa-chart-line mr-2"></i><a href="/admin/sales">Sales</a></li>
           </ul>
         </div>
     </div>
@@ -41,22 +42,7 @@
                     Phone Number
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Birthday
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Governtment ID Number
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Governtment ID Image
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Drivers License ID Number
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Drivers License ID Photo
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Selfie Photo
+                    Documents Provided
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Contact Persons
@@ -87,23 +73,61 @@
                 <td class="px-6 py-2">
                     {{ $user->phone_number }}
                 </td>
-                <td class="px-6 py-2">
-                    {{ $user->birthday }}
-                </td>
-                <td class="px-6 py-2">
-                    {{ $user->govtid }}
-                </td>
-                <td class="px-6 py-2">
-                    <img class="rounded-full w-8 h-8" src="{{ asset('storage/'.$user->govtid_image) }}">
-                </td>
-                <td class="px-6 py-2">
-                    {{ $user->driverslicense }}
-                </td>
-                <td class="px-6 py-2">
-                    <img class="rounded-full w-8 h-8" src="{{ asset('storage/'.$user->driverslicense_image) }}"> <img class="rounded-full w-8 h-8" src="{{ asset('storage/'.$user->driverslicense2_image) }}">
-                </td>
-                <td class="px-6 py-2">
-                    <img class="rounded-full w-8 h-8" src="{{ asset('storage/'.$user->selfie_image) }}">
+                <td class="border-b border-dashed border-gray-500">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary bg-gray-700 hover:bg-blue-700" data-bs-toggle="modal" data-bs-target="#documentsModal{{ $user->id }}">
+                        View Documents
+                    </button>
+                    
+                    <!-- Modal -->
+                    <div class="modal fade" id="documentsModal{{ $user->id }}" tabindex="-1" aria-labelledby="documentsModalLabel{{ $user->id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="documentsModalLabel{{ $user->id }}">Documents Provided</h5>
+                                    <button type="button" class="btn-close bg-red-800 text-white" data-bs-dismiss="modal" aria-label="Close">X</button>
+                                </div>
+                                <div class="modal-body">
+                                    <ul>
+                                        <li>Government ID</li>
+                                        <li>{{ $user->govtid }}</li>
+                                        <li>  @if ($user->govtid_image)
+                                            <div>
+                                                <img src="{{ asset('storage/'.$user->govtid_image) }}" class="h-40 w-auto">
+                                            </div>
+                                        @endif</li>
+                                    <br/><br/>
+                                        <li>Driver's License</li>
+                                        <li>{{ $user->driverslicense }}</li>
+                                        <li>  @if ($user->driverslicense_image)
+                                            <div>
+                                                <img src="{{ asset('storage/'.$user->driverslicense_image) }}" class="h-40 w-auto">
+                                            </div>
+                                        @endif</li>
+                                        <br/><br/>
+                                        <li>Driver's License Back</li>
+                                        <li>{{ $user->driverslicense }}</li>
+                                        <li>  @if ($user->driverslicense2_image)
+                                            <div>
+                                                <img src="{{ asset('storage/'.$user->driverslicense2_image) }}" class="h-40 w-auto">
+                                            </div>
+                                        @endif</li>
+                                        <br/><br/>
+                                        <li>Selfie</li>
+                                        <li>{{ $user->first_name. ' ' .$user->last_name }}</li>
+                                        <li>  @if ($user->selfie_image)
+                                            <div>
+                                                <img src="{{ asset('storage/'.$user->selfie_image) }}" class="h-40 w-auto">
+                                            </div>
+                                        @endif</li>
+                                    </ul>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary bg-gray-600" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </td>
                 <td class="px-6 py-2">
                 <button type="button" class="text-xs btn btn-primary bg-gray-700 hover:bg-blue-700" data-bs-toggle="modal" data-bs-target="#contactPersonsModal{{ $user->id }}">
