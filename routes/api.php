@@ -29,19 +29,6 @@ Route::post('/update-location', function (Request $request) {
     $carId = $data['carId'];
 
 
-    // // Retrieve latitude and longitude from the request
-    // $latitude = $request->input('latitude');
-    // $longitude = $request->input('longitude');
-
-    // // Retrieve other necessary data (car ID, customer ID, booking ID, etc.) from the request
-    // $carId = $request->input('carId');
-    // $customerId = $request->input('customerId');
-    // $bookingId = $request->input('bookingId');
-
-    // You can perform additional processing or validation here if needed
-
-    // Save the latitude, longitude, and other data to the database
-    // Assuming you have a database table called "tracking_data"
     $trackingData = new TrackingData();
     $trackingData->car_id = $carId;
     $trackingData->latitude = $latitude;

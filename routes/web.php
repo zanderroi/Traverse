@@ -92,6 +92,7 @@ Route::get('/admin/carapproval', [AdminController::class, 'carapprove'])->name('
 Route::get('/admin/car/approve/{carId}/{ownerId}', [AdminController::class, 'approveCar'])->name('admin.car.approve');
 Route::get('/admin/car/decline/{carId}/{ownerId}', [AdminController::class, 'declineCar'])->name('admin.car.decline');
 Route::get('/admin/sales', [AdminController::class, 'sales'])->name('admin.sales');
+Route::get('admin/sales-data', [AdminController::class, 'getSalesData'])->name('admin.sales.data');
 
 
 
