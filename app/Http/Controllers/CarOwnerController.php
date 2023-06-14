@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Car;
-use App\Models\CarImage;
+use App\Models\Commission;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -253,28 +253,43 @@ public function updateCarDetails(Request $request, $car_id)
     return redirect()->route('car_owner.dashboard')->with('success', 'Car details updated successfully!');
 }
 
-
 public function earnings()
 {
     $user = Auth::user();
     $carOwner = auth()->user();
     $bookedCarsCount = Car::where('car_owner_id', auth()->id())
-    ->where('status', 'booked')
-    ->count();
-    // Retrieve the returned cars with customer name and total rental fee
+        ->where('status', 'booked')
+        ->count();
+
+    // Retrieve the returned cars with customer name, total rental fee, and commission
     $returnedCars = Booking::whereHas('car', function ($query) use ($carOwner) {
         $query->where('car_owner_id', $carOwner->id);
     })
-    ->whereNotNull('returned_at')
-    ->with(['customer', 'car'])
-    ->select('car_id', 'user_id', DB::raw('SUM(total_rental_fee) as total_rental_fee'))
-    ->groupBy('car_id', 'user_id')
-    ->get();
+        ->whereNotNull('returned_at')
+        ->with(['customer', 'car'])
+        ->get();
 
     $totalRentalFee = $returnedCars->sum('total_rental_fee');
+    $totalCommission = 0;
+
+    foreach ($returnedCars as $returnedCar) {
+        $commission = $returnedCar->getCommissionAmount(); // Retrieve the commission amount from the booking model
+        $totalCommission += $commission;
+        $returnedCar->commission = $commission; // Add the commission amount to the returnedCar object
+    }
+
+    $totalEarnings = $totalRentalFee - $totalCommission;
+
     $latestProfilePicture = $user->profilePicture()->latest()->first();
-    return view('car_owner.earnings', compact('returnedCars', 'totalRentalFee','latestProfilePicture', 'bookedCarsCount'));
+
+    $bookingIds = $returnedCars->pluck('id')->toArray(); // Get an array of booking_ids
+
+    return view('car_owner.earnings', compact('returnedCars', 'carOwner', 'totalRentalFee', 'totalCommission', 'totalEarnings', 'latestProfilePicture', 'bookedCarsCount', 'bookingIds'));
 }
+
+
+
+
 
 public function rentedcars()
 {
@@ -293,6 +308,34 @@ public function rentedcars()
 
     $latestProfilePicture = $user->profilepicture()->latest()->first();
     return view('car_owner.rentedcars', ['bookedCars' => $bookedCars, 'user' => $user, 'carOwner' => $carOwner, 'latestProfilePicture' => $latestProfilePicture, 'bookedCarsCount' => $bookedCarsCount]);
+}
+public function storeCommission(Request $request)
+{
+    // Retrieve the necessary data from the request
+    $bookingId = $request->input('booking_id');
+    $carOwnerId = $request->input('car_owner_id');
+    $totalRentalFee = $request->input('total_rental_fee');
+    $commissionAmount = $request->input('commission');
+
+    // Create a new commission record
+    $commission = new Commission();
+    $commission->booking_id = $bookingId;
+    $commission->car_owner_id = $carOwnerId;
+    $commission->commission_amount = $commissionAmount;
+
+    // Save the receipt image if provided
+    if ($request->hasFile('receipt_image')) {
+        $receiptImage = $request->file('receipt_image');
+        $receiptImagePath = $receiptImage->store('receipts'); // Adjust the storage path as needed
+        $commission->receipt = $receiptImagePath;
+    }
+
+    $commission->save();
+
+    // Perform any additional actions or redirects as needed
+
+    // Return a response or redirect
+    return redirect()->back()->with('success', 'Thank you for using Traverse! Receipt saved successfully');
 }
 
 }
