@@ -22,7 +22,12 @@
 
         <style>
             
-
+           h3 {
+        font-family: 'Bebas Neue', sans-serif;
+      
+      
+       
+    }
         #scroll-to-next {
         animation: fadeInDown 2s ease-in-out infinite;
         }
@@ -50,21 +55,21 @@
             </style>
 
     </head>
-    <body class="bg-cover"style="background-image: url('{{ asset('logo/bgimage5.jpg') }}');">
-   
+    <body class="bg-cover"style="background-image: url('{{ asset('logo/welcome3.png') }}');">
+   <div style="min-height: 90vh;">
                     <x-nav/>
-                <div class="mt-4 p-4 flex-grow bg-black bg-opacity-75 backdrop-blur-lg" style="min-height: 90vh;">
-
-                <div class="mx-auto mt-4  w-1/2 flex flex-col shadow-md md:flex-row md:space-x-4">
-                    <div class="w-full md:w-1/2 md:order-0 h-96 ">
-                        <img src="{{ asset('logo/register.jpg')}}" style="width: 100%; height: 100%; object-fit: cover;" alt="Car Image"/>
+            <div class="pt-4 mt-4">
+                <div class="mx-auto mt-4  w-1/2 flex flex-col rounded-md shadow-md md:flex-row md:space-x-4">
+                    <div class="w-full md:w-1/2 md:order-0 h-96 rounded-md ">
+                        <img class="rounded-md" src="{{ asset('logo/register.jpg')}}" style="width: 100%; height: 100%; object-fit: cover;" alt="Car Image"/>
         
                     </div>
-                <div class="p-4 mx-auto" style="background-color:rgb(231, 231, 231); display: flex;align-items:center; justify-content:center;">
-                    <h3 class="text-center font-semibold text-2xl">Thanks for joining us! Please wait for email confirmation </h3>
+                <div class="p-4 mx-auto rounded-md" style="background-color:rgb(231, 231, 231); display: flex;align-items:center; justify-content:center;">
+                    <h3 class="text-center font-semibold text-2xl">Your Account Awaits Verification !! <br> Get Ready to Hit the Road. Please wait for Email Update on Your Account Verification. </h3>
                 </div>
             </div>
         </div>
+    </div>
         @include('components.footer')
     </body>
 </html>

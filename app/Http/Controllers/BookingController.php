@@ -12,6 +12,9 @@ use DateTime;
 use Carbon\Carbon;
 use Dompdf\Adapter\PDFLib;
 use PDF;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\BookingConfirmation;
+
 
 class BookingController extends Controller
 {
@@ -25,6 +28,7 @@ class BookingController extends Controller
         $validatedData = $request->validate([
             'pickup_date_time' => 'required|date',
             'return_date_time' => 'required|date',
+            'passengers' => 'required|numeric|min:1',
             'note' => 'nullable|string|max:255',
         ]);
     
@@ -33,6 +37,7 @@ class BookingController extends Controller
         $booking->user_id = Auth::id();
         $booking->pickup_date_time = $validatedData['pickup_date_time'];
         $booking->return_date_time = $validatedData['return_date_time'];
+        $booking->passengers = $validatedData['passengers'];
         $booking->note = $validatedData['note'];
         $booking->save();
     
@@ -46,6 +51,7 @@ class BookingController extends Controller
         $request->validate([
             'pickup_date_time' => 'required|date|after_or_equal:today',
             'return_date_time' => 'required|date|after_or_equal:pickup_date_time',
+            'passengers' => 'required|numeric|min:1',
             'notes' => 'nullable|string|max:255',
         ]);
     
@@ -55,6 +61,7 @@ class BookingController extends Controller
         $latestProfilePicture = $user->profilepicture()->latest()->first();
         $pickup_date_time = $request->input('pickup_date_time');
         $return_date_time = $request->input('return_date_time');
+        $passengers = $request->input('passengers');
         $notes = $request->input('notes');
         $car = Car::with('owner')->findOrFail($car_id);
     
@@ -80,6 +87,7 @@ class BookingController extends Controller
             'car_id' => $car_id,
             'pickup_date_time' => $pickup_date_time,
             'return_date_time' => $return_date_time,
+            'passengers' => $passengers,
             'notes' => $notes,
             'total_rental_fee' => $total_rental_fee,
         ]);
@@ -229,6 +237,40 @@ public function extend(Request $request, Booking $booking)
     $booking->save();
 
     return redirect()->route('customer.garage')->with('success', 'Booking extended successfully.');
+}
+
+public function confirmemail($car_id)
+{
+    $car = Car::with('owner')->findOrFail($car_id);
+
+    if (!$car) {
+        // The car with the given $car_id was not found
+        return redirect()->back()->with('error', 'Car not found.');
+    }
+
+    $carBrand = $car->car_brand;
+    $carModel = $car->car_model;
+    $car_owner_email = $car->owner ? $car->owner->email : 'Unknown';
+    $carOwnerName = $car->owner ? $car->owner->first_name : 'Unknown';
+    $customerName = Auth::user();
+
+    // Send the confirmation email
+    $this->sendConfirmationEmail($car_owner_email, $carBrand, $carModel, $customerName, $carOwnerName);
+
+    // Redirect to the customer.garage view with success message
+    return redirect()->route('customer.garage')->with('success', 'Booking confirmed successfully.');
+}
+
+private function sendConfirmationEmail($carOwnerEmail, $carBrand, $carModel, $customerName, $carOwnerName)
+{
+    $data = [
+        'carOwnerName' => $carOwnerName,
+        'carBrand' => $carBrand,
+        'carModel' => $carModel,
+        'customerName' => $customerName,
+    ];
+
+    Mail::to($carOwnerEmail)->send(new BookingConfirmation($carOwnerName, $carBrand, $carModel, $customerName));
 }
 
 

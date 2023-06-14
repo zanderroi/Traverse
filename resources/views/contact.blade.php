@@ -20,8 +20,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
 
 </head>
-<body class="pt-5 bg-cover bg-center" style="background-image: url('{{ asset('logo/bgimage7.jpg') }}');">
-  <div class="bg-black bg-opacity-75 backdrop-blur-lg">
+<body style="background-image: url('{{ asset('logo/welcome3.png') }}');  background-size: cover;
+background-position: center;
+background-repeat: no-repeat;">
+ 
     <x-nav/>
 
 <!-- component -->
@@ -106,6 +108,6 @@
     </a>
   </div>
 </div> --}}
-</div>
+
 </body>
 </html>

@@ -91,6 +91,7 @@ Route::get('users/{userId}/decline', [AdminController::class, 'declineUser'])->n
 Route::get('/admin/carapproval', [AdminController::class, 'carapprove'])->name('admin.carapproval');
 Route::get('/admin/car/approve/{carId}/{ownerId}', [AdminController::class, 'approveCar'])->name('admin.car.approve');
 Route::get('/admin/car/decline/{carId}/{ownerId}', [AdminController::class, 'declineCar'])->name('admin.car.decline');
+Route::get('/admin/sales', [AdminController::class, 'sales'])->name('admin.sales');
 
 
 
@@ -133,6 +134,9 @@ Route::get('booking/confirmation', [BookingController::class, 'confirmation'])->
 //Route to Book Now
 Route::post('/bookings/confirm/{car_id}', [BookingController::class, 'confirm'])->name('bookings.confirm');
 Route::get('bookings/{booking}/receipt', [BookingController::class, 'download'])->name('bookings.receipt');
+//Email owner for booking
+Route::get('booking/confirmemail/{car_id}', [BookingController::class, 'confirmemail'])->name('booking.confirmemail');
+
 //Cancel Booking
 Route::delete('/bookings/{id}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
 //Customer Garage

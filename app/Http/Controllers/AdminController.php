@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Car;
 use App\Models\User;
+use App\Models\Commission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -575,6 +576,11 @@ $totalCustomers = User::where('user_type', 'customer')->count();
         Mail::raw($emailContent, function ($message) use ($carOwner) {
             $message->to($carOwner->email)->subject('Car Listing Declined');
         });
+    }
+    public function sales()
+    {
+      
+        return view('admin.sales');
     }
 
 

@@ -55,19 +55,24 @@ class CustomerController extends Controller
         $latestProfilePicture = $user->profilepicture()->latest()->first();
         $location = $request->input('location', '');
         $sort_by_rental_fee = $request->input('sort_by_rental_fee', 'asc');
-    
+        $transmission = $request->input('transmission', ''); // Get the selected transmission value
+        
         // Query for all available cars (where deleted_at is null and status is available)
         $cars = Car::whereNull('deleted_at')
             ->where('status', 'available')
             ->when($location, function ($query) use ($location) {
                 return $query->where('location', $location);
             })
+            ->when($transmission, function ($query) use ($transmission) {
+                return $query->where('transmission', $transmission);
+            })
             ->orderBy('rental_fee', $sort_by_rental_fee)
             ->get();
         
         // Pass the cars to the view to display
-        return view('customer.dashboard', ['cars' => $cars, 'location' => $location, 'user' => $user, 'latestProfilePicture'=> $latestProfilePicture]);
+        return view('customer.dashboard', ['cars' => $cars,'transmission' => $transmission, 'location' => $location, 'user' => $user, 'latestProfilePicture' => $latestProfilePicture]);
     }
+    
 
     public function garage()
     {

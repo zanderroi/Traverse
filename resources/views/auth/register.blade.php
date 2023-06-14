@@ -23,7 +23,12 @@
         <script src="{{ asset('js/wizardform.js') }}"></script>
         @show
         <style>
-            
+             h2 {
+        font-family: 'Bebas Neue', sans-serif;
+        text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
+
+       
+    }
 
         #scroll-to-next {
         animation: fadeInDown 2s ease-in-out infinite;
@@ -82,13 +87,13 @@
             </style>
 
     </head>
-    <body class="pt-5 bg-cover bg-center" style="background-image: url('{{ asset('logo/bgimage7.jpg') }}');">
-        <div class="bg-black bg-opacity-75 backdrop-blur-lg " style="min-height: 100vh;">
+    <body class="pt-5 bg-cover bg-center" style="background-image: url('{{ asset('logo/welcome3.png') }}');">
+        
             <x-nav/>
 
-                      <div class="bg-gray-100 flex flex-col mx-auto py-12 sm:px-6 lg:px-8" style="min-height: 100vh;">
+                      <div class="flex flex-col mx-auto py-12 sm:px-6 lg:px-8" style="min-height: 100vh;">
                         <div class="sm:mx-auto sm:w-full sm:max-w-md">
-                            <h2 class="text-center text-3xl font-bold text-gray-900">BECOME A PART OF TRAVERSE!</h2>
+                            <h2 class="text-center text-6xl font-bold text-gray-900">BECOME A PART OF TRAVERSE!</h2>
                         </div>
                         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                             <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
@@ -431,6 +436,6 @@
                     
 
 
-</div>
+
     </body>
 </html>

@@ -31,7 +31,7 @@
             </style>
 
     </head>
-    <body class="pt-5 bg-cover bg-center" style="background-color: #d7d7d7;;">
+    <body class="pt-5 bg-cover bg-center" style="background-image: url('{{ asset('logo/welcome3.png') }}');">
       
         <x-nav/>
             {{-- Main Content --}}
@@ -114,6 +114,6 @@
                 </div>
             </div>
 
-  
+            @include('components.footer')
     </body>
 </html>

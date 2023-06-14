@@ -20,7 +20,9 @@
           {{-- Font Awesome --}}
         <script src="https://kit.fontawesome.com/57a798c9bb.js" crossorigin="anonymous"></script>
     </head>
-    <body style="background-color: rgb(221, 221, 221); ">
+    <body style="background-image: url('{{ asset('logo/welcome3.png') }}');  background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;">
         <x-nav/>
         <div class="mt-2 pt-4 pb-5 mx auto h-32" style="background-color: #0C0C0C;">
             <h2 class="pt-4 mt-4 ml-4 text-3xl font-semi-bold text-white text-center sm:text-2xl">We're always here to help!</h2>

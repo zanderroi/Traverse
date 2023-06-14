@@ -70,6 +70,7 @@
     <div class="p-4 pl-4">
         <h3 class="text-white text-lg font-bold">{{$booking->car->car_brand}} - {{$booking->car->car_model}}</h3>
         <p class="text-gray-400 text-md font-semi-bold">Car Owner: {{ $booking->car->owner->first_name }} {{ $booking->car->owner->last_name }}</p>
+        <p class="text-gray-400 text-md font-semi-bold">Passengers: {{ $booking->passengers }}</p>
         <p class="text-gray-400 text-md font-semi-bold">Total Rental Fee: Php {{number_format ($booking->total_rental_fee, 2) }}</p>
         <p class="text-gray-400 text-md font-semi-bold">Pickup Date and Time: {{ date('F d, Y h:i A', strtotime($booking->pickup_date_time)) }}</p>
         <p class="text-gray-400 text-md font-semi-bold">Return Date and Time: {{ date('F d, Y h:i A', strtotime($booking->return_date_time)) }}</p>
