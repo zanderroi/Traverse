@@ -14,7 +14,7 @@ use App\Models\Booking;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
-
+use Carbon\Carbon;
 class AdminController extends Controller
 {
     public function __construct()
@@ -577,12 +577,64 @@ $totalCustomers = User::where('user_type', 'customer')->count();
             $message->to($carOwner->email)->subject('Car Listing Declined');
         });
     }
-    public function sales()
-    {
-      
-        return view('admin.sales');
-    }
+   
 
+    public function sales(Request $request)
+    {
+        // Get the selected timeframe from the request
+        $timeframe = $request->input('timeframe');
+    
+        // Calculate the start and end dates for the time range based on the selected timeframe
+        $startDate = null;
+        $endDate = null;
+    
+        if ($timeframe === 'weekly') {
+            $startDate = Carbon::now()->startOfWeek();
+            $endDate = Carbon::now()->endOfWeek();
+        } elseif ($timeframe === 'monthly') {
+            $startDate = Carbon::now()->startOfMonth();
+            $endDate = Carbon::now()->endOfMonth();
+        } elseif ($timeframe === 'yearly') {
+            $startDate = Carbon::now()->startOfYear();
+            $endDate = Carbon::now()->endOfYear();
+        }
+    
+        // Retrieve the bookings within the time range
+        $bookings = Booking::whereBetween('created_at', [$startDate, $endDate])->get();
+    
+        // Calculate the total commission for the bookings
+        $totalCommission = 0;
+        foreach ($bookings as $booking) {
+            $totalCommission += $booking->getCommissionAmount();
+        }
+    
+        // Calculate the total sales (without subtracting the commission)
+        $totalSales = $bookings->sum('total_rental_fee');
+    
+        // Retrieve the top car owner with the most amount of sales
+        $topCarOwner = User::where('user_type', 'car_owner')
+            ->withCount(['bookings'])
+            ->orderByDesc('bookings_count')
+            ->first();
+    
+        $latestProfilePicture = $topCarOwner->profilePicture()->latest()->first();
+    
+        // Retrieve the sum of total rental fees for the top car owner
+        $topCarOwnerTotalSales = Booking::join('cars', 'bookings.car_id', '=', 'cars.id')
+            ->where('cars.car_owner_id', $topCarOwner->id)
+            ->whereBetween('bookings.created_at', [$startDate, $endDate])
+            ->sum('bookings.total_rental_fee');
+    
+        return view('admin.sales', [
+            'totalCommission' => $totalCommission,
+            'totalSales' => $totalSales,
+            'totalBookings' => $bookings->count(),
+            'topCarOwner' => $topCarOwner,
+            'topCarOwnerTotalSales' => $topCarOwnerTotalSales,
+            'latestProfilePicture' => $latestProfilePicture,
+        ]);
+    }
+    
 
 }
 

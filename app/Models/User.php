@@ -76,5 +76,12 @@ class User extends Authenticatable
         return $this->hasOne(ProfilePicture::class);
     }
     
+    public function carOwnerBookings()
+{
+    return $this->hasMany(Booking::class, 'user_id')->whereHas('car', function ($query) {
+        $query->where('car_owner_id', $this->id);
+    });
+}
+
 
 }
