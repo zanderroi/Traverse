@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Http\Controllers\Controller;
 use App\Models\Car;
 use App\Models\User;
@@ -22,94 +23,87 @@ class AdminController extends Controller
         $this->middleware(['auth', 'admin']);
     }
 
-    public function dashboard()
+    public function dashboard(Request $request)
     {
+        // Get the selected month and week from the request
+    $selectedMonth = $request->input('month');
+    $selectedWeek = $request->input('week');
+    $year = date('Y');
+
+    // Get the start and end dates for the selected month and week
+    $weeks = [];
+    $startMonth = $selectedMonth ?? 1;
+    $endMonth = $selectedMonth ?? 12;
+
+    for ($month = $startMonth; $month <= $endMonth; $month++) {
+        $startWeek = ($month == $selectedMonth) ? 1 : 0;
+        $endWeek = ($month == $selectedMonth) ? 5 : 4;
+
+        for ($weekNumber = $startWeek; $weekNumber <= $endWeek; $weekNumber++) {
+            $startDate = Carbon::parse("{$year}-{$month}-01")->startOfWeek(Carbon::SUNDAY);
+            $weekStart = $startDate->copy()->addWeeks($weekNumber - 1);
+            $weekEnd = $weekStart->copy()->endOfWeek(Carbon::SATURDAY);
+            $weekLabel = $weekStart->format('F j') . ' - ' . $weekEnd->format('F j');
+            $weeks[] = [
+                'month' => $month,
+                'week' => $weekNumber,
+                'label' => $weekLabel
+            ];
+        }
+    }
+
+    // Fetch user registration data for each day of the week
+    $weekData = [];
+
+    if ($selectedWeek) {
+        $startDate = Carbon::parse("{$year}-{$selectedMonth}-01")->startOfWeek(Carbon::SUNDAY);
+        $weekStart = $startDate->copy()->addWeeks($selectedWeek - 1);
+        $weekEnd = $weekStart->copy()->endOfWeek(Carbon::SATURDAY);
+
+        for ($date = $weekStart; $date <= $weekEnd; $date->addDay()) {
+            $day = $date->format('Y-m-d');
+            $nextDay = $date->copy()->addDay(); // Get the next day
+            $carOwnerCount = User::where('user_type', 'car_owner')
+            ->whereBetween('created_at', [$day, $nextDay])
+            ->count();
+    
+        $customerCount = User::where('user_type', 'customer')
+            ->whereBetween('created_at', [$day, $nextDay])
+            ->count();
+    
+        $bookingCount = Booking::whereBetween('created_at', [$day, $nextDay])
+            ->count();
+    
+        $carCount = Car::whereBetween('created_at', [$day, $nextDay])
+            ->count();
+    
+        $weekData[$day] = [
+            'carOwnerCount' => $carOwnerCount,
+            'customerCount' => $customerCount,
+            'bookingCount' => $bookingCount,
+            'carCount' => $carCount
+        ];
+        }
+    }
+
+    // Pass the selected month and week to the view
+    $selectedMonth = $selectedMonth ?? Carbon::now()->format('m');
+    $selectedWeek = $selectedWeek ?? Carbon::now()->weekOfMonth;
+
         $carsCount = DB::table('cars')->whereNull('deleted_at')->count();
     
         // Update bookedCarsCount based on the status of the cars
         $bookedCarsCount = DB::table('bookings')->count();
-        $returnedCarsCount = DB::table('cars')->where('status', 'available')->whereIn('id', function ($query) {
-            $query->select('car_id')->from('bookings')->whereNotNull('returned_at');
-        })->count();
-        $bookedCarsCount -= $returnedCarsCount;
-    
-        // Update availableCarsCount based on the status of the cars
-        $availableCarsCount = $carsCount - $bookedCarsCount;
-    
-        $carOwnersOnTransactions = User::where('user_type', 'car_owner')
-            ->whereHas('cars', function ($query) {
-                $query->whereHas('bookings');
-            })
-            ->count();
-    
-        $carOwnersVacant = User::where('user_type', 'car_owner')
-            ->whereDoesntHave('cars', function ($query) {
-                $query->whereHas('bookings');
-            })
-            ->count();
-    
-        $returnedCarOwnersCount = DB::table('cars')->where('status', 'available')->whereIn('id', function ($query) {
-            $query->select('id')->from('bookings')->whereNotNull('returned_at');
-        })->count();
-    
-        $carOwnersOnTransactions -= $returnedCarOwnersCount;
-        $carOwnersVacant += $returnedCarOwnersCount;
-    
-        $customersOnTransactions = User::where('user_type', 'customer')
-                                ->whereHas('bookings')
-                                ->count();
-
-        $customersVacant = User::where('user_type', 'customer')
-                        ->whereDoesntHave('bookings')
-                        ->count();
-    
-        $customersOnTransactions -= $returnedCarsCount;
-        $customersVacant += $returnedCarsCount;
-    
         $carOwners = User::where('user_type', 'car_owner')->count();
         $customers = User::where('user_type', 'customer')->count();
-    
         $totalBookings = DB::table('bookings')->count();
-        $bookingsDone = Booking::whereNotNull('returned_at')->count();
-        $bookingsOngoing = Booking::whereNull('returned_at')->count();
 
-        $currentDate = now()->subDays(6)->format('Y-m-d');
-
-
-// Retrieve the data for the last 7 days
-$bookingsLast7Days = Booking::whereBetween('created_at', [$currentDate, now()->format('Y-m-d')])->get();
-$carsLast7Days = Car::whereBetween('created_at', [$currentDate, now()->format('Y-m-d')])->get();
-$carOwnersLast7Days = User::where('user_type', 'car_owner')->whereBetween('created_at', [$currentDate, now()->format('Y-m-d')])->get();
-$customersLast7Days = User::where('user_type', 'customer')->whereBetween('created_at', [$currentDate, now()->format('Y-m-d')])->get();
-
-// Retrieve the total counts for all time
-$total1Bookings = DB::table('bookings')->count();
-$totalCars = Car::count();
-$totalCarOwners = User::where('user_type', 'car_owner')->count();
-$totalCustomers = User::where('user_type', 'customer')->count();
-    
         return view('admin.dashboard', compact(
             'carsCount',
             'carOwners',
             'customers',
-            'bookedCarsCount',
-            'availableCarsCount',
-            'carOwnersOnTransactions',
-            'carOwnersVacant',
-            'customersOnTransactions',
-            'customersVacant',
             'totalBookings',
-            'bookingsDone',
-            'bookingsOngoing',
-            
-            'total1Bookings',
-            'bookingsLast7Days',
-            'totalCars',
-            'carsLast7Days',
-            'totalCarOwners',
-            'carOwnersLast7Days',
-            'totalCustomers',
-            'customersLast7Days'
+            'weekData', 'selectedMonth', 'selectedWeek', 'weeks' 
         ));
     }
   
@@ -634,7 +628,81 @@ $totalCustomers = User::where('user_type', 'customer')->count();
             'latestProfilePicture' => $latestProfilePicture,
         ]);
     }
+
+        public function weeklyDL(Request $request)
+    {
+    $weekData = json_decode($request->input('weekData'), true);
+
+    // Generate the PDF view
+    $pdf = PDF::loadView('admin.weekly', ['weekData' => $weekData]);
+
+    // Generate the PDF filename
+    $filename = 'weekly_data_' . date('Ymd') . '.pdf';
+
+    // Download the PDF file
+    return $pdf->download($filename);
+    }
+
+    public function monthlyDL(Request $request)
+    {
+        $selectedMonth = $request->input('month');
+        $year = date('Y');
+        $monthlyData = $this->generateMonthlyData($selectedMonth, $year);
+
+        // Generate the PDF using the data and the corresponding view
+        $pdf = PDF::loadView('admin.monthly', [
+            'monthData' => $monthlyData,
+            'selectedMonth' => $selectedMonth,
+            'currentMonth' => Carbon::parse("{$year}-{$selectedMonth}-01")->format('F'),
+            'currentYear' => $year,
+        ]);
+
+        // Download the PDF
+        return $pdf->download('monthly_data.pdf');
+    }
     
+    private function generateMonthlyData($selectedMonth, $year)
+    {
+        $startOfMonth = Carbon::create($year, $selectedMonth, 1)->startOfMonth();
+        $endOfMonth = $startOfMonth->copy()->endOfMonth();
+
+        // Initialize an empty array to store the daily data
+        $monthlyData = [];
+
+        // Loop through each day of the selected month
+        while ($startOfMonth <= $endOfMonth) {
+            $day = $startOfMonth->format('Y-m-d');
+            $nextDay = $startOfMonth->copy()->addDay();
+
+            // Retrieve the data for each day from your database or any other source
+            // Perform the necessary calculations or queries to get the data for the specific day
+            $carOwnerCount = User::where('user_type', 'car_owner')
+                ->whereBetween('created_at', [$day, $nextDay])
+                ->count();
+
+            $customerCount = User::where('user_type', 'customer')
+                ->whereBetween('created_at', [$day, $nextDay])
+                ->count();
+
+            $bookingCount = Booking::whereBetween('created_at', [$day, $nextDay])
+                ->count();
+
+            $carCount = Car::whereBetween('created_at', [$day, $nextDay])
+                ->count();
+
+            // Add the data to the $monthlyData array
+            $monthlyData[$day] = [
+                'carOwnerCount' => $carOwnerCount,
+                'customerCount' => $customerCount,
+                'bookingCount' => $bookingCount,
+                'carCount' => $carCount,
+            ];
+
+            $startOfMonth->addDay();
+        }
+
+        return $monthlyData;
+    }
 
 }
 

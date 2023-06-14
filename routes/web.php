@@ -156,3 +156,5 @@ Route::put('/profile/update', [CustomerController::class, 'updateProfile'])->nam
 // Customer Change Password
 Route::post('/profile/change-password', [CustomerController::class, 'changePassword'])->name('change-password');
 
+Route::post('/download-week-data-pdf', [AdminController::class, 'weeklyDL'])->name('downloadWeekDataPDF');
+Route::post('/download-month-data-pdf', [AdminController::class, 'monthlyDL'])->name('downloadMonthDataPDF');
