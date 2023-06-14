@@ -5,8 +5,9 @@
     <div class="sidebar text-white w-48 pt-8" style="background-color: #0C0C0C; min-height: 100vh;">
         <div class="content-titles mt-1">
           <h2 class="text-xl font-bold mb-4 text-center"><a href="/admin/dashboard">Dashboard</a></h2>
-          <li class="flex items-center ml-4"> <i class="fa-solid fa-user-shield mr-2"></i><a href="/admin/verification"> Account Verification</a></li>
           <ul class="space-y-8 ml-6">
+            <li class="flex items-center ml-4"> <i class="fa-solid fa-user-shield mr-2"></i><a href="/admin/verification"> Account Verification</a></li>
+            <li class="flex items-center ml-4"> <i class="fa-solid fa-car-side mr-2"></i><a href="/admin/carapproval"> Car Verification</a></li>
             <li class="flex items-center {{ Request::is('cars/details') ? 'bg-indigo-600' : '' }} w-full" style="padding: 12px 16px; height: 48px;">
                 <i class="fa-solid fa-car mr-2"></i>
                 <a href="/cars/details" class="{{ Request::is('cars/details') ? 'text-white' : 'text-gray-300' }}">Cars</a>
@@ -15,7 +16,7 @@
             <li class="flex items-center ml-4"> <i class="fa-solid fa-briefcase mr-2"></i><a href="/customers/details">Customers</a></li>
             <li class="flex items-center ml-4"> <i class="fa-solid fa-book mr-2"></i><a href="/reservation/details">Bookings</a></li>
             <li class="flex items-center ml-4"> <i class="fa-solid fa-chart-line mr-2"></i><a href="/graph">Graph</a></li>
-            {{-- <li class="flex items-center ml-4"> <i class="fa-solid fa-peso-sign mr-2"></i><a href="/graph/details">Sales</a></li> --}}
+            <li class="flex items-center ml-4"> <i class="fa-solid fa-chart-line mr-2"></i><a href="/admin/sales">Sales</a></li>
           </ul>
         </div>
     </div>
@@ -112,7 +113,7 @@
         </tbody>
     </table>
     <div class="pagination mx-64 max-w-lg pt-6 p-4 ">
-        {{-- {{ $cars->appends(request()->except('page'))->links('pagination::bootstrap-5') }} --}}
+        {{ $cars->links('pagination::bootstrap-5') }}
     </div>
 </div>
 </div>

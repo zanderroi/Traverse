@@ -135,9 +135,9 @@ $totalCustomers = User::where('user_type', 'customer')->count();
                          ->whereNull('returned_at');
             });
         }
-
+        $cars = $query->paginate(10);
         // Paginate the results if the filter is set to "all"
-        $cars = ($filter === 'all') ? $query->paginate(10) : $query->get();
+        //  $cars = ($filter === 'all') ? $query->paginate(10) : $query->get();
         // $cars = Car::with('owner', 'bookings.customer')->paginate(5);
         $carOwnersWithCars = DB::table('users')
         ->join('cars', 'users.id', '=', 'cars.car_owner_id')
