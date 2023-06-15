@@ -576,13 +576,14 @@ class AdminController extends Controller
 
     public function sales(Request $request)
     {
-        // Get the selected timeframe from the request
-        $timeframe = $request->input('timeframe');
-    
+        // Retrieve the filter values from the request
+        $filterType = $request->input('filter_type');
+        $timeframe = $request->input('timeframe', 'monthly');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
         // Calculate the start and end dates for the time range based on the selected timeframe
         $startDate = null;
         $endDate = null;
-    
         if ($timeframe === 'weekly') {
             $startDate = Carbon::now()->startOfWeek();
             $endDate = Carbon::now()->endOfWeek();
@@ -593,24 +594,31 @@ class AdminController extends Controller
             $startDate = Carbon::now()->startOfYear();
             $endDate = Carbon::now()->endOfYear();
         }
-    
         // Retrieve the bookings within the time range
-        $bookings = Booking::whereBetween('created_at', [$startDate, $endDate])->get();
-    
+        $bookings = Booking::with([
+            'car.owner' => function ($query) {
+                $query->withTrashed();
+            },
+            'car' => function ($query) {
+                $query->withTrashed();
+            }
+        ])->whereBetween('created_at', [$startDate, $endDate])->get();
         // Calculate the total commission for the bookings
         $totalCommission = 0;
         foreach ($bookings as $booking) {
             $totalCommission += $booking->getCommissionAmount();
         }
-    
         // Calculate the total sales (without subtracting the commission)
         $totalSales = $bookings->sum('total_rental_fee');
-    
         // Retrieve the top car owner with the most amount of sales
         $topCarOwner = User::where('user_type', 'car_owner')
             ->withCount(['bookings'])
             ->orderByDesc('bookings_count')
             ->first();
+    
+        // Retrieve the commissions for the bookings
+        $commissions = Commission::whereIn('booking_id', $bookings->pluck('id')->all())->get();
+        $commissionreceived = $commissions->sum('commission_amount');
     
         $latestProfilePicture = $topCarOwner->profilePicture()->latest()->first();
     
@@ -620,226 +628,185 @@ class AdminController extends Controller
             ->whereBetween('bookings.created_at', [$startDate, $endDate])
             ->sum('bookings.total_rental_fee');
     
+           // Prepare the commission data for the chart
+    $commissionData = [
+        'labels' => [],
+        'data' => []
+    ];
+    
+    if ($timeframe === 'weekly') {
+        $numOfWeeks = $startDate->diffInWeeks($endDate) + 1;
+        $dateRangeFormat = 'W M'; 
+        // Generate the labels for the chart based on the number of weeks
+        for ($i = 1; $i <= $numOfWeeks; $i++) {
+            $label = 'Week ' . $i;
+            $labelStartDate = $startDate->copy()->addWeeks($i - 1);
+            $labelEndDate = $startDate->copy()->addWeeks($i)->subDay();
+            $commissionData['labels'][] = $label . ' (' . $labelStartDate->format($dateRangeFormat) . ' - ' . $labelEndDate->format($dateRangeFormat) . ')';
+        }
+    
+        // Retrieve the commission data for each week
+        for ($i = 1; $i <= $numOfWeeks; $i++) {
+            $weekStartDate = $startDate->copy()->addWeeks($i - 1);
+            $weekEndDate = $startDate->copy()->addWeeks($i)->subDay();
+    
+            // Retrieve the commissions within the week
+            $weekCommissions = Commission::whereIn('booking_id', $bookings->pluck('id')->all())
+                ->whereBetween('created_at', [$weekStartDate, $weekEndDate])
+                ->get();
+    
+            // Calculate the total commission for the week
+            $weekCommissionTotal = $weekCommissions->sum('commission_amount');
+    
+            $commissionData['data'][] = $weekCommissionTotal;
+        }
+    } elseif ($timeframe === 'monthly') {
+        $numOfMonths = 12; // Change this number as per your requirement
+        $dateRangeFormat = 'M Y'; // Customize the date range format if needed
+    
+        // Generate the labels for the chart based on the number of months
+        for ($i = 1; $i <= $numOfMonths; $i++) {
+            $label = Carbon::create(null, $i, 1)->format($dateRangeFormat);
+            $labelStartDate = Carbon::create(null, $i, 1)->startOfMonth();
+            $labelEndDate = Carbon::create(null, $i, 1)->endOfMonth();
+            $commissionData['labels'][] = $label . ' (' . $labelStartDate->format($dateRangeFormat) . ' - ' . $labelEndDate->format($dateRangeFormat) . ')';
+        }
+    
+        // Retrieve the commission data for each month
+        for ($i = 1; $i <= $numOfMonths; $i++) {
+            $monthStartDate = Carbon::create(null, $i, 1)->startOfMonth();
+            $monthEndDate = Carbon::create(null, $i, 1)->endOfMonth();
+    
+            // Retrieve the commissions within the month
+            $monthCommissions = Commission::whereIn('booking_id', $bookings->pluck('id')->all())
+                ->whereBetween('created_at', [$monthStartDate, $monthEndDate])
+                ->get();
+    
+            // Calculate the total commission for the month
+            $monthCommissionTotal = $monthCommissions->sum('commission_amount');
+    
+            $commissionData['data'][] = $monthCommissionTotal;
+        }
+    } elseif ($timeframe === 'yearly') {
+        $startYear = Carbon::now()->startOfYear()->year;
+        $endYear = Carbon::now()->year;
+        $dateRangeFormat = 'Y'; // Customize the date range format if needed
+    
+        // Generate the labels for the chart based on the number of years
+        for ($year = $startYear; $year <= $endYear; $year++) {
+            $label = 'Year ' . $year;
+            $labelStartDate = Carbon::createFromDate($year, 1, 1);
+            $labelEndDate = Carbon::createFromDate($year, 12, 31);
+            $commissionData['labels'][] = $label . ' (' . $labelStartDate->format($dateRangeFormat) . ' - ' . $labelEndDate->format($dateRangeFormat) . ')';
+        }
+    
+        // Retrieve the commission data for each year
+        for ($year = $startYear; $year <= $endYear; $year++) {
+            $yearStartDate = Carbon::createFromDate($year, 1, 1);
+            $yearEndDate = Carbon::createFromDate($year, 12, 31);
+    
+            // Retrieve the commissions within the year
+            $yearCommissions = Commission::whereIn('booking_id', $bookings->pluck('id')->all())
+                ->whereBetween('created_at', [$yearStartDate, $yearEndDate])
+                ->get();
+    
+            // Calculate the total commission for the year
+            $yearCommissionTotal = $yearCommissions->sum('commission_amount');
+    
+            $commissionData['data'][] = $yearCommissionTotal;
+        }
+    }
+    
+    
         return view('admin.sales', [
+            'commissionreceived' => $commissionreceived,
             'totalCommission' => $totalCommission,
             'totalSales' => $totalSales,
             'totalBookings' => $bookings->count(),
             'topCarOwner' => $topCarOwner,
             'topCarOwnerTotalSales' => $topCarOwnerTotalSales,
             'latestProfilePicture' => $latestProfilePicture,
+            'commissionData' => $commissionData,
+            'timeframe'=> $timeframe,
         ]);
     }
 
-    public function weeklyDL(Request $request)
-    {
-    $weekData = json_decode($request->input('weekData'), true);
+        public function weeklyDL(Request $request)
+        {
+            $weekData = json_decode($request->input('weekData'), true);
 
+            // Generate the PDF view
+            $pdf = PDF::loadView('admin.weekly', ['weekData' => $weekData]);
 
-    // Retrieve the top car owner with the most amount of sales
-    $topCarOwner = User::where('user_type', 'car_owner')
-        ->withCount(['bookings'])
-        ->orderByDesc('bookings_count')
-        ->first();
-        
-    // Retrieve the commissions for the bookings
-    $commissions = Commission::whereIn('booking_id', $bookings->pluck('id')->all())->get();
-    $commissionreceived = $commissions->sum('commission_amount');
+            // Generate the PDF filename
+            $filename = 'weekly_data_' . date('Ymd') . '.pdf';
 
-    // Generate the PDF view
-    $pdf = PDF::loadView('admin.weekly', ['weekData' => $weekData]);
-
-    // Generate the PDF filename
-    $filename = 'weekly_data_' . date('Ymd') . '.pdf';
-
-    // Retrieve the sum of total rental fees for the top car owner
-    $topCarOwnerTotalSales = Booking::join('cars', 'bookings.car_id', '=', 'cars.id')
-        ->where('cars.car_owner_id', $topCarOwner->id)
-        ->whereBetween('bookings.created_at', [$startDate, $endDate])
-        ->sum('bookings.total_rental_fee');
-
-       // Prepare the commission data for the chart
-$commissionData = [
-    'labels' => [],
-    'data' => []
-];
-
-if ($timeframe === 'weekly') {
-    $numOfWeeks = $startDate->diffInWeeks($endDate) + 1;
-    $dateRangeFormat = 'W M'; 
-    // Generate the labels for the chart based on the number of weeks
-    for ($i = 1; $i <= $numOfWeeks; $i++) {
-        $label = 'Week ' . $i;
-        $labelStartDate = $startDate->copy()->addWeeks($i - 1);
-        $labelEndDate = $startDate->copy()->addWeeks($i)->subDay();
-        $commissionData['labels'][] = $label . ' (' . $labelStartDate->format($dateRangeFormat) . ' - ' . $labelEndDate->format($dateRangeFormat) . ')';
-    }
-
-    // Retrieve the commission data for each week
-    for ($i = 1; $i <= $numOfWeeks; $i++) {
-        $weekStartDate = $startDate->copy()->addWeeks($i - 1);
-        $weekEndDate = $startDate->copy()->addWeeks($i)->subDay();
-
-        // Retrieve the commissions within the week
-        $weekCommissions = Commission::whereIn('booking_id', $bookings->pluck('id')->all())
-            ->whereBetween('created_at', [$weekStartDate, $weekEndDate])
-            ->get();
-
-        // Calculate the total commission for the week
-        $weekCommissionTotal = $weekCommissions->sum('commission_amount');
-
-        $commissionData['data'][] = $weekCommissionTotal;
-    }
-} elseif ($timeframe === 'monthly') {
-    $numOfMonths = 12; // Change this number as per your requirement
-    $dateRangeFormat = 'M Y'; // Customize the date range format if needed
-
-    // Generate the labels for the chart based on the number of months
-    for ($i = 1; $i <= $numOfMonths; $i++) {
-        $label = Carbon::create(null, $i, 1)->format($dateRangeFormat);
-        $labelStartDate = Carbon::create(null, $i, 1)->startOfMonth();
-        $labelEndDate = Carbon::create(null, $i, 1)->endOfMonth();
-        $commissionData['labels'][] = $label . ' (' . $labelStartDate->format($dateRangeFormat) . ' - ' . $labelEndDate->format($dateRangeFormat) . ')';
-    }
-
-    // Retrieve the commission data for each month
-    for ($i = 1; $i <= $numOfMonths; $i++) {
-        $monthStartDate = Carbon::create(null, $i, 1)->startOfMonth();
-        $monthEndDate = Carbon::create(null, $i, 1)->endOfMonth();
-
-        // Retrieve the commissions within the month
-        $monthCommissions = Commission::whereIn('booking_id', $bookings->pluck('id')->all())
-            ->whereBetween('created_at', [$monthStartDate, $monthEndDate])
-            ->get();
-
-        // Calculate the total commission for the month
-        $monthCommissionTotal = $monthCommissions->sum('commission_amount');
-
-        $commissionData['data'][] = $monthCommissionTotal;
-    }
-} elseif ($timeframe === 'yearly') {
-    $startYear = Carbon::now()->startOfYear()->year;
-    $endYear = Carbon::now()->year;
-    $dateRangeFormat = 'Y'; // Customize the date range format if needed
-
-    // Generate the labels for the chart based on the number of years
-    for ($year = $startYear; $year <= $endYear; $year++) {
-        $label = 'Year ' . $year;
-        $labelStartDate = Carbon::createFromDate($year, 1, 1);
-        $labelEndDate = Carbon::createFromDate($year, 12, 31);
-        $commissionData['labels'][] = $label . ' (' . $labelStartDate->format($dateRangeFormat) . ' - ' . $labelEndDate->format($dateRangeFormat) . ')';
-    }
-
-    // Retrieve the commission data for each year
-    for ($year = $startYear; $year <= $endYear; $year++) {
-        $yearStartDate = Carbon::createFromDate($year, 1, 1);
-        $yearEndDate = Carbon::createFromDate($year, 12, 31);
-
-        // Retrieve the commissions within the year
-        $yearCommissions = Commission::whereIn('booking_id', $bookings->pluck('id')->all())
-            ->whereBetween('created_at', [$yearStartDate, $yearEndDate])
-            ->get();
-
-        // Calculate the total commission for the year
-        $yearCommissionTotal = $yearCommissions->sum('commission_amount');
-
-        $commissionData['data'][] = $yearCommissionTotal;
-    }
-}
-        
-
-    return view('admin.sales', [
-        'commissionreceived' => $commissionreceived,
-        'totalCommission' => $totalCommission,
-        'totalSales' => $totalSales,
-        'totalBookings' => $bookings->count(),
-        'topCarOwner' => $topCarOwner,
-        'topCarOwnerTotalSales' => $topCarOwnerTotalSales,
-        'latestProfilePicture' => $latestProfilePicture,
-        'commissionData' => $commissionData,
-        'timeframe'=> $timeframe,
-    ]);
-}
-public function getSalesData(Request $request)
-{
-    $timeframe = $request->input('timeframe', 'monthly');
-    $startDate = null;
-    $endDate = null;
-
-    if ($timeframe === 'weekly') {
-        $startDate = Carbon::now()->startOfWeek();
-        $endDate = Carbon::now()->endOfWeek();
-    } elseif ($timeframe === 'monthly') {
-        $startDate = Carbon::now()->startOfMonth();
-        $endDate = Carbon::now()->endOfMonth();
-    } elseif ($timeframe === 'yearly') {
-        $startDate = Carbon::now()->startOfYear();
-        $endDate = Carbon::now()->endOfYear();
-
-    // Download the PDF file
-    return $pdf->download($filename);
-
-    }
-}
-    public function monthlyDL(Request $request)
-    {
-        $selectedMonth = $request->input('month');
-        $year = date('Y');
-        $monthlyData = $this->generateMonthlyData($selectedMonth, $year);
-
-        // Generate the PDF using the data and the corresponding view
-        $pdf = PDF::loadView('admin.monthly', [
-            'monthData' => $monthlyData,
-            'selectedMonth' => $selectedMonth,
-            'currentMonth' => Carbon::parse("{$year}-{$selectedMonth}-01")->format('F'),
-            'currentYear' => $year,
-        ]);
-
-        // Download the PDF
-        return $pdf->download('monthly_data.pdf');
-    }
-    
-    private function generateMonthlyData($selectedMonth, $year)
-    {
-        $startOfMonth = Carbon::create($year, $selectedMonth, 1)->startOfMonth();
-        $endOfMonth = $startOfMonth->copy()->endOfMonth();
-
-        // Initialize an empty array to store the daily data
-        $monthlyData = [];
-
-        // Loop through each day of the selected month
-        while ($startOfMonth <= $endOfMonth) {
-            $day = $startOfMonth->format('Y-m-d');
-            $nextDay = $startOfMonth->copy()->addDay();
-
-            // Retrieve the data for each day from your database or any other source
-            // Perform the necessary calculations or queries to get the data for the specific day
-            $carOwnerCount = User::where('user_type', 'car_owner')
-                ->whereBetween('created_at', [$day, $nextDay])
-                ->count();
-
-            $customerCount = User::where('user_type', 'customer')
-                ->whereBetween('created_at', [$day, $nextDay])
-                ->count();
-
-            $bookingCount = Booking::whereBetween('created_at', [$day, $nextDay])
-                ->count();
-
-            $carCount = Car::whereBetween('created_at', [$day, $nextDay])
-                ->count();
-
-            // Add the data to the $monthlyData array
-            $monthlyData[$day] = [
-                'carOwnerCount' => $carOwnerCount,
-                'customerCount' => $customerCount,
-                'bookingCount' => $bookingCount,
-                'carCount' => $carCount,
-            ];
-
-            $startOfMonth->addDay();
+            // Download the PDF file
+            return $pdf->download($filename);
         }
 
-        return $monthlyData;
-    }
+        public function monthlyDL(Request $request)
+        {
+            $selectedMonth = $request->input('month');
+            $year = date('Y');
+            $monthlyData = $this->generateMonthlyData($selectedMonth, $year);
+
+            // Generate the PDF using the data and the corresponding view
+            $pdf = PDF::loadView('admin.monthly', [
+                'monthData' => $monthlyData,
+                'selectedMonth' => $selectedMonth,
+                'currentMonth' => Carbon::parse("{$year}-{$selectedMonth}-01")->format('F'),
+                'currentYear' => $year,
+            ]);
+
+            // Download the PDF
+            return $pdf->download('monthly_data.pdf');
+        }
+
+        private function generateMonthlyData($selectedMonth, $year)
+        {
+            $startOfMonth = Carbon::create($year, $selectedMonth, 1)->startOfMonth();
+            $endOfMonth = $startOfMonth->copy()->endOfMonth();
+
+            // Initialize an empty array to store the daily data
+            $monthlyData = [];
+
+            // Loop through each day of the selected month
+            while ($startOfMonth <= $endOfMonth) {
+                $day = $startOfMonth->format('Y-m-d');
+                $nextDay = $startOfMonth->copy()->addDay();
+
+                // Retrieve the data for each day from your database or any other source
+                // Perform the necessary calculations or queries to get the data for the specific day
+                $carOwnerCount = User::where('user_type', 'car_owner')
+                    ->whereBetween('created_at', [$day, $nextDay])
+                    ->count();
+
+                $customerCount = User::where('user_type', 'customer')
+                    ->whereBetween('created_at', [$day, $nextDay])
+                    ->count();
+
+                $bookingCount = Booking::whereBetween('created_at', [$day, $nextDay])
+                    ->count();
+
+                $carCount = Car::whereBetween('created_at', [$day, $nextDay])
+                    ->count();
+
+                // Add the data to the $monthlyData array
+                $monthlyData[$day] = [
+                    'carOwnerCount' => $carOwnerCount,
+                    'customerCount' => $customerCount,
+                    'bookingCount' => $bookingCount,
+                    'carCount' => $carCount,
+                ];
+
+                $startOfMonth->addDay();
+            }
+
+            return $monthlyData;
+        }
+
+   
     
 
 }
