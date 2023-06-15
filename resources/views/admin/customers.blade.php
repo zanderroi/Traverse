@@ -14,7 +14,7 @@
                  <a href="/customers/details" class="{{ Request::is('customers/details') ? 'text-white' : 'text-gray-300' }}">Customers</a></li>
             <li class="flex items-center ml-4"> <i class="fa-solid fa-book mr-2"></i><a href="/reservation/details">Bookings</a></li>
             <li class="flex items-center ml-4"> <i class="fa-solid fa-chart-line mr-2"></i><a href="/graph">Graph</a></li>
-            <li class="flex items-center ml-4"> <i class="fa-solid fa-chart-line mr-2"></i><a href="/admin/sales">Sales</a></li>
+            <li class="flex items-center ml-4"> <i class="fa-solid fa-peso-sign mr-2"></i><a href="/admin/sales">Sales</a></li>
           </ul>
         </div>
     </div>

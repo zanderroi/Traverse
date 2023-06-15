@@ -19,8 +19,72 @@ class GraphController extends Controller
     {
         $this->middleware(['auth', 'admin']);
     }
-    public function graph()
-        {
+    public function graph(Request $request)
+{
+    // Get the selected month and week from the request
+    $selectedMonth = $request->input('month');
+    $selectedWeek = $request->input('week');
+    $year = date('Y');
+
+    // Get the start and end dates for the selected month and week
+    $weeks = [];
+    $startMonth = $selectedMonth ?? 1;
+    $endMonth = $selectedMonth ?? 12;
+
+    for ($month = $startMonth; $month <= $endMonth; $month++) {
+        $startWeek = ($month == $selectedMonth) ? 1 : 0;
+        $endWeek = ($month == $selectedMonth) ? 5 : 4;
+
+        for ($weekNumber = $startWeek; $weekNumber <= $endWeek; $weekNumber++) {
+            $startDate = Carbon::parse("{$year}-{$month}-01")->startOfWeek(Carbon::SUNDAY);
+            $weekStart = $startDate->copy()->addWeeks($weekNumber - 1);
+            $weekEnd = $weekStart->copy()->endOfWeek(Carbon::SATURDAY);
+            $weekLabel = $weekStart->format('F j') . ' - ' . $weekEnd->format('F j');
+            $weeks[] = [
+                'month' => $month,
+                'week' => $weekNumber,
+                'label' => $weekLabel
+            ];
+        }
+    }
+
+    // Fetch user registration data for each day of the week
+    $weekData = [];
+
+    if ($selectedWeek) {
+        $startDate = Carbon::parse("{$year}-{$selectedMonth}-01")->startOfWeek(Carbon::SUNDAY);
+        $weekStart = $startDate->copy()->addWeeks($selectedWeek - 1);
+        $weekEnd = $weekStart->copy()->endOfWeek(Carbon::SATURDAY);
+
+        for ($date = $weekStart; $date <= $weekEnd; $date->addDay()) {
+            $day = $date->format('Y-m-d');
+            $nextDay = $date->copy()->addDay(); // Get the next day
+            $carOwnerCount = User::where('user_type', 'car_owner')
+            ->whereBetween('created_at', [$day, $nextDay])
+            ->count();
+    
+        $customerCount = User::where('user_type', 'customer')
+            ->whereBetween('created_at', [$day, $nextDay])
+            ->count();
+    
+        $bookingCount = Booking::whereBetween('created_at', [$day, $nextDay])
+            ->count();
+    
+        $carCount = Car::whereBetween('created_at', [$day, $nextDay])
+            ->count();
+    
+        $weekData[$day] = [
+            'carOwnerCount' => $carOwnerCount,
+            'customerCount' => $customerCount,
+            'bookingCount' => $bookingCount,
+            'carCount' => $carCount
+        ];
+        }
+    }
+
+    // Pass the selected month and week to the view
+    $selectedMonth = $selectedMonth ?? Carbon::now()->format('m');
+    $selectedWeek = $selectedWeek ?? Carbon::now()->weekOfMonth;
             // Get the labels for the x-axis (dates)
             $labels = $this->getLabels();
 
@@ -30,30 +94,36 @@ class GraphController extends Controller
             $carCounts = $this->getCarCounts();
             $bookingCounts = $this->getBookingCounts();
 
-            return view('graph.main', compact('labels', 'customerCounts', 'carOwnerCounts', 'carCounts', 'bookingCounts'));
+
+            return view('graph.main', compact('weekData', 'labels', 'customerCounts', 'carOwnerCounts', 'carCounts', 'bookingCounts', 'selectedMonth', 'selectedWeek', 'weeks'));
         }
+    
 
         private function getLabels()
         {
-            // Generate an array of labels for the last 7 days
-            $labels = [];
-            for ($i = 6; $i >= 0; $i--) {
-                $date = Carbon::now()->subDays($i)->format('Y-m-d');
-                $labels[] = $date;
-            }
-            return $labels;
+        // Generate an array of labels for the last 7 days (Sunday to Saturday)
+        $labels = [];
+        $startDay = Carbon::now()->startOfWeek(Carbon::SUNDAY);
+        for ($i = 0; $i < 7; $i++) {
+            $date = $startDay->copy()->addDays($i)->format('Y-m-d');
+            $labels[] = $date;
+        }
+        return $labels;
         }
 
         private function getUserTypeCounts($userType)
         {
             // Get the counts for a specific user type (customer or car owner) for the last 7 days
             $counts = [];
-            for ($i = 6; $i >= 0; $i--) {
-                $date = Carbon::now()->subDays($i)->format('Y-m-d');
+            $startDay = Carbon::now()->startOfWeek(Carbon::SUNDAY);
+            $date = $startDay;
+            while (count($counts) < 7) {
+                $day = $date->format('Y-m-d');
                 $count = User::where('user_type', $userType)
-                    ->whereDate('created_at', $date)
+                    ->whereDate('created_at', $day)
                     ->count();
                 $counts[] = $count;
+                $date->addDay();
             }
             return $counts;
         }
@@ -62,11 +132,14 @@ class GraphController extends Controller
         {
             // Get the counts for listed cars for the last 7 days
             $counts = [];
-            for ($i = 6; $i >= 0; $i--) {
-                $date = Carbon::now()->subDays($i)->format('Y-m-d');
+            $startDay = Carbon::now()->startOfWeek(Carbon::SUNDAY);
+            $date = $startDay;
+            while (count($counts) < 7) {
+                $day = $date->format('Y-m-d');
                 $count = Car::whereDate('created_at', $date)
                     ->count();
                 $counts[] = $count;
+                $date->addDay();
             }
             return $counts;
         }
@@ -75,11 +148,14 @@ class GraphController extends Controller
         {
             // Get the counts for bookings for the last 7 days
             $counts = [];
-            for ($i = 6; $i >= 0; $i--) {
-                $date = Carbon::now()->subDays($i)->format('Y-m-d');
+            $startDay = Carbon::now()->startOfWeek(Carbon::SUNDAY);
+            $date = $startDay;
+            while (count($counts) < 7) {
+                $day = $date->format('Y-m-d');
                 $count = Booking::whereDate('created_at', $date)
                     ->count();
                 $counts[] = $count;
+                $date->addDay();
             }
             return $counts;
         }
