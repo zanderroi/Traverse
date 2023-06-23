@@ -16,6 +16,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\View;
+use League\Csv\Writer;
+use League\Csv\CannotInsertRecord;
 
 class AdminController extends Controller
 {
@@ -581,9 +585,8 @@ class AdminController extends Controller
         $timeframe = $request->input('timeframe', 'monthly');
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
+    
         // Calculate the start and end dates for the time range based on the selected timeframe
-        $startDate = null;
-        $endDate = null;
         if ($timeframe === 'weekly') {
             $startDate = Carbon::now()->startOfWeek();
             $endDate = Carbon::now()->endOfWeek();
@@ -594,6 +597,7 @@ class AdminController extends Controller
             $startDate = Carbon::now()->startOfYear();
             $endDate = Carbon::now()->endOfYear();
         }
+    
         // Retrieve the bookings within the time range
         $bookings = Booking::with([
             'car.owner' => function ($query) {
@@ -603,13 +607,16 @@ class AdminController extends Controller
                 $query->withTrashed();
             }
         ])->whereBetween('created_at', [$startDate, $endDate])->get();
+    
         // Calculate the total commission for the bookings
         $totalCommission = 0;
         foreach ($bookings as $booking) {
             $totalCommission += $booking->getCommissionAmount();
         }
+    
         // Calculate the total sales (without subtracting the commission)
         $totalSales = $bookings->sum('total_rental_fee');
+    
         // Retrieve the top car owner with the most amount of sales
         $topCarOwner = User::where('user_type', 'car_owner')
             ->withCount(['bookings'])
@@ -628,97 +635,22 @@ class AdminController extends Controller
             ->whereBetween('bookings.created_at', [$startDate, $endDate])
             ->sum('bookings.total_rental_fee');
     
-           // Prepare the commission data for the chart
-    $commissionData = [
-        'labels' => [],
-        'data' => []
-    ];
+        // Prepare the commission data for the chart
+        $commissionData = [
+            'labels' => [],
+            'data' => []
+        ];
     
-    if ($timeframe === 'weekly') {
-        $numOfWeeks = $startDate->diffInWeeks($endDate) + 1;
-        $dateRangeFormat = 'W M'; 
-        // Generate the labels for the chart based on the number of weeks
-        for ($i = 1; $i <= $numOfWeeks; $i++) {
-            $label = 'Week ' . $i;
-            $labelStartDate = $startDate->copy()->addWeeks($i - 1);
-            $labelEndDate = $startDate->copy()->addWeeks($i)->subDay();
-            $commissionData['labels'][] = $label . ' (' . $labelStartDate->format($dateRangeFormat) . ' - ' . $labelEndDate->format($dateRangeFormat) . ')';
-        }
-    
-        // Retrieve the commission data for each week
-        for ($i = 1; $i <= $numOfWeeks; $i++) {
-            $weekStartDate = $startDate->copy()->addWeeks($i - 1);
-            $weekEndDate = $startDate->copy()->addWeeks($i)->subDay();
-    
-            // Retrieve the commissions within the week
-            $weekCommissions = Commission::whereIn('booking_id', $bookings->pluck('id')->all())
-                ->whereBetween('created_at', [$weekStartDate, $weekEndDate])
-                ->get();
-    
-            // Calculate the total commission for the week
-            $weekCommissionTotal = $weekCommissions->sum('commission_amount');
-    
-            $commissionData['data'][] = $weekCommissionTotal;
-        }
-    } elseif ($timeframe === 'monthly') {
-        $numOfMonths = 12; // Change this number as per your requirement
-        $dateRangeFormat = 'M Y'; // Customize the date range format if needed
-    
-        // Generate the labels for the chart based on the number of months
-        for ($i = 1; $i <= $numOfMonths; $i++) {
-            $label = Carbon::create(null, $i, 1)->format($dateRangeFormat);
-            $labelStartDate = Carbon::create(null, $i, 1)->startOfMonth();
-            $labelEndDate = Carbon::create(null, $i, 1)->endOfMonth();
-            $commissionData['labels'][] = $label . ' (' . $labelStartDate->format($dateRangeFormat) . ' - ' . $labelEndDate->format($dateRangeFormat) . ')';
-        }
-    
-        // Retrieve the commission data for each month
-        for ($i = 1; $i <= $numOfMonths; $i++) {
-            $monthStartDate = Carbon::create(null, $i, 1)->startOfMonth();
-            $monthEndDate = Carbon::create(null, $i, 1)->endOfMonth();
-    
-            // Retrieve the commissions within the month
-            $monthCommissions = Commission::whereIn('booking_id', $bookings->pluck('id')->all())
-                ->whereBetween('created_at', [$monthStartDate, $monthEndDate])
-                ->get();
-    
-            // Calculate the total commission for the month
-            $monthCommissionTotal = $monthCommissions->sum('commission_amount');
-    
-            $commissionData['data'][] = $monthCommissionTotal;
-        }
-    } elseif ($timeframe === 'yearly') {
-        $startYear = Carbon::now()->startOfYear()->year;
-        $endYear = Carbon::now()->year;
-        $dateRangeFormat = 'Y'; // Customize the date range format if needed
-    
-        // Generate the labels for the chart based on the number of years
-        for ($year = $startYear; $year <= $endYear; $year++) {
-            $label = 'Year ' . $year;
-            $labelStartDate = Carbon::createFromDate($year, 1, 1);
-            $labelEndDate = Carbon::createFromDate($year, 12, 31);
-            $commissionData['labels'][] = $label . ' (' . $labelStartDate->format($dateRangeFormat) . ' - ' . $labelEndDate->format($dateRangeFormat) . ')';
-        }
-    
-        // Retrieve the commission data for each year
-        for ($year = $startYear; $year <= $endYear; $year++) {
-            $yearStartDate = Carbon::createFromDate($year, 1, 1);
-            $yearEndDate = Carbon::createFromDate($year, 12, 31);
-    
-            // Retrieve the commissions within the year
-            $yearCommissions = Commission::whereIn('booking_id', $bookings->pluck('id')->all())
-                ->whereBetween('created_at', [$yearStartDate, $yearEndDate])
-                ->get();
-    
-            // Calculate the total commission for the year
-            $yearCommissionTotal = $yearCommissions->sum('commission_amount');
-    
-            $commissionData['data'][] = $yearCommissionTotal;
-        }
+        // ... (rest of the code)
+       // Populate the commission data
+       foreach ($bookings as $booking) {
+        $commissionData['labels'][] = $booking->created_at->format('Y-m-d');
+        $commissionData['data'][] = $booking->getCommissionAmount();
     }
-    
-    
         return view('admin.sales', [
+            'filterType' => $filterType,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
             'commissionreceived' => $commissionreceived,
             'totalCommission' => $totalCommission,
             'totalSales' => $totalSales,
@@ -727,9 +659,10 @@ class AdminController extends Controller
             'topCarOwnerTotalSales' => $topCarOwnerTotalSales,
             'latestProfilePicture' => $latestProfilePicture,
             'commissionData' => $commissionData,
-            'timeframe'=> $timeframe,
+            'timeframe' => $timeframe,
         ]);
     }
+    
 
         public function weeklyDL(Request $request)
         {
@@ -762,7 +695,6 @@ class AdminController extends Controller
             // Download the PDF
             return $pdf->download('monthly_data.pdf');
         }
-
         private function generateMonthlyData($selectedMonth, $year)
         {
             $startOfMonth = Carbon::create($year, $selectedMonth, 1)->startOfMonth();
@@ -806,8 +738,97 @@ class AdminController extends Controller
             return $monthlyData;
         }
 
-   
-    
 
+        public function generateSalesReport(Request $request)
+        {
+            // Retrieve the filter values from the request
+            $filterType = $request->input('filter_type');
+            $timeframe = $request->input('timeframe');
+            $startDate = $request->input('start_date');
+            $endDate = $request->input('end_date');
+        
+            // Calculate the start and end dates for the time range based on the selected timeframe
+            if ($timeframe === 'weekly') {
+                $startDate = Carbon::now()->startOfWeek();
+                $endDate = Carbon::now()->endOfWeek();
+            } elseif ($timeframe === 'monthly') {
+                $startDate = Carbon::now()->startOfMonth();
+                $endDate = Carbon::now()->endOfMonth();
+            } elseif ($timeframe === 'yearly') {
+                $startDate = Carbon::now()->startOfYear();
+                $endDate = Carbon::now()->endOfYear();
+            }
+        
+            // Retrieve the bookings within the specified time range
+            $bookings = Booking::with([
+                'car.owner' => function ($query) {
+                    $query->withTrashed();
+                },
+            ])->whereBetween('created_at', [$startDate, $endDate])->get();
+        
+            // Retrieve the commissions for the bookings
+            $commissions = Commission::whereIn('booking_id', $bookings->pluck('id')->all())->get();
+            $commissionTotal = $commissions->sum('commission_amount');
+
+            // Create a new CSV writer
+            $csv = Writer::createFromFileObject(new \SplTempFileObject());
+
+            // Define the CSV headers
+            $csv->insertOne([
+                'Date',
+                'Booking ID',
+                'Car',
+                'Car Owner',
+                'Total Rental Fee',
+                'Profit'
+            ]);
+
+            // Iterate over the bookings and add the data to the CSV
+            foreach ($bookings as $booking) {
+                try {
+                    $car = $booking->car;
+                    $carOwner = $car->owner ?? null;
+                    $carname = $car->car_brand . ' ' . $car->car_model;
+                    $ownername = $carOwner->first_name . ' ' . $carOwner->last_name;
+                    $csv->insertOne([
+                        $booking->created_at->format('Y-m-d'),
+                        $booking->id,
+                        $carname ?? null,
+                        $ownername ?? null,
+                        $booking->total_rental_fee,
+                        $booking->getCommissionAmount()
+                    ]);
+                } catch (CannotInsertRecord $e) {
+                    // Handle any exceptions that occur during record insertion
+                    // You can log the error or take appropriate action
+                }
+            }
+
+            // Add the sum of all commission amounts at the bottom
+            $csv->insertOne([
+                '', // Empty cell for Date
+                '', // Empty cell for Booking ID
+                '', // Empty cell for Car
+                '', // Empty cell for Car Owner
+                '', // Empty cell for Total Rental Fee
+                'Total Profit Received: ' . $commissionTotal // Sum of all commission amounts
+            ]);
+
+
+            // Set the CSV headers for download
+            $headers = [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => 'attachment; filename="sales_report.csv"'
+            ];
+        
+            // Generate the CSV response
+            $response = response()->streamDownload(function () use ($csv) {
+                echo $csv->getContent();
+            }, 'sales_report.csv', $headers);
+        
+            // Return the response
+            return $response;
+        }
+        
 }
 

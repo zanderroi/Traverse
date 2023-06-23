@@ -104,13 +104,7 @@
               </div>
             </div>
           </div>
-{{-- 
-          <div class="mt-4 w-64 h-28 rounded-lg shadow-md p-6 flex items-center justify-center" style="background-color: rgb(36, 36, 36);">
-            <div class="text-white text-xl font-bold mr-2">Total Bookings</div>
-            <div class="bg-indigo-500 text-white rounded-lg px-4 py-2">
-              {{$totalBookings}}
-            </div>
-          </div> --}}
+
 
 
 <!-- Chart -->
@@ -187,6 +181,8 @@
     </div>
 
     <div class="mt-4 bg-green-500 text-white text-center px-4 py-2 text-xs w-32 rounded-md">
-        Generate Sales Report
+        <a href="{{ route('admin.sales.report', ['filter_type' => $filterType, 'timeframe' => $timeframe, 'start_date' => $startDate, 'end_date' => $endDate]) }}">
+            Generate Sales Report
+        </a>
     </div>
-        
+    
